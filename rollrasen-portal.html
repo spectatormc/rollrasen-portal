@@ -1,0 +1,359 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Rollrasen anfragen – 3 Angebote von Händlern in Ihrer Region</title>
+  <meta name="description" content="Fläche berechnen, PLZ eingeben, kostenlos bis zu 3 Angebote von regionalen Rollrasen-Händlern erhalten.">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --green:       #2d6a2d;
+      --green-dark:  #1e4d1e;
+      --green-deep:  #163816;
+      --green-soft:  #eaf3ea;
+      --green-mid:   #c4dcc4;
+      --earth:       #b87333;
+      --text:        #1a1a1a;
+      --muted:       #6b7280;
+      --border:      #e5e7eb;
+      --bg:          #f9fafb;
+      --white:       #ffffff;
+      --r:           10px;
+      --shadow:      0 2px 12px rgba(0,0,0,0.08);
+    }
+
+    body { font-family: system-ui, -apple-system, sans-serif; color: var(--text); background: var(--bg); line-height: 1.55; }
+
+    /* ── HERO ── */
+    .hero {
+      background: linear-gradient(140deg, var(--green-deep) 0%, #1a3d1a 50%, #245a24 100%);
+      color: white; padding: 3rem 1.5rem 2.5rem; text-align: center;
+    }
+    .hero__kicker { font-size: 0.78rem; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; opacity: 0.7; margin-bottom: 0.75rem; }
+    .hero__title { font-size: clamp(1.6rem, 4vw, 2.4rem); font-weight: 800; line-height: 1.2; margin-bottom: 0.9rem; }
+    .hero__title span { color: #a8d5a8; }
+    .hero__sub { font-size: 1rem; opacity: 0.82; max-width: 540px; margin: 0 auto 1.5rem; }
+    .hero__usps { display: flex; flex-wrap: wrap; gap: 0.5rem; justify-content: center; }
+    .usp { font-size: 0.78rem; font-weight: 600; background: rgba(255,255,255,0.12); border-radius: 999px; padding: 0.3rem 0.8rem; }
+    .usp::before { content: '✓ '; }
+
+    /* ── LAYOUT ── */
+    .main { max-width: 680px; margin: 0 auto; padding: 2rem 1.25rem 4rem; }
+
+    /* ── CARD ── */
+    .card { background: white; border-radius: var(--r); box-shadow: var(--shadow); padding: 1.75rem; margin-bottom: 1.25rem; }
+    .card__title { font-size: 1rem; font-weight: 700; color: var(--green-dark); margin-bottom: 1.1rem; display: flex; align-items: center; gap: 0.5rem; }
+    .card__title .step { display: inline-flex; align-items: center; justify-content: center; width: 24px; height: 24px; border-radius: 50%; background: var(--green); color: white; font-size: 0.72rem; font-weight: 800; flex-shrink: 0; }
+
+    /* ── RECHNER ── */
+    .rechner-m2 { display: flex; gap: 0.75rem; align-items: center; margin-bottom: 1rem; }
+    .rechner-m2 input[type=range] { flex: 1; accent-color: var(--green); }
+    .rechner-m2__val { font-size: 1.2rem; font-weight: 800; color: var(--green-dark); min-width: 70px; text-align: right; }
+    .sorten { display: grid; grid-template-columns: 1fr 1fr; gap: 0.6rem; }
+    @media(min-width:480px) { .sorten { grid-template-columns: repeat(4, 1fr); } }
+    .sorte-card { border: 2px solid var(--border); border-radius: 8px; padding: 0.7rem 0.5rem; text-align: center; cursor: pointer; transition: all 0.15s; }
+    .sorte-card:hover { border-color: var(--green-mid); }
+    .sorte-card.selected { border-color: var(--green); background: var(--green-soft); }
+    .sorte-card__name { font-size: 0.82rem; font-weight: 700; color: var(--text); display: block; }
+    .sorte-card__price { font-size: 0.72rem; color: var(--muted); }
+    .preis-info { margin-top: 1rem; background: var(--green-soft); border: 1px solid var(--green-mid); border-radius: 8px; padding: 0.75rem 1rem; font-size: 0.88rem; color: var(--green-dark); font-weight: 600; }
+    .preis-info span { font-size: 1.1rem; }
+
+    /* ── PLZ ── */
+    .plz-row { display: flex; gap: 0.75rem; }
+    .plz-row input { flex: 1; }
+    .haendler-badge { display: flex; align-items: center; gap: 0.5rem; background: var(--green-soft); border: 1px solid var(--green-mid); border-radius: 8px; padding: 0.65rem 0.9rem; font-size: 0.85rem; color: var(--green-dark); font-weight: 600; white-space: nowrap; }
+    .haendler-badge .dot { width: 8px; height: 8px; border-radius: 50%; background: var(--green); flex-shrink: 0; }
+
+    /* ── FORMULAR ── */
+    .field-group { display: grid; gap: 0.75rem; }
+    .field-group--2 { grid-template-columns: 1fr 1fr; }
+    @media(max-width:480px) { .field-group--2 { grid-template-columns: 1fr; } }
+    label { display: block; font-size: 0.82rem; font-weight: 600; color: var(--text); margin-bottom: 0.3rem; }
+    label .opt { font-weight: 400; color: var(--muted); }
+    input, textarea { width: 100%; border: 1.5px solid var(--border); border-radius: 7px; padding: 0.65rem 0.85rem; font-size: 0.93rem; font-family: inherit; color: var(--text); background: white; transition: border-color 0.15s; }
+    input:focus, textarea:focus { outline: none; border-color: var(--green); }
+    textarea { resize: vertical; min-height: 80px; }
+
+    /* ── SUBMIT ── */
+    .btn-submit { display: block; width: 100%; background: var(--green); color: white; border: none; border-radius: var(--r); padding: 1rem; font-size: 1.05rem; font-weight: 700; font-family: inherit; cursor: pointer; transition: all 0.15s; box-shadow: 0 2px 10px rgba(45,106,45,0.35); margin-top: 1rem; }
+    .btn-submit:hover { background: var(--green-dark); transform: translateY(-1px); }
+    .btn-submit:disabled { opacity: 0.6; cursor: not-allowed; transform: none; }
+    .submit-hint { text-align: center; font-size: 0.75rem; color: var(--muted); margin-top: 0.5rem; }
+
+    /* ── ERROR ── */
+    .error-msg { background: #fee2e2; border: 1px solid #fecaca; border-radius: 7px; padding: 0.6rem 0.85rem; font-size: 0.85rem; color: #b91c1c; margin-top: 0.75rem; display: none; }
+    .error-msg.show { display: block; }
+
+    /* ── SUCCESS ── */
+    .success-screen { display: none; text-align: center; padding: 2rem 1rem; }
+    .success-screen.show { display: block; }
+    .success-icon { font-size: 3rem; margin-bottom: 1rem; }
+    .success-screen h2 { font-size: 1.4rem; font-weight: 800; color: var(--green-dark); margin-bottom: 0.5rem; }
+    .success-screen p { color: var(--muted); font-size: 0.95rem; line-height: 1.6; }
+    .success-detail { background: var(--green-soft); border-radius: 8px; padding: 1rem; margin: 1.25rem 0; font-size: 0.88rem; color: var(--green-dark); }
+
+    /* ── HOW IT WORKS ── */
+    .how { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1rem; margin-bottom: 1.5rem; }
+    @media(max-width:480px) { .how { grid-template-columns: 1fr; } }
+    .how-step { text-align: center; padding: 1rem; }
+    .how-step__icon { font-size: 1.8rem; margin-bottom: 0.5rem; }
+    .how-step__title { font-size: 0.85rem; font-weight: 700; color: var(--text); margin-bottom: 0.25rem; }
+    .how-step__text { font-size: 0.78rem; color: var(--muted); }
+
+    /* ── TRUST ── */
+    .trust { background: white; border-radius: var(--r); box-shadow: var(--shadow); padding: 1.25rem 1.75rem; text-align: center; font-size: 0.8rem; color: var(--muted); }
+
+    /* ── FOOTER ── */
+    footer { text-align: center; font-size: 0.75rem; color: var(--muted); padding: 2rem 1rem; }
+    footer a { color: var(--muted); }
+  </style>
+</head>
+<body>
+
+<header class="hero">
+  <div class="hero__kicker">Rollrasen · Bayern · Kostenlos</div>
+  <h1 class="hero__title">Bis zu <span>3 Angebote</span> von<br>Händlern in Ihrer Region</h1>
+  <p class="hero__sub">Fläche berechnen, PLZ eingeben, Anfrage absenden – fertig. Händler melden sich innerhalb von 24 Stunden.</p>
+  <div class="hero__usps">
+    <span class="usp">Kostenlos & unverbindlich</span>
+    <span class="usp">Regionale Händler</span>
+    <span class="usp">Antwort in 24h</span>
+  </div>
+</header>
+
+<main class="main">
+
+  <!-- Wie funktioniert es -->
+  <div class="how">
+    <div class="how-step">
+      <div class="how-step__icon">📐</div>
+      <div class="how-step__title">Fläche berechnen</div>
+      <div class="how-step__text">m² und Rasensorte auswählen</div>
+    </div>
+    <div class="how-step">
+      <div class="how-step__icon">📍</div>
+      <div class="how-step__title">PLZ eingeben</div>
+      <div class="how-step__text">Händler in Ihrer Nähe werden gefunden</div>
+    </div>
+    <div class="how-step">
+      <div class="how-step__icon">📩</div>
+      <div class="how-step__title">Angebote erhalten</div>
+      <div class="how-step__text">Händler melden sich direkt bei Ihnen</div>
+    </div>
+  </div>
+
+  <div id="anfrage-form">
+
+    <!-- SCHRITT 1: Rechner -->
+    <div class="card">
+      <div class="card__title"><span class="step">1</span> Fläche & Sorte</div>
+
+      <div class="rechner-m2">
+        <input type="range" id="m2-slider" min="10" max="500" value="80" step="5" oninput="updateRechner()">
+        <div class="rechner-m2__val"><span id="m2-val">80</span> m²</div>
+      </div>
+
+      <div class="sorten" id="sorten">
+        <div class="sorte-card selected" data-sorte="premium" onclick="selectSorte(this)">
+          <span class="sorte-card__name">Premium</span>
+          <span class="sorte-card__price">9,00 €/m²</span>
+        </div>
+        <div class="sorte-card" data-sorte="halbschatten" onclick="selectSorte(this)">
+          <span class="sorte-card__name">Halbschatten</span>
+          <span class="sorte-card__price">6,50 €/m²</span>
+        </div>
+        <div class="sorte-card" data-sorte="sport" onclick="selectSorte(this)">
+          <span class="sorte-card__name">Sport</span>
+          <span class="sorte-card__price">10,50 €/m²</span>
+        </div>
+        <div class="sorte-card" data-sorte="boeschung" onclick="selectSorte(this)">
+          <span class="sorte-card__name">Böschung</span>
+          <span class="sorte-card__price">11,50 €/m²</span>
+        </div>
+      </div>
+
+      <div class="preis-info" id="preis-info">
+        Richtwert: ca. <span id="preis-display">720 €</span> für <span id="m2-display">80 m²</span> Premium-Fertigrasen
+      </div>
+    </div>
+
+    <!-- SCHRITT 2: PLZ -->
+    <div class="card">
+      <div class="card__title"><span class="step">2</span> Ihre Postleitzahl</div>
+      <div class="plz-row">
+        <div style="flex:1">
+          <label for="plz">PLZ <span class="opt">(für regionale Händler)</span></label>
+          <input type="text" id="plz" maxlength="5" placeholder="z.B. 82205" inputmode="numeric"
+            oninput="this.value=this.value.replace(/\D/g,''); updateHaendler()">
+        </div>
+        <div style="align-self:flex-end">
+          <div class="haendler-badge" id="haendler-badge">
+            <span class="dot"></span>
+            <span id="haendler-text">Händler werden geladen …</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- SCHRITT 3: Kontakt -->
+    <div class="card">
+      <div class="card__title"><span class="step">3</span> Ihre Kontaktdaten</div>
+      <div class="field-group field-group--2" style="margin-bottom:0.75rem">
+        <div>
+          <label for="name">Name *</label>
+          <input type="text" id="name" placeholder="Ihr Name" required>
+        </div>
+        <div>
+          <label for="email">E-Mail *</label>
+          <input type="email" id="email" placeholder="ihre@email.de" required>
+        </div>
+      </div>
+      <div class="field-group field-group--2">
+        <div>
+          <label for="phone">Telefon <span class="opt">(optional)</span></label>
+          <input type="tel" id="phone" placeholder="+49 ...">
+        </div>
+        <div>
+          <!-- PLZ schon oben -->
+        </div>
+      </div>
+      <div style="margin-top:0.75rem">
+        <label for="message">Nachricht <span class="opt">(optional)</span></label>
+        <textarea id="message" placeholder="Wunschtermin, besondere Anforderungen, Hanglage …"></textarea>
+      </div>
+
+      <div class="error-msg" id="error-msg"></div>
+
+      <button class="btn-submit" id="submit-btn" onclick="submitAnfrage()">
+        Anfrage kostenlos absenden →
+      </button>
+      <p class="submit-hint">Kostenlos & unverbindlich · Keine versteckten Kosten</p>
+    </div>
+
+  </div>
+
+  <!-- SUCCESS -->
+  <div class="success-screen" id="success-screen">
+    <div class="success-icon">🌱</div>
+    <h2>Anfrage erfolgreich gesendet!</h2>
+    <p>Wir haben Ihre Anfrage an <strong id="success-count">3 Händler</strong> in Ihrer Region weitergeleitet.</p>
+    <div class="success-detail" id="success-detail">
+      Die Händler melden sich innerhalb von <strong>24 Stunden</strong> direkt per E-Mail oder Telefon bei Ihnen.
+    </div>
+    <p style="font-size:0.82rem;color:var(--muted)">Zur Bestätigung haben wir Ihnen eine E-Mail geschickt.</p>
+  </div>
+
+  <!-- TRUST -->
+  <div class="trust">
+    🔒 Ihre Daten werden ausschließlich zur Vermittlung von Angeboten verwendet und nicht an Dritte weitergegeben.
+    · <a href="https://www.gartenbau-kosten.de/datenschutz/" target="_blank">Datenschutz</a>
+  </div>
+
+</main>
+
+<footer>
+  Ein Service von <a href="https://www.gartenbau-kosten.de/" target="_blank">gartenbau-kosten.de</a>
+</footer>
+
+<script>
+  var API = window.location.origin;
+
+  var PREISE = { premium: 9.00, halbschatten: 6.50, sport: 10.50, boeschung: 11.50 };
+  var LABELS = { premium: 'Premium-Fertigrasen', halbschatten: 'Halbschattenrasen', sport: 'Sportrasen', boeschung: 'Böschungsrasen' };
+  var aktiveSorte = 'premium';
+
+  function updateRechner() {
+    var m2 = parseInt(document.getElementById('m2-slider').value);
+    document.getElementById('m2-val').textContent = m2;
+    document.getElementById('m2-display').textContent = m2 + ' m²';
+    var preis = (m2 * PREISE[aktiveSorte]).toLocaleString('de-DE', {minimumFractionDigits:2, maximumFractionDigits:2});
+    document.getElementById('preis-display').textContent = preis + ' €';
+    document.getElementById('preis-info').querySelector('span:last-child') &&
+      (document.getElementById('preis-info').innerHTML =
+        'Richtwert: ca. <span id="preis-display">' + preis + ' €</span> für <span id="m2-display">' + m2 + ' m²</span> ' + LABELS[aktiveSorte]);
+  }
+
+  function selectSorte(el) {
+    document.querySelectorAll('.sorte-card').forEach(function(c) { c.classList.remove('selected'); });
+    el.classList.add('selected');
+    aktiveSorte = el.dataset.sorte;
+    updateRechner();
+  }
+
+  var haendlerTimer = null;
+  function updateHaendler() {
+    var plz = document.getElementById('plz').value;
+    if (plz.length < 2) {
+      document.getElementById('haendler-text').textContent = 'PLZ eingeben …';
+      return;
+    }
+    clearTimeout(haendlerTimer);
+    haendlerTimer = setTimeout(async function() {
+      try {
+        var r = await fetch(API + '/haendler?plz=' + plz);
+        var data = await r.json();
+        document.getElementById('haendler-text').textContent =
+          data.count + ' Händler in ' + data.region + ' verfügbar';
+      } catch(e) {
+        document.getElementById('haendler-text').textContent = 'Händler werden gesucht …';
+      }
+    }, 400);
+  }
+
+  async function submitAnfrage() {
+    var name  = document.getElementById('name').value.trim();
+    var email = document.getElementById('email').value.trim();
+    var plz   = document.getElementById('plz').value.trim();
+    var errEl = document.getElementById('error-msg');
+    errEl.classList.remove('show');
+
+    if (!name) { errEl.textContent = 'Bitte Namen eingeben.'; errEl.classList.add('show'); return; }
+    if (!email || !email.includes('@')) { errEl.textContent = 'Bitte gültige E-Mail-Adresse eingeben.'; errEl.classList.add('show'); return; }
+
+    var btn = document.getElementById('submit-btn');
+    btn.disabled = true;
+    btn.textContent = 'Wird gesendet …';
+
+    var m2 = parseInt(document.getElementById('m2-slider').value);
+
+    try {
+      var r = await fetch(API + '/anfrage', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          name, email, plz,
+          phone:   document.getElementById('phone').value.trim(),
+          message: document.getElementById('message').value.trim(),
+          m2, product: aktiveSorte
+        })
+      });
+      var data = await r.json();
+      if (r.ok && data.ok) {
+        document.getElementById('anfrage-form').style.display = 'none';
+        var sc = document.getElementById('success-screen');
+        document.getElementById('success-count').textContent =
+          data.haendler_count + ' Händler' + (data.region ? ' in ' + data.region : '');
+        sc.classList.add('show');
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+      } else {
+        errEl.textContent = data.error || 'Fehler beim Absenden – bitte versuchen Sie es erneut.';
+        errEl.classList.add('show');
+        btn.disabled = false; btn.textContent = 'Anfrage kostenlos absenden →';
+      }
+    } catch(e) {
+      errEl.textContent = 'Verbindungsfehler – bitte Seite neu laden und erneut versuchen.';
+      errEl.classList.add('show');
+      btn.disabled = false; btn.textContent = 'Anfrage kostenlos absenden →';
+    }
+  }
+
+  // Init
+  updateRechner();
+  updateHaendler();
+</script>
+
+</body>
+</html>

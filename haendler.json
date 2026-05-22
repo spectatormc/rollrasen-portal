@@ -1,0 +1,23 @@
+[
+  {
+    "name": "BayernRasen",
+    "email": "info@bayernrasen.de",
+    "website": "https://www.bayernrasen.de",
+    "plz_prefixes": ["80","81","82","83","84","85","86","87","88","89"],
+    "region": "Bayern"
+  },
+  {
+    "name": "Rasen-Direkt GmbH",
+    "email": "info@rasen-direkt.de",
+    "website": "",
+    "plz_prefixes": ["80","81","82","83","84","85"],
+    "region": "München & Umland"
+  },
+  {
+    "name": "Rasenland Bayern",
+    "email": "kontakt@rasenland-bayern.de",
+    "website": "",
+    "plz_prefixes": ["86","87","88","89","90","91"],
+    "region": "Augsburg / Nordbayern"
+  }
+]
