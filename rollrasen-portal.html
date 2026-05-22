@@ -2,357 +2,1049 @@
 <html lang="de">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Rollrasen anfragen – 3 Angebote von Händlern in Ihrer Region</title>
-  <meta name="description" content="Fläche berechnen, PLZ eingeben, kostenlos bis zu 3 Angebote von regionalen Rollrasen-Händlern erhalten.">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Rollrasen Kosten & Verlegerechner – rollrasen.gartenbau-kosten.de</title>
+  <meta name="description" content="Rollrasen Verlegerechner mit Verschnittberechnung, Preisübersicht und kostenlose Anfrage an regionale Händler in Bayern.">
   <style>
-    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-
     :root {
-      --green:       #2d6a2d;
-      --green-dark:  #1e4d1e;
-      --green-deep:  #163816;
-      --green-soft:  #eaf3ea;
-      --green-mid:   #c4dcc4;
-      --earth:       #b87333;
-      --text:        #1a1a1a;
-      --muted:       #6b7280;
-      --border:      #e5e7eb;
-      --bg:          #f9fafb;
-      --white:       #ffffff;
-      --r:           10px;
-      --shadow:      0 2px 12px rgba(0,0,0,0.08);
+      --color-bg:           #fafaf8;
+      --color-surface:      #f8f7f3;
+      --color-surface-white:#ffffff;
+      --color-border:       #ddd6c8;
+      --color-text:         #2d2d2d;
+      --color-text-muted:   #6a6a6a;
+      --color-heading:      #1a1a18;
+      --color-accent:       #5f7c4f;
+      --color-accent-dark:  #49613d;
+      --color-accent-soft:  #edf3e8;
+      --color-accent-mid:   #d4e8c8;
+      --font-heading: Georgia, 'Palatino Linotype', Palatino, serif;
+      --font-body:    system-ui, -apple-system, 'Segoe UI', Tahoma, sans-serif;
+      --radius-sm: 8px;
+      --radius-md: 12px;
+      --radius-lg: 18px;
+      --shadow:      0 8px 24px rgba(0,0,0,0.06);
+      --shadow-soft: 0 4px 14px rgba(0,0,0,0.04);
+      --max:      760px;
+      --max-wide: 1060px;
     }
 
-    body { font-family: system-ui, -apple-system, sans-serif; color: var(--text); background: var(--bg); line-height: 1.55; }
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+    body { font-family: var(--font-body); font-size: 1.0625rem; line-height: 1.7; color: var(--color-text); background: var(--color-bg); }
+    .container       { max-width: var(--max-wide); margin-inline: auto; padding-inline: 1.5rem; }
+    .container--narrow { max-width: var(--max); margin-inline: auto; padding-inline: 1.5rem; }
 
-    /* ── HERO ── */
-    .hero {
-      background: linear-gradient(140deg, var(--green-deep) 0%, #1a3d1a 50%, #245a24 100%);
-      color: white; padding: 3rem 1.5rem 2.5rem; text-align: center;
-    }
-    .hero__kicker { font-size: 0.78rem; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; opacity: 0.7; margin-bottom: 0.75rem; }
-    .hero__title { font-size: clamp(1.6rem, 4vw, 2.4rem); font-weight: 800; line-height: 1.2; margin-bottom: 0.9rem; }
-    .hero__title span { color: #a8d5a8; }
-    .hero__sub { font-size: 1rem; opacity: 0.82; max-width: 540px; margin: 0 auto 1.5rem; }
-    .hero__usps { display: flex; flex-wrap: wrap; gap: 0.5rem; justify-content: center; }
-    .usp { font-size: 0.78rem; font-weight: 600; background: rgba(255,255,255,0.12); border-radius: 999px; padding: 0.3rem 0.8rem; }
-    .usp::before { content: '✓ '; }
+    /* HEADER */
+    .site-header { background: white; border-bottom: 1px solid var(--color-border); padding: 0.9rem 0; position: sticky; top: 0; z-index: 100; }
+    .header-inner { max-width: var(--max-wide); margin-inline: auto; padding-inline: 1.5rem; display: flex; align-items: center; justify-content: space-between; gap: 1rem; }
+    .site-logo { font-family: var(--font-heading); font-size: 1.05rem; font-weight: 700; color: var(--color-heading); text-decoration: none; line-height: 1.2; }
+    .site-logo span { color: var(--color-accent); }
+    .site-logo small { display: block; font-family: var(--font-body); font-size: 0.7rem; font-weight: 400; color: var(--color-text-muted); }
+    .header-nav { display: flex; gap: 1.5rem; list-style: none; }
+    .header-nav a { font-size: 0.875rem; color: var(--color-text-muted); text-decoration: none; transition: color 0.15s; }
+    .header-nav a:hover { color: var(--color-accent-dark); }
+    .header-cta { background: var(--color-accent); color: white; padding: 0.45rem 1rem; border-radius: var(--radius-sm); font-size: 0.875rem; font-weight: 600; text-decoration: none; transition: background 0.15s; white-space: nowrap; }
+    .header-cta:hover { background: var(--color-accent-dark); }
 
-    /* ── LAYOUT ── */
-    .main { max-width: 680px; margin: 0 auto; padding: 2rem 1.25rem 4rem; }
+    /* HERO */
+    .hero { background: linear-gradient(160deg, #f0f5ec 0%, #fafaf8 60%); border-bottom: 1px solid var(--color-border); padding: 4rem 0 3.5rem; }
+    .hero__inner { max-width: var(--max); margin-inline: auto; padding-inline: 1.5rem; text-align: center; }
+    .hero__eyebrow { display: inline-block; font-size: 0.72rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.1em; color: var(--color-accent-dark); background: var(--color-accent-soft); border: 1px solid var(--color-accent-mid); padding: 0.25rem 0.85rem; border-radius: 999px; margin-bottom: 1.1rem; }
+    .hero h1 { font-family: var(--font-heading); font-size: clamp(2rem, 5vw, 3rem); color: var(--color-heading); line-height: 1.15; margin-bottom: 1rem; }
+    .hero__sub { font-size: 1.1rem; color: var(--color-text-muted); max-width: 520px; margin-inline: auto; margin-bottom: 2rem; }
+    .hero__actions { display: flex; gap: 0.75rem; justify-content: center; flex-wrap: wrap; }
+    .btn-primary   { background: var(--color-accent); color: white; padding: 0.75rem 1.5rem; border-radius: var(--radius-sm); font-size: 0.95rem; font-weight: 600; text-decoration: none; transition: background 0.15s; display: inline-block; }
+    .btn-primary:hover { background: var(--color-accent-dark); }
+    .btn-secondary { background: white; color: var(--color-accent-dark); border: 1.5px solid var(--color-accent-mid); padding: 0.75rem 1.5rem; border-radius: var(--radius-sm); font-size: 0.95rem; font-weight: 600; text-decoration: none; transition: border-color 0.15s; display: inline-block; }
+    .btn-secondary:hover { border-color: var(--color-accent); }
 
-    /* ── CARD ── */
-    .card { background: white; border-radius: var(--r); box-shadow: var(--shadow); padding: 1.75rem; margin-bottom: 1.25rem; }
-    .card__title { font-size: 1rem; font-weight: 700; color: var(--green-dark); margin-bottom: 1.1rem; display: flex; align-items: center; gap: 0.5rem; }
-    .card__title .step { display: inline-flex; align-items: center; justify-content: center; width: 24px; height: 24px; border-radius: 50%; background: var(--green); color: white; font-size: 0.72rem; font-weight: 800; flex-shrink: 0; }
+    /* TRUST STRIP */
+    .trust-strip { background: white; border-bottom: 1px solid var(--color-border); padding: 0.75rem 0; }
+    .trust-strip__inner { max-width: var(--max-wide); margin-inline: auto; padding-inline: 1.5rem; display: flex; gap: 2rem; justify-content: center; flex-wrap: wrap; }
+    .trust-item { font-size: 0.82rem; color: var(--color-text-muted); display: flex; align-items: center; gap: 0.4rem; }
+    .trust-item::before { content: '✓'; color: var(--color-accent); font-weight: 700; }
 
-    /* ── RECHNER ── */
-    .rechner-m2 { display: flex; gap: 0.75rem; align-items: center; margin-bottom: 1rem; }
-    .rechner-m2 input[type=range] { flex: 1; accent-color: var(--green); }
-    .rechner-m2__val { font-size: 1.2rem; font-weight: 800; color: var(--green-dark); min-width: 70px; text-align: right; }
-    .sorten { display: grid; grid-template-columns: 1fr 1fr; gap: 0.6rem; }
-    @media(min-width:480px) { .sorten { grid-template-columns: repeat(4, 1fr); } }
-    .sorte-card { border: 2px solid var(--border); border-radius: 8px; padding: 0.7rem 0.5rem; text-align: center; cursor: pointer; transition: all 0.15s; }
-    .sorte-card:hover { border-color: var(--green-mid); }
-    .sorte-card.selected { border-color: var(--green); background: var(--green-soft); }
-    .sorte-card__name { font-size: 0.82rem; font-weight: 700; color: var(--text); display: block; }
-    .sorte-card__price { font-size: 0.72rem; color: var(--muted); }
-    .preis-info { margin-top: 1rem; background: var(--green-soft); border: 1px solid var(--green-mid); border-radius: 8px; padding: 0.75rem 1rem; font-size: 0.88rem; color: var(--green-dark); font-weight: 600; }
-    .preis-info span { font-size: 1.1rem; }
+    /* SECTIONS */
+    .section { padding: 3.5rem 0; }
+    .section--alt { background: var(--color-surface); border-top: 1px solid var(--color-border); border-bottom: 1px solid var(--color-border); }
+    .section__header { text-align: center; margin-bottom: 2.25rem; }
+    .section__label { font-size: 0.72rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.1em; color: var(--color-accent-dark); margin-bottom: 0.5rem; }
+    .section__title { font-family: var(--font-heading); font-size: clamp(1.4rem, 3vw, 1.9rem); color: var(--color-heading); line-height: 1.2; }
+    .section__sub { font-size: 0.95rem; color: var(--color-text-muted); margin-top: 0.5rem; }
 
-    /* ── PLZ ── */
-    .plz-row { display: flex; gap: 0.75rem; }
-    .plz-row input { flex: 1; }
-    .haendler-badge { display: flex; align-items: center; gap: 0.5rem; background: var(--green-soft); border: 1px solid var(--green-mid); border-radius: 8px; padding: 0.65rem 0.9rem; font-size: 0.85rem; color: var(--green-dark); font-weight: 600; white-space: nowrap; }
-    .haendler-badge .dot { width: 8px; height: 8px; border-radius: 50%; background: var(--green); flex-shrink: 0; }
+    /* RECHNER */
+    .rechner-wrap { max-width: 640px; margin-inline: auto; }
+    .rechner { background: var(--color-accent-soft); border: 1px solid var(--color-border); border-radius: var(--radius-md); padding: 1.75rem; box-shadow: var(--shadow); }
+    .rechner__section { margin-bottom: 1.5rem; }
+    .rechner__section:last-child { margin-bottom: 0; }
+    .field-label { font-size: 0.72rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.08em; color: var(--color-text-muted); margin-bottom: 0.7rem; }
 
-    /* ── FORMULAR ── */
-    .field-group { display: grid; gap: 0.75rem; }
+    /* Mode tabs */
+    .mode-tabs { display: flex; background: white; border: 1px solid var(--color-border); border-radius: var(--radius-sm); overflow: hidden; margin-bottom: 1rem; }
+    .mode-tab { flex: 1; padding: 0.45rem 0.5rem; font-size: 0.82rem; font-family: var(--font-body); border: none; background: transparent; cursor: pointer; color: var(--color-text-muted); transition: background 0.12s, color 0.12s; white-space: nowrap; }
+    .mode-tab + .mode-tab { border-left: 1px solid var(--color-border); }
+    .mode-tab.active { background: var(--color-accent); color: white; font-weight: 600; }
+
+    /* Area list */
+    .area-list { display: grid; gap: 0.5rem; margin-bottom: 0.75rem; }
+    .area-row { display: grid; grid-template-columns: 1fr auto 1fr auto auto; align-items: end; gap: 0.4rem; background: white; border: 1px solid var(--color-border); border-radius: var(--radius-sm); padding: 0.65rem 0.75rem; }
+    .area-row .field { min-width: 0; }
+    .area-row .field label { display: block; font-size: 0.75rem; font-weight: 600; color: var(--color-text-muted); margin-bottom: 0.2rem; }
+    input[type="number"] { width: 100%; padding: 0.5rem 0.6rem; border: 1px solid var(--color-border); border-radius: var(--radius-sm); font-size: 0.95rem; font-family: var(--font-body); background: white; color: var(--color-text); }
+    input[type="number"]:focus { outline: 2px solid var(--color-accent); outline-offset: 1px; border-color: var(--color-accent); }
+    .area-sep { padding-bottom: 0.5rem; text-align: center; color: var(--color-text-muted); font-size: 1rem; align-self: end; }
+    .area-m2 { font-size: 0.8rem; font-weight: 700; color: var(--color-accent-dark); white-space: nowrap; align-self: end; padding-bottom: 0.55rem; min-width: 3.5rem; text-align: right; }
+    .area-remove { background: none; border: none; color: var(--color-text-muted); font-size: 1.1rem; cursor: pointer; padding: 0 0.15rem; align-self: end; padding-bottom: 0.4rem; line-height: 1; transition: color 0.12s; }
+    .area-remove:hover { color: #b33; }
+    .area-remove:disabled { opacity: 0.2; cursor: default; }
+    .add-area-btn { display: flex; align-items: center; gap: 0.4rem; background: white; border: 1.5px dashed var(--color-accent-mid); border-radius: var(--radius-sm); padding: 0.55rem 0.9rem; font-size: 0.875rem; font-weight: 600; color: var(--color-accent-dark); cursor: pointer; width: 100%; justify-content: center; transition: border-color 0.15s, background 0.15s; font-family: var(--font-body); }
+    .add-area-btn:hover { border-color: var(--color-accent); background: var(--color-accent-soft); }
+
+    /* Slider mode */
+    #mode-direct { display: none; }
+    .slider-row { display: flex; align-items: center; gap: 0.75rem; background: white; border: 1px solid var(--color-border); border-radius: var(--radius-sm); padding: 0.65rem 0.9rem; }
+    input[type="range"] { flex: 1; accent-color: var(--color-accent); cursor: pointer; }
+    .slider-val { font-weight: 700; font-size: 1rem; min-width: 4.5rem; text-align: right; }
+
+    /* Draw mode */
+    #mode-draw { display: none; }
+    .draw-controls { display: flex; align-items: center; gap: 0.5rem; flex-wrap: wrap; margin-bottom: 0.75rem; }
+    .draw-scale-wrap { display: flex; align-items: center; gap: 0.4rem; font-size: 0.82rem; color: var(--color-text-muted); }
+    .draw-scale-wrap select { padding: 0.3rem 0.5rem; border: 1px solid var(--color-border); border-radius: var(--radius-sm); font-size: 0.82rem; font-family: var(--font-body); background: white; color: var(--color-text); }
+    .draw-btn { background: white; border: 1px solid var(--color-border); border-radius: var(--radius-sm); padding: 0.3rem 0.7rem; font-size: 0.8rem; font-family: var(--font-body); cursor: pointer; color: var(--color-text-muted); transition: border-color 0.12s, color 0.12s; }
+    .draw-btn:hover { border-color: var(--color-accent); color: var(--color-accent-dark); }
+    .draw-canvas-wrap { position: relative; border-radius: var(--radius-sm); overflow: hidden; border: 1px solid var(--color-border); background: white; cursor: crosshair; }
+    #draw-canvas { display: block; width: 100%; touch-action: none; }
+    .draw-hint { font-size: 0.75rem; color: var(--color-text-muted); margin-top: 0.5rem; text-align: center; }
+    #draw-poly-list { display: grid; gap: 0.3rem; margin-top: 0.5rem; }
+    .poly-item { display: flex; justify-content: space-between; align-items: center; background: white; border: 1px solid var(--color-border); border-radius: var(--radius-sm); padding: 0.4rem 0.75rem; font-size: 0.83rem; }
+    .poly-item__label { color: var(--color-text-muted); }
+    .poly-item__label strong { color: var(--color-heading); margin-right: 0.4rem; }
+    .poly-item__remove { background: none; border: none; color: var(--color-text-muted); cursor: pointer; font-size: 1rem; padding: 0 0.1rem; transition: color 0.12s; line-height: 1; }
+    .poly-item__remove:hover { color: #b33; }
+    .draw-result { display: flex; align-items: center; justify-content: space-between; margin-top: 0.6rem; background: white; border: 1px solid var(--color-border); border-radius: var(--radius-sm); padding: 0.5rem 0.85rem; }
+    .draw-result__label { font-size: 0.82rem; color: var(--color-text-muted); }
+    .draw-result__value { font-weight: 700; font-size: 1.05rem; color: var(--color-accent-dark); }
+
+    /* Fläche info */
+    .flaeche-info { display: flex; justify-content: space-between; align-items: center; background: white; border: 1px solid var(--color-border); border-radius: var(--radius-sm); padding: 0.65rem 0.9rem; margin-top: 0.85rem; }
+    .flaeche-info__label { font-size: 0.83rem; color: var(--color-text-muted); }
+    .flaeche-info__right { text-align: right; }
+    .flaeche-info__brutto { font-weight: 700; font-size: 1rem; color: var(--color-heading); }
+    .flaeche-info__sub { font-size: 0.75rem; color: var(--color-text-muted); }
+
+    /* Sorten */
+    .qual-cards { display: grid; grid-template-columns: repeat(2, 1fr); gap: 0.5rem; }
+    @media(min-width: 480px) { .qual-cards { grid-template-columns: repeat(4, 1fr); } }
+    .qual-card { border: 2px solid var(--color-border); border-radius: var(--radius-sm); padding: 0.65rem 0.5rem; text-align: center; cursor: pointer; background: white; transition: border-color 0.12s, background 0.12s; user-select: none; }
+    .qual-card.selected { border-color: var(--color-accent); background: var(--color-accent-soft); }
+    .qual-card__name  { display: block; font-weight: 700; font-size: 0.875rem; color: var(--color-heading); }
+    .qual-card__price { display: block; font-size: 0.76rem; color: var(--color-text-muted); margin-top: 0.1rem; }
+
+    /* Optionen */
+    .option-list { display: grid; gap: 0.4rem; }
+    .option-item { display: flex; align-items: flex-start; gap: 0.65rem; background: white; border: 1px solid var(--color-border); border-radius: var(--radius-sm); padding: 0.65rem 0.9rem; cursor: pointer; transition: border-color 0.12s; }
+    .option-item:hover { border-color: var(--color-accent); }
+    .option-item input[type="checkbox"] { width: 1.1rem; height: 1.1rem; margin-top: 0.22rem; accent-color: var(--color-accent); flex-shrink: 0; cursor: pointer; }
+    .option-item__text strong { display: block; font-size: 0.9rem; font-weight: 600; color: var(--color-heading); line-height: 1.3; }
+    .option-item__text span   { font-size: 0.78rem; color: var(--color-text-muted); }
+
+    /* Ergebnis */
+    .result { background: white; border: 1px solid var(--color-border); border-radius: var(--radius-sm); padding: 1.25rem 1.25rem 1rem; margin-top: 1.5rem; }
+    .result__label { font-size: 0.72rem; text-transform: uppercase; letter-spacing: 0.08em; color: var(--color-text-muted); font-weight: 700; margin-bottom: 0.2rem; }
+    .result__total { font-family: var(--font-heading); font-size: 2.1rem; color: var(--color-accent-dark); font-weight: 700; line-height: 1; margin-bottom: 1rem; }
+    .result__breakdown { border-top: 1px solid var(--color-border); padding-top: 0.7rem; display: grid; gap: 0.3rem; margin-bottom: 0.75rem; }
+    .result__line { display: flex; justify-content: space-between; font-size: 0.875rem; }
+    .result__line-label { color: var(--color-text-muted); }
+    .result__line-value { font-weight: 600; color: var(--color-heading); }
+    .result__menge { background: var(--color-accent-soft); border-radius: var(--radius-sm); padding: 0.5rem 0.75rem; font-size: 0.83rem; color: var(--color-accent-dark); font-weight: 600; margin-bottom: 0.65rem; }
+    .result__note  { font-size: 0.72rem; color: var(--color-text-muted); border-top: 1px solid var(--color-border); padding-top: 0.6rem; }
+    .result__cta   { margin-top: 1rem; }
+    .result__cta-btn { display: block; width: 100%; background: var(--color-accent); color: white; border: none; border-radius: var(--radius-sm); padding: 0.85rem 1rem; font-size: 1rem; font-weight: 700; font-family: var(--font-body); cursor: pointer; text-align: center; transition: background 0.15s; }
+    .result__cta-btn:hover { background: var(--color-accent-dark); }
+
+    /* ANFRAGE FORMULAR */
+    .anfrage-box { max-width: 640px; margin-inline: auto; background: white; border: 1px solid var(--color-border); border-radius: var(--radius-md); padding: 2rem; box-shadow: var(--shadow-soft); }
+    .anfrage-box h3 { font-family: var(--font-heading); font-size: 1.3rem; color: var(--color-heading); margin-bottom: 0.4rem; }
+    .anfrage-box__sub { font-size: 0.875rem; color: var(--color-text-muted); margin-bottom: 1.5rem; }
+    .anfrage-summary { background: var(--color-accent-soft); border: 1px solid var(--color-accent-mid); border-radius: var(--radius-sm); padding: 0.75rem 1rem; font-size: 0.85rem; color: var(--color-accent-dark); font-weight: 600; margin-bottom: 1.25rem; }
+
+    /* PLZ-Suche im Formular */
+    .plz-row { display: flex; gap: 0.75rem; align-items: flex-end; margin-bottom: 1.25rem; }
+    .plz-row > div:first-child { flex: 1; }
+    .haendler-badge { display: flex; align-items: center; gap: 0.5rem; background: var(--color-accent-soft); border: 1px solid var(--color-accent-mid); border-radius: var(--radius-sm); padding: 0.6rem 0.9rem; font-size: 0.82rem; color: var(--color-accent-dark); font-weight: 600; white-space: nowrap; height: 2.85rem; }
+    .haendler-badge .dot { width: 7px; height: 7px; border-radius: 50%; background: var(--color-accent); flex-shrink: 0; }
+
+    .field-group { display: grid; gap: 0.75rem; margin-bottom: 0.75rem; }
     .field-group--2 { grid-template-columns: 1fr 1fr; }
-    @media(max-width:480px) { .field-group--2 { grid-template-columns: 1fr; } }
-    label { display: block; font-size: 0.82rem; font-weight: 600; color: var(--text); margin-bottom: 0.3rem; }
-    label .opt { font-weight: 400; color: var(--muted); }
-    input, textarea { width: 100%; border: 1.5px solid var(--border); border-radius: 7px; padding: 0.65rem 0.85rem; font-size: 0.93rem; font-family: inherit; color: var(--text); background: white; transition: border-color 0.15s; }
-    input:focus, textarea:focus { outline: none; border-color: var(--green); }
-    textarea { resize: vertical; min-height: 80px; }
+    @media(max-width: 480px) { .field-group--2 { grid-template-columns: 1fr; } }
+    .anfrage-box label { display: block; font-size: 0.82rem; font-weight: 600; color: var(--color-text); margin-bottom: 0.3rem; }
+    .anfrage-box label .opt { font-weight: 400; color: var(--color-text-muted); }
+    .anfrage-box input, .anfrage-box textarea { width: 100%; border: 1.5px solid var(--color-border); border-radius: var(--radius-sm); padding: 0.65rem 0.85rem; font-size: 0.93rem; font-family: inherit; color: var(--color-text); background: white; transition: border-color 0.15s; }
+    .anfrage-box input:focus, .anfrage-box textarea:focus { outline: 2px solid var(--color-accent); outline-offset: 1px; border-color: var(--color-accent); }
+    .anfrage-box textarea { resize: vertical; min-height: 80px; }
 
-    /* ── SUBMIT ── */
-    .btn-submit { display: block; width: 100%; background: var(--green); color: white; border: none; border-radius: var(--r); padding: 1rem; font-size: 1.05rem; font-weight: 700; font-family: inherit; cursor: pointer; transition: all 0.15s; box-shadow: 0 2px 10px rgba(45,106,45,0.35); margin-top: 1rem; }
-    .btn-submit:hover { background: var(--green-dark); transform: translateY(-1px); }
+    .btn-submit { display: block; width: 100%; background: var(--color-accent); color: white; border: none; border-radius: var(--radius-sm); padding: 1rem; font-size: 1.05rem; font-weight: 700; font-family: inherit; cursor: pointer; transition: all 0.15s; box-shadow: 0 2px 10px rgba(95,124,79,0.35); margin-top: 1rem; }
+    .btn-submit:hover { background: var(--color-accent-dark); transform: translateY(-1px); }
     .btn-submit:disabled { opacity: 0.6; cursor: not-allowed; transform: none; }
-    .submit-hint { text-align: center; font-size: 0.75rem; color: var(--muted); margin-top: 0.5rem; }
-
-    /* ── ERROR ── */
-    .error-msg { background: #fee2e2; border: 1px solid #fecaca; border-radius: 7px; padding: 0.6rem 0.85rem; font-size: 0.85rem; color: #b91c1c; margin-top: 0.75rem; display: none; }
+    .submit-hint { text-align: center; font-size: 0.75rem; color: var(--color-text-muted); margin-top: 0.5rem; }
+    .error-msg { background: #fee2e2; border: 1px solid #fecaca; border-radius: var(--radius-sm); padding: 0.6rem 0.85rem; font-size: 0.85rem; color: #b91c1c; margin-top: 0.75rem; display: none; }
     .error-msg.show { display: block; }
 
-    /* ── SUCCESS ── */
-    .success-screen { display: none; text-align: center; padding: 2rem 1rem; }
+    /* SUCCESS */
+    .success-screen { display: none; text-align: center; padding: 2rem 1rem; max-width: 640px; margin-inline: auto; }
     .success-screen.show { display: block; }
     .success-icon { font-size: 3rem; margin-bottom: 1rem; }
-    .success-screen h2 { font-size: 1.4rem; font-weight: 800; color: var(--green-dark); margin-bottom: 0.5rem; }
-    .success-screen p { color: var(--muted); font-size: 0.95rem; line-height: 1.6; }
-    .success-detail { background: var(--green-soft); border-radius: 8px; padding: 1rem; margin: 1.25rem 0; font-size: 0.88rem; color: var(--green-dark); }
+    .success-screen h2 { font-family: var(--font-heading); font-size: 1.6rem; color: var(--color-heading); margin-bottom: 0.5rem; }
+    .success-screen p { color: var(--color-text-muted); font-size: 0.95rem; line-height: 1.6; }
+    .success-detail { background: var(--color-accent-soft); border-radius: var(--radius-sm); padding: 1rem 1.25rem; margin: 1.25rem 0; font-size: 0.88rem; color: var(--color-accent-dark); }
 
-    /* ── HOW IT WORKS ── */
-    .how { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1rem; margin-bottom: 1.5rem; }
-    @media(max-width:480px) { .how { grid-template-columns: 1fr; } }
-    .how-step { text-align: center; padding: 1rem; }
-    .how-step__icon { font-size: 1.8rem; margin-bottom: 0.5rem; }
-    .how-step__title { font-size: 0.85rem; font-weight: 700; color: var(--text); margin-bottom: 0.25rem; }
-    .how-step__text { font-size: 0.78rem; color: var(--muted); }
+    /* PREISTABELLE */
+    .preistabelle { width: 100%; border-collapse: collapse; font-size: 0.9rem; background: white; border-radius: var(--radius-md); overflow: hidden; box-shadow: var(--shadow-soft); }
+    .preistabelle th { background: var(--color-surface); font-family: var(--font-heading); font-weight: 700; font-size: 0.83rem; text-align: left; padding: 0.75rem 1rem; border-bottom: 1px solid var(--color-border); color: var(--color-heading); }
+    .preistabelle td { padding: 0.7rem 1rem; border-bottom: 1px solid var(--color-border); vertical-align: middle; }
+    .preistabelle tr:last-child td { border-bottom: none; }
+    .preistabelle tr:hover td { background: var(--color-accent-soft); }
 
-    /* ── TRUST ── */
-    .trust { background: white; border-radius: var(--r); box-shadow: var(--shadow); padding: 1.25rem 1.75rem; text-align: center; font-size: 0.8rem; color: var(--muted); }
+    /* CONTENT BLÖCKE */
+    .content-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem; }
+    @media(max-width: 600px) { .content-grid { grid-template-columns: 1fr; } }
+    .content-card { background: white; border: 1px solid var(--color-border); border-radius: var(--radius-md); padding: 1.75rem; box-shadow: var(--shadow-soft); }
+    .content-card h3 { font-family: var(--font-heading); font-size: 1.15rem; color: var(--color-heading); margin-bottom: 0.75rem; }
+    .content-card p  { font-size: 0.9rem; color: var(--color-text-muted); line-height: 1.65; margin-bottom: 0.65rem; }
+    .content-card p:last-child { margin-bottom: 0; }
+    .content-list { list-style: none; display: grid; gap: 0.4rem; margin-top: 0.5rem; }
+    .content-list li { font-size: 0.88rem; color: var(--color-text-muted); padding-left: 1.2rem; position: relative; }
+    .content-list li::before { content: '→'; position: absolute; left: 0; color: var(--color-accent); font-size: 0.8rem; }
 
-    /* ── FOOTER ── */
-    footer { text-align: center; font-size: 0.75rem; color: var(--muted); padding: 2rem 1rem; }
-    footer a { color: var(--muted); }
+    /* PARTNER */
+    .partner-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 1rem; }
+    .partner-card { background: white; border: 1px solid var(--color-border); border-radius: var(--radius-md); padding: 1.5rem; box-shadow: var(--shadow-soft); }
+    .partner-card__icon { font-size: 1.75rem; margin-bottom: 0.75rem; }
+    .partner-card h4 { font-family: var(--font-heading); font-size: 1.05rem; color: var(--color-heading); margin-bottom: 0.4rem; }
+    .partner-card p { font-size: 0.875rem; color: var(--color-text-muted); line-height: 1.5; margin-bottom: 1rem; }
+    .partner-card a { font-size: 0.875rem; font-weight: 600; color: var(--color-accent-dark); text-decoration: none; }
+    .partner-card a:hover { text-decoration: underline; }
+
+    /* FOOTER */
+    .site-footer { background: var(--color-heading); color: rgba(255,255,255,0.6); padding: 2rem 0; }
+    .footer-inner { max-width: var(--max-wide); margin-inline: auto; padding-inline: 1.5rem; display: flex; justify-content: space-between; align-items: center; gap: 1rem; flex-wrap: wrap; }
+    .footer-brand { font-family: var(--font-heading); font-size: 0.95rem; color: rgba(255,255,255,0.85); }
+    .footer-links { display: flex; gap: 1.25rem; list-style: none; flex-wrap: wrap; }
+    .footer-links a { font-size: 0.8rem; color: rgba(255,255,255,0.5); text-decoration: none; transition: color 0.15s; }
+    .footer-links a:hover { color: rgba(255,255,255,0.85); }
+
+    @media (max-width: 600px) {
+      .header-nav { display: none; }
+      .area-row { grid-template-columns: 1fr auto 1fr auto auto; }
+    }
   </style>
 </head>
 <body>
 
-<header class="hero">
-  <div class="hero__kicker">Rollrasen · Bayern · Kostenlos</div>
-  <h1 class="hero__title">Bis zu <span>3 Angebote</span> von<br>Händlern in Ihrer Region</h1>
-  <p class="hero__sub">Fläche berechnen, PLZ eingeben, Anfrage absenden – fertig. Händler melden sich innerhalb von 24 Stunden.</p>
-  <div class="hero__usps">
-    <span class="usp">Kostenlos & unverbindlich</span>
-    <span class="usp">Regionale Händler</span>
-    <span class="usp">Antwort in 24h</span>
+  <header class="site-header">
+    <div class="header-inner">
+      <a class="site-logo" href="#">
+        <span>rollrasen</span>.gartenbau-kosten.de
+        <small>Kosten · Rechner · Regionale Händler</small>
+      </a>
+      <nav>
+        <ul class="header-nav">
+          <li><a href="#rechner">Verlegerechner</a></li>
+          <li><a href="#preise">Preise</a></li>
+          <li><a href="#anfrage">Händler anfragen</a></li>
+          <li><a href="#wissen">Wissen</a></li>
+        </ul>
+      </nav>
+      <a class="header-cta" href="#anfrage">Händler in meiner Nähe</a>
+    </div>
+  </header>
+
+  <section class="hero">
+    <div class="hero__inner">
+      <span class="hero__eyebrow">Rollrasen in Bayern</span>
+      <h1>Was kostet Rollrasen – und wie viel brauchst du?</h1>
+      <p class="hero__sub">Verlegerechner mit Verschnittberechnung, realistische Preisübersicht und kostenlose Anfragen an regionale Händler.</p>
+      <div class="hero__actions">
+        <a class="btn-primary" href="#rechner">Jetzt Kosten berechnen</a>
+        <a class="btn-secondary" href="#anfrage">Angebote anfragen</a>
+      </div>
+    </div>
+  </section>
+
+  <div class="trust-strip">
+    <div class="trust-strip__inner">
+      <span class="trust-item">Unabhängige Kostenübersicht</span>
+      <span class="trust-item">Kostenlose Händleranfrage</span>
+      <span class="trust-item">Regionale Händler in Bayern</span>
+      <span class="trust-item">Rechner mit Verschnittberechnung</span>
+    </div>
   </div>
-</header>
 
-<main class="main">
-
-  <!-- Wie funktioniert es -->
-  <div class="how">
-    <div class="how-step">
-      <div class="how-step__icon">📐</div>
-      <div class="how-step__title">Fläche berechnen</div>
-      <div class="how-step__text">m² und Rasensorte auswählen</div>
-    </div>
-    <div class="how-step">
-      <div class="how-step__icon">📍</div>
-      <div class="how-step__title">PLZ eingeben</div>
-      <div class="how-step__text">Händler in Ihrer Nähe werden gefunden</div>
-    </div>
-    <div class="how-step">
-      <div class="how-step__icon">📩</div>
-      <div class="how-step__title">Angebote erhalten</div>
-      <div class="how-step__text">Händler melden sich direkt bei Ihnen</div>
-    </div>
-  </div>
-
-  <div id="anfrage-form">
-
-    <!-- SCHRITT 1: Rechner -->
-    <div class="card">
-      <div class="card__title"><span class="step">1</span> Fläche & Sorte</div>
-
-      <div class="rechner-m2">
-        <input type="range" id="m2-slider" min="10" max="500" value="80" step="5" oninput="updateRechner()">
-        <div class="rechner-m2__val"><span id="m2-val">80</span> m²</div>
+  <!-- ── VERLEGERECHNER ── -->
+  <section class="section" id="rechner">
+    <div class="container--narrow">
+      <div class="section__header">
+        <div class="section__label">Schritt 1</div>
+        <h2 class="section__title">Rollrasen Verlegerechner</h2>
+        <p class="section__sub">Fläche eingeben, Sorte wählen, Optionen auswählen – du bekommst eine realistische Kostenschätzung als erste Orientierung.</p>
       </div>
 
-      <div class="sorten" id="sorten">
-        <div class="sorte-card selected" data-sorte="premium" onclick="selectSorte(this)">
-          <span class="sorte-card__name">Premium</span>
-          <span class="sorte-card__price">9,00 €/m²</span>
-        </div>
-        <div class="sorte-card" data-sorte="halbschatten" onclick="selectSorte(this)">
-          <span class="sorte-card__name">Halbschatten</span>
-          <span class="sorte-card__price">6,50 €/m²</span>
-        </div>
-        <div class="sorte-card" data-sorte="sport" onclick="selectSorte(this)">
-          <span class="sorte-card__name">Sport</span>
-          <span class="sorte-card__price">10,50 €/m²</span>
-        </div>
-        <div class="sorte-card" data-sorte="boeschung" onclick="selectSorte(this)">
-          <span class="sorte-card__name">Böschung</span>
-          <span class="sorte-card__price">11,50 €/m²</span>
-        </div>
-      </div>
+      <div class="rechner-wrap">
+        <div class="rechner">
 
-      <div class="preis-info" id="preis-info">
-        Richtwert: ca. <span id="preis-display">720 €</span> für <span id="m2-display">80 m²</span> Premium-Fertigrasen
-      </div>
-    </div>
+          <!-- FLÄCHE -->
+          <div class="rechner__section">
+            <div class="field-label">Fläche</div>
+            <div class="mode-tabs">
+              <button class="mode-tab active" onclick="setMode('rects')">Rechteckig</button>
+              <button class="mode-tab" onclick="setMode('direct')">Direkt m²</button>
+              <button class="mode-tab" onclick="setMode('draw')">Freihand zeichnen</button>
+            </div>
 
-    <!-- SCHRITT 2: PLZ -->
-    <div class="card">
-      <div class="card__title"><span class="step">2</span> Ihre Postleitzahl</div>
-      <div class="plz-row">
-        <div style="flex:1">
-          <label for="plz">PLZ <span class="opt">(für regionale Händler)</span></label>
-          <input type="text" id="plz" maxlength="5" placeholder="z.B. 82205" inputmode="numeric"
-            oninput="this.value=this.value.replace(/\D/g,''); updateHaendler()">
-        </div>
-        <div style="align-self:flex-end">
-          <div class="haendler-badge" id="haendler-badge">
-            <span class="dot"></span>
-            <span id="haendler-text">Händler werden geladen …</span>
+            <div id="mode-rects">
+              <div class="area-list" id="area-list"></div>
+              <button class="add-area-btn" onclick="addArea()">+ Weitere Fläche hinzufügen</button>
+            </div>
+
+            <div id="mode-direct">
+              <div class="slider-row">
+                <input type="range" id="direkt-slider" min="10" max="1000" value="80" step="5">
+                <span class="slider-val"><span id="direkt-val">80</span> m²</span>
+              </div>
+            </div>
+
+            <div id="mode-draw" style="display:none">
+              <div class="draw-controls">
+                <div class="draw-scale-wrap">
+                  <span>Maßstab:</span>
+                  <select id="draw-scale" onchange="updateScale()">
+                    <option value="0.5">0,5 m pro Kästchen</option>
+                    <option value="1" selected>1 m pro Kästchen</option>
+                    <option value="2">2 m pro Kästchen</option>
+                  </select>
+                </div>
+                <button class="draw-btn" onclick="undoPoint()">← Rückgängig</button>
+                <button class="draw-btn" onclick="resetDraw()">Neu zeichnen</button>
+              </div>
+              <div class="draw-canvas-wrap">
+                <canvas id="draw-canvas" width="560" height="360"></canvas>
+              </div>
+              <p class="draw-hint" id="draw-hint">Klicken um Punkte zu setzen &nbsp;·&nbsp; Doppelklick zum Abschließen</p>
+              <div id="draw-poly-list"></div>
+              <div class="draw-result">
+                <span class="draw-result__label">Gesamtfläche (alle Bereiche)</span>
+                <span class="draw-result__value" id="draw-area">–</span>
+              </div>
+            </div>
+
+            <div class="flaeche-info">
+              <div class="flaeche-info__label">Bestellmenge<br>(inkl. 10 % Verschnitt)</div>
+              <div class="flaeche-info__right">
+                <div class="flaeche-info__brutto" id="fl-brutto">–</div>
+                <div class="flaeche-info__sub" id="fl-netto">Grundfläche: –</div>
+              </div>
+            </div>
           </div>
+
+          <!-- SORTE -->
+          <div class="rechner__section">
+            <div class="field-label">Rollrasen-Sorte</div>
+            <div class="qual-cards">
+              <div class="qual-card selected" data-qual="premium" onclick="selectQual(this)">
+                <span class="qual-card__name">Premium</span>
+                <span class="qual-card__price">9,00 €/m²</span>
+              </div>
+              <div class="qual-card" data-qual="halbschatten" onclick="selectQual(this)">
+                <span class="qual-card__name">Halbschatten</span>
+                <span class="qual-card__price">6,50 €/m²</span>
+              </div>
+              <div class="qual-card" data-qual="sport" onclick="selectQual(this)">
+                <span class="qual-card__name">Sport</span>
+                <span class="qual-card__price">10,50 €/m²</span>
+              </div>
+              <div class="qual-card" data-qual="boeschung" onclick="selectQual(this)">
+                <span class="qual-card__name">Böschung</span>
+                <span class="qual-card__price">11,50 €/m²</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- OPTIONEN -->
+          <div class="rechner__section">
+            <div class="field-label">Optionen</div>
+            <div class="option-list">
+              <label class="option-item">
+                <input type="checkbox" id="opt-verlegen">
+                <div class="option-item__text">
+                  <strong>Verlegen durch Fachbetrieb</strong>
+                  <span>Galabauer oder Gartenbauer – ca. 5–12 €/m² Lohn</span>
+                </div>
+              </label>
+              <label class="option-item">
+                <input type="checkbox" id="opt-boden">
+                <div class="option-item__text">
+                  <strong>Bodenarbeit einrechnen</strong>
+                  <span>Fräsen, Eggen, Planieren – ca. 5–15 €/m²</span>
+                </div>
+              </label>
+              <label class="option-item">
+                <input type="checkbox" id="opt-lieferung">
+                <div class="option-item__text">
+                  <strong>Lieferung dazurechnen</strong>
+                  <span>Pauschal ca. 80–150 € je nach Anbieter und Region</span>
+                </div>
+              </label>
+            </div>
+          </div>
+
+          <!-- ERGEBNIS -->
+          <div class="result">
+            <div class="result__label">Geschätzte Gesamtkosten</div>
+            <div class="result__total" id="res-total">–</div>
+            <div class="result__breakdown" id="res-breakdown"></div>
+            <div class="result__menge" id="res-menge"></div>
+            <div class="result__note">Orientierungswert auf Basis typischer Marktpreise. Kein verbindliches Angebot.</div>
+            <div class="result__cta">
+              <button class="result__cta-btn" onclick="document.getElementById('anfrage').scrollIntoView({behavior:'smooth'})">
+                Kostenlose Angebote von Händlern anfragen →
+              </button>
+            </div>
+          </div>
+
         </div>
       </div>
     </div>
+  </section>
 
-    <!-- SCHRITT 3: Kontakt -->
-    <div class="card">
-      <div class="card__title"><span class="step">3</span> Ihre Kontaktdaten</div>
-      <div class="field-group field-group--2" style="margin-bottom:0.75rem">
-        <div>
-          <label for="name">Name *</label>
-          <input type="text" id="name" placeholder="Ihr Name" required>
-        </div>
-        <div>
-          <label for="email">E-Mail *</label>
-          <input type="email" id="email" placeholder="ihre@email.de" required>
-        </div>
+  <!-- ── PREISÜBERSICHT ── -->
+  <section class="section section--alt" id="preise">
+    <div class="container--narrow">
+      <div class="section__header">
+        <div class="section__label">Preisübersicht</div>
+        <h2 class="section__title">Was kostet Rollrasen?</h2>
+        <p class="section__sub">Typische Marktpreise in Deutschland – Frühjahr 2026.</p>
       </div>
-      <div class="field-group field-group--2">
-        <div>
-          <label for="phone">Telefon <span class="opt">(optional)</span></label>
-          <input type="tel" id="phone" placeholder="+49 ...">
-        </div>
-        <div>
-          <!-- PLZ schon oben -->
-        </div>
-      </div>
-      <div style="margin-top:0.75rem">
-        <label for="message">Nachricht <span class="opt">(optional)</span></label>
-        <textarea id="message" placeholder="Wunschtermin, besondere Anforderungen, Hanglage …"></textarea>
-      </div>
-
-      <div class="error-msg" id="error-msg"></div>
-
-      <button class="btn-submit" id="submit-btn" onclick="submitAnfrage()">
-        Anfrage kostenlos absenden →
-      </button>
-      <p class="submit-hint">Kostenlos & unverbindlich · Keine versteckten Kosten</p>
+      <table class="preistabelle">
+        <thead>
+          <tr><th>Kategorie</th><th>Preis</th><th>Hinweis</th></tr>
+        </thead>
+        <tbody>
+          <tr><td>Rollrasen Premium</td><td><strong>9,00 €/m²</strong></td><td>Robust, dicht, sofort benutzbar</td></tr>
+          <tr><td>Rollrasen Halbschatten</td><td><strong>6,50 €/m²</strong></td><td>Für schattige bis halbschattige Lagen</td></tr>
+          <tr><td>Rollrasen Sport</td><td><strong>10,50 €/m²</strong></td><td>Strapazierfähig, für Freizeitflächen</td></tr>
+          <tr><td>Rollrasen Böschung</td><td><strong>11,50 €/m²</strong></td><td>Tiefwurzelnd, erosionsstabil</td></tr>
+          <tr><td>Verlegen (Fachbetrieb)</td><td><strong>5–12 €/m²</strong></td><td>Lohnanteil, regional unterschiedlich</td></tr>
+          <tr><td>Bodenarbeit</td><td><strong>5–15 €/m²</strong></td><td>Fräsen, Eggen, Planieren</td></tr>
+          <tr><td>Lieferung</td><td><strong>80–150 €</strong></td><td>Pauschal, abhängig von Entfernung</td></tr>
+        </tbody>
+      </table>
     </div>
+  </section>
 
-  </div>
+  <!-- ── ANFRAGE FORMULAR ── -->
+  <section class="section" id="anfrage">
+    <div class="container--narrow">
+      <div class="section__header">
+        <div class="section__label">Schritt 2</div>
+        <h2 class="section__title">Kostenlose Angebote anfragen</h2>
+        <p class="section__sub">PLZ eingeben und Kontaktdaten hinterlassen – regionale Händler melden sich direkt bei dir.</p>
+      </div>
 
-  <!-- SUCCESS -->
-  <div class="success-screen" id="success-screen">
-    <div class="success-icon">🌱</div>
-    <h2>Anfrage erfolgreich gesendet!</h2>
-    <p>Wir haben Ihre Anfrage an <strong id="success-count">3 Händler</strong> in Ihrer Region weitergeleitet.</p>
-    <div class="success-detail" id="success-detail">
-      Die Händler melden sich innerhalb von <strong>24 Stunden</strong> direkt per E-Mail oder Telefon bei Ihnen.
+      <div id="anfrage-form">
+        <div class="anfrage-box">
+          <h3>Anfrage senden</h3>
+          <p class="anfrage-box__sub">Kostenlos & unverbindlich · Antwort in der Regel innerhalb von 24 Stunden</p>
+
+          <div class="anfrage-summary" id="anfrage-summary" style="display:none"></div>
+
+          <!-- PLZ -->
+          <div class="plz-row">
+            <div>
+              <label for="plz">Postleitzahl</label>
+              <input type="text" id="plz" maxlength="5" placeholder="z.B. 80331" inputmode="numeric"
+                oninput="this.value=this.value.replace(/\D/g,''); updateHaendler()">
+            </div>
+            <div class="haendler-badge" id="haendler-badge">
+              <span class="dot"></span>
+              <span id="haendler-text">PLZ eingeben …</span>
+            </div>
+          </div>
+
+          <!-- Kontakt -->
+          <div class="field-group field-group--2">
+            <div>
+              <label for="name">Name *</label>
+              <input type="text" id="name" placeholder="Ihr Name" required>
+            </div>
+            <div>
+              <label for="email">E-Mail *</label>
+              <input type="email" id="email" placeholder="ihre@email.de" required>
+            </div>
+          </div>
+          <div class="field-group" style="margin-top:0.75rem">
+            <div>
+              <label for="phone">Telefon <span class="opt">(optional)</span></label>
+              <input type="tel" id="phone" placeholder="+49 ...">
+            </div>
+          </div>
+          <div class="field-group" style="margin-top:0.75rem">
+            <div>
+              <label for="message">Nachricht <span class="opt">(optional)</span></label>
+              <textarea id="message" placeholder="Wunschtermin, besondere Anforderungen, Hanglage …"></textarea>
+            </div>
+          </div>
+
+          <div class="error-msg" id="error-msg"></div>
+
+          <button class="btn-submit" id="submit-btn" onclick="submitAnfrage()">
+            Anfrage kostenlos absenden →
+          </button>
+          <p class="submit-hint">Kostenlos & unverbindlich · Ihre Daten werden nur zur Händlervermittlung genutzt</p>
+        </div>
+      </div>
+
+      <div class="success-screen" id="success-screen">
+        <div class="success-icon">🌱</div>
+        <h2>Anfrage erfolgreich gesendet!</h2>
+        <p>Wir haben Ihre Anfrage an <strong id="success-count">Händler</strong> in Ihrer Region weitergeleitet.</p>
+        <div class="success-detail">
+          Die Händler melden sich in der Regel <strong>innerhalb von 24 Stunden</strong> direkt per E-Mail oder Telefon bei Ihnen.
+        </div>
+        <p style="font-size:0.82rem;color:var(--color-text-muted)">Zur Bestätigung haben wir Ihnen eine E-Mail geschickt.</p>
+      </div>
     </div>
-    <p style="font-size:0.82rem;color:var(--muted)">Zur Bestätigung haben wir Ihnen eine E-Mail geschickt.</p>
-  </div>
+  </section>
 
-  <!-- TRUST -->
-  <div class="trust">
-    🔒 Ihre Daten werden ausschließlich zur Vermittlung von Angeboten verwendet und nicht an Dritte weitergegeben.
-    · <a href="https://www.gartenbau-kosten.de/datenschutz/" target="_blank">Datenschutz</a>
-  </div>
+  <!-- ── WISSEN ── -->
+  <section class="section section--alt" id="wissen">
+    <div class="container">
+      <div class="section__header">
+        <div class="section__label">Ratgeber</div>
+        <h2 class="section__title">Rollrasen – was du wissen solltest</h2>
+      </div>
+      <div class="content-grid">
+        <div class="content-card">
+          <h3>Was ist Rollrasen?</h3>
+          <p>Rollrasen ist vorgezogenes Gras, das auf Spezialfarmen über Monate heranwächst, dann in Rollen geschnitten und geliefert wird. Im Gegensatz zur Rasensaat erhältst du damit sofort eine fertige, nutzbare Rasenfläche.</p>
+          <p>Typisch für Rollrasen ist das dichte, gleichmäßige Bild direkt nach dem Verlegen. Innerhalb von 2–3 Wochen hat er sich in den Boden eingewurzelt und ist voll belastbar.</p>
+        </div>
+        <div class="content-card">
+          <h3>Wann lohnt sich Rollrasen?</h3>
+          <ul class="content-list">
+            <li>Wenn du sofort eine nutzbare Fläche willst</li>
+            <li>Bei repräsentativen Bereichen (Vorgarten, Terrasse)</li>
+            <li>Als Ersatz für lückigen oder beschädigten Rasen</li>
+            <li>Auf Hängen und Böschungen (Böschungsrasen)</li>
+            <li>In Schattenlagen, wo Saat kaum angeht</li>
+          </ul>
+        </div>
+        <div class="content-card">
+          <h3>Was beeinflusst den Preis?</h3>
+          <ul class="content-list">
+            <li>Rasensorte (Halbschatten, Sport, Böschung)</li>
+            <li>Bestellmenge – größere Flächen oft günstiger pro m²</li>
+            <li>Region und Transportweg des Händlers</li>
+            <li>Verlege-Service durch Galabauer</li>
+            <li>Bodenqualität und notwendige Vorbereitung</li>
+          </ul>
+        </div>
+        <div class="content-card">
+          <h3>Verlegen – selbst oder Fachbetrieb?</h3>
+          <p>Rollrasen selbst verlegen ist grundsätzlich möglich. Die Vorbereitung des Bodens ist dabei der kritischste Schritt: gut gefrästes und geplaniertes Bett, kein Unkraut, feine Krümelstruktur.</p>
+          <p>Ein Galabauer lohnt sich bei großen Flächen, schwierigem Gelände oder wenn du auf Nummer sicher gehen möchtest. Die Kosten für das Verlegen liegen meist bei 5–12 €/m².</p>
+        </div>
+      </div>
+    </div>
+  </section>
 
-</main>
+  <!-- ── PARTNER WERDEN ── -->
+  <section class="section" id="partner-werden">
+    <div class="container">
+      <div class="section__header">
+        <div class="section__label">Für Händler & Galabauer</div>
+        <h2 class="section__title">Werde Partner</h2>
+        <p class="section__sub">Wir starten in Bayern. Rollrasen-Händler und Galabauer können 2026 kostenlos dabei sein.</p>
+      </div>
+      <div class="partner-grid">
+        <div class="partner-card">
+          <div class="partner-card__icon">🏪</div>
+          <h4>Rollrasen-Händler</h4>
+          <p>Du verkaufst Rollrasen und lieferst regional? Wir listen dich mit PLZ-Matching, Profil und direkten Kundenanfragen.</p>
+          <a href="mailto:info@gartenbau-kosten.de?subject=Rollrasen Partner Anfrage">Als Händler anfragen →</a>
+        </div>
+        <div class="partner-card">
+          <div class="partner-card__icon">🌿</div>
+          <h4>Galabauer & Verleger</h4>
+          <p>Du verlegst Rollrasen als Dienstleistung? Wir vermitteln Anfragen aus deiner Region direkt an dich.</p>
+          <a href="mailto:info@gartenbau-kosten.de?subject=Rollrasen Galabauer Anfrage">Als Galabauer anfragen →</a>
+        </div>
+        <div class="partner-card">
+          <div class="partner-card__icon">📊</div>
+          <h4>Was du bekommst</h4>
+          <p>Profil-Eintrag, PLZ-basierte Sichtbarkeit und qualifizierte Kundenanfragen direkt in dein Postfach. Kostenlos im MVP.</p>
+          <a href="mailto:info@gartenbau-kosten.de?subject=Rollrasen Partner Info">Mehr erfahren →</a>
+        </div>
+      </div>
+    </div>
+  </section>
 
-<footer>
-  Ein Service von <a href="https://www.gartenbau-kosten.de/" target="_blank">gartenbau-kosten.de</a>
-</footer>
+  <footer class="site-footer">
+    <div class="footer-inner">
+      <span class="footer-brand">rollrasen.gartenbau-kosten.de</span>
+      <ul class="footer-links">
+        <li><a href="https://www.gartenbau-kosten.de/impressum/" target="_blank">Impressum</a></li>
+        <li><a href="https://www.gartenbau-kosten.de/datenschutz/" target="_blank">Datenschutz</a></li>
+        <li><a href="https://gartenbau-kosten.de" target="_blank">gartenbau-kosten.de</a></li>
+      </ul>
+    </div>
+  </footer>
 
 <script>
+(function () {
+
   var API = window.location.origin;
 
-  var PREISE = { premium: 9.00, halbschatten: 6.50, sport: 10.50, boeschung: 11.50 };
-  var LABELS = { premium: 'Premium-Fertigrasen', halbschatten: 'Halbschattenrasen', sport: 'Sportrasen', boeschung: 'Böschungsrasen' };
-  var aktiveSorte = 'premium';
+  /* ── Konfiguration ── */
+  var QUAL = {
+    premium:     { price: 9.00,  label: 'Premium-Fertigrasen' },
+    halbschatten:{ price: 6.50,  label: 'Halbschattenrasen' },
+    sport:       { price: 10.50, label: 'Sportrasen' },
+    boeschung:   { price: 11.50, label: 'Böschungsrasen' }
+  };
+  var VERLEGEN  = { min: 5,  max: 12 };
+  var BODEN     = { min: 5,  max: 15 };
+  var LIEFERUNG = { min: 80, max: 150 };
 
-  function updateRechner() {
-    var m2 = parseInt(document.getElementById('m2-slider').value);
-    document.getElementById('m2-val').textContent = m2;
-    document.getElementById('m2-display').textContent = m2 + ' m²';
-    var preis = (m2 * PREISE[aktiveSorte]).toLocaleString('de-DE', {minimumFractionDigits:2, maximumFractionDigits:2});
-    document.getElementById('preis-display').textContent = preis + ' €';
-    document.getElementById('preis-info').querySelector('span:last-child') &&
-      (document.getElementById('preis-info').innerHTML =
-        'Richtwert: ca. <span id="preis-display">' + preis + ' €</span> für <span id="m2-display">' + m2 + ' m²</span> ' + LABELS[aktiveSorte]);
+  var mode      = 'rects';
+  var qual      = 'premium';
+  var areaCount = 0;
+  var drawNetto = 0;
+
+  /* ── Hilfsfunktionen ── */
+  function round50(n)      { return Math.round(n / 50) * 50; }
+  function fmtEur(n)       { return n.toLocaleString('de-DE', {minimumFractionDigits: 2, maximumFractionDigits: 2}) + ' €'; }
+  function fmtRange(a, b)  { return round50(a).toLocaleString('de-DE') + ' – ' + round50(b).toLocaleString('de-DE') + ' €'; }
+
+  /* ── Flächenermittlung ── */
+  function getNetto() {
+    if (mode === 'rects') {
+      var total = 0;
+      document.querySelectorAll('.area-row').forEach(function (row) {
+        var l = parseFloat(row.querySelector('.area-l').value) || 0;
+        var b = parseFloat(row.querySelector('.area-b').value) || 0;
+        total += l * b;
+      });
+      return total;
+    }
+    if (mode === 'direct') return parseInt(document.getElementById('direkt-slider').value, 10);
+    return drawNetto;
   }
 
-  function selectSorte(el) {
-    document.querySelectorAll('.sorte-card').forEach(function(c) { c.classList.remove('selected'); });
+  /* ── Hauptberechnung ── */
+  function calculate() {
+    var netto  = getNetto();
+    var brutto = Math.ceil(netto * 1.10);
+
+    document.getElementById('fl-brutto').textContent = brutto > 0 ? brutto + ' m²' : '–';
+    document.getElementById('fl-netto').textContent  = netto  > 0 ? 'Grundfläche: ' + Math.round(netto) + ' m²' : '–';
+
+    if (netto <= 0) {
+      document.getElementById('res-total').textContent = '–';
+      document.getElementById('res-breakdown').innerHTML = '';
+      document.getElementById('res-menge').textContent = '';
+      return;
+    }
+
+    var q   = QUAL[qual];
+    var mat = brutto * q.price;
+
+    var verMin = 0, verMax = 0;
+    if (document.getElementById('opt-verlegen').checked) {
+      verMin = brutto * VERLEGEN.min;
+      verMax = brutto * VERLEGEN.max;
+    }
+    var boMin = 0, boMax = 0;
+    if (document.getElementById('opt-boden').checked) {
+      boMin = netto * BODEN.min;
+      boMax = netto * BODEN.max;
+    }
+    var livMin = 0, livMax = 0;
+    if (document.getElementById('opt-lieferung').checked) {
+      livMin = LIEFERUNG.min;
+      livMax = LIEFERUNG.max;
+    }
+
+    var hasExtra = (verMin + boMin + livMin) > 0;
+
+    if (hasExtra) {
+      document.getElementById('res-total').textContent =
+        fmtRange(mat + verMin + boMin + livMin, mat + verMax + boMax + livMax);
+    } else {
+      document.getElementById('res-total').textContent = fmtEur(mat);
+    }
+
+    var lines = [['Rollrasen ' + q.label + ' (' + brutto + ' m²)', fmtEur(mat)]];
+    if (verMin > 0) lines.push(['Verlegen (Fachbetrieb)', fmtRange(verMin, verMax)]);
+    if (boMin  > 0) lines.push(['Bodenarbeit',            fmtRange(boMin,  boMax)]);
+    if (livMin > 0) lines.push(['Lieferung',              fmtRange(livMin, livMax)]);
+
+    document.getElementById('res-breakdown').innerHTML = lines.map(function (l) {
+      return '<div class="result__line"><span class="result__line-label">' + l[0] +
+             '</span><span class="result__line-value">' + l[1] + '</span></div>';
+    }).join('');
+
+    var paletten = Math.ceil(brutto / 20);
+    document.getElementById('res-menge').textContent =
+      'Benötigt: ca. ' + brutto + ' m² = ' + paletten +
+      ' Palett' + (paletten === 1 ? 'e' : 'en') + ' à 20 m²';
+
+    /* Zusammenfassung im Formular aktualisieren */
+    var sumEl = document.getElementById('anfrage-summary');
+    sumEl.style.display = 'block';
+    sumEl.textContent = 'Aus dem Rechner: ' + Math.round(netto) + ' m² · ' + q.label +
+      (hasExtra ? ' · inkl. Zusatzleistungen' : '') +
+      ' · Richtwert: ' + (hasExtra ? fmtRange(mat + verMin + boMin + livMin, mat + verMax + boMax + livMax) : fmtEur(mat));
+  }
+
+  /* ── Modus-Wechsel ── */
+  window.setMode = function (m) {
+    mode = m;
+    document.getElementById('mode-rects').style.display  = m === 'rects'  ? 'block' : 'none';
+    document.getElementById('mode-direct').style.display = m === 'direct' ? 'block' : 'none';
+    document.getElementById('mode-draw').style.display   = m === 'draw'   ? 'block' : 'none';
+    document.querySelectorAll('.mode-tab').forEach(function (btn, i) {
+      btn.classList.toggle('active', ['rects','direct','draw'][i] === m);
+    });
+    if (m === 'draw') renderCanvas();
+    calculate();
+  };
+
+  /* ── Qualitätswahl ── */
+  window.selectQual = function (el) {
+    document.querySelectorAll('.qual-card').forEach(function (c) { c.classList.remove('selected'); });
     el.classList.add('selected');
-    aktiveSorte = el.dataset.sorte;
-    updateRechner();
+    qual = el.dataset.qual;
+    calculate();
+  };
+
+  /* ── Mehrere Flächen ── */
+  function makeAreaRow(id) {
+    var row = document.createElement('div');
+    row.className = 'area-row';
+    row.dataset.id = id;
+    row.innerHTML =
+      '<div class="field"><label>Länge (m)</label><input type="number" class="area-l" value="10" min="0.1" max="500" step="0.5"></div>' +
+      '<div class="area-sep">×</div>' +
+      '<div class="field"><label>Breite (m)</label><input type="number" class="area-b" value="8" min="0.1" max="500" step="0.5"></div>' +
+      '<span class="area-m2">80 m²</span>' +
+      '<button class="area-remove" title="Fläche entfernen" onclick="removeArea(this)">✕</button>';
+
+    function updateRow() {
+      var l = parseFloat(row.querySelector('.area-l').value) || 0;
+      var b = parseFloat(row.querySelector('.area-b').value) || 0;
+      row.querySelector('.area-m2').textContent = Math.round(l * b * 10) / 10 + ' m²';
+      calculate();
+    }
+    row.querySelector('.area-l').addEventListener('input', updateRow);
+    row.querySelector('.area-b').addEventListener('input', updateRow);
+    return row;
   }
 
+  window.addArea = function () {
+    areaCount++;
+    var list = document.getElementById('area-list');
+    list.appendChild(makeAreaRow(areaCount));
+    refreshRemoveButtons();
+    calculate();
+  };
+
+  window.removeArea = function (btn) {
+    btn.closest('.area-row').remove();
+    refreshRemoveButtons();
+    calculate();
+  };
+
+  function refreshRemoveButtons() {
+    var rows = document.querySelectorAll('.area-row');
+    rows.forEach(function (row) {
+      row.querySelector('.area-remove').disabled = rows.length <= 1;
+    });
+  }
+
+  document.getElementById('direkt-slider').addEventListener('input', function () {
+    document.getElementById('direkt-val').textContent = this.value;
+    calculate();
+  });
+
+  ['opt-verlegen','opt-boden','opt-lieferung'].forEach(function (id) {
+    document.getElementById(id).addEventListener('change', calculate);
+  });
+
+  /* ── PLZ / Händler ── */
   var haendlerTimer = null;
-  function updateHaendler() {
+  window.updateHaendler = function () {
     var plz = document.getElementById('plz').value;
     if (plz.length < 2) {
       document.getElementById('haendler-text').textContent = 'PLZ eingeben …';
       return;
     }
     clearTimeout(haendlerTimer);
-    haendlerTimer = setTimeout(async function() {
+    haendlerTimer = setTimeout(async function () {
       try {
-        var r = await fetch(API + '/haendler?plz=' + plz);
+        var r    = await fetch(API + '/haendler?plz=' + plz);
         var data = await r.json();
         document.getElementById('haendler-text').textContent =
           data.count + ' Händler in ' + data.region + ' verfügbar';
-      } catch(e) {
+      } catch (e) {
         document.getElementById('haendler-text').textContent = 'Händler werden gesucht …';
       }
     }, 400);
-  }
+  };
 
-  async function submitAnfrage() {
+  /* ── Anfrage absenden ── */
+  window.submitAnfrage = async function () {
     var name  = document.getElementById('name').value.trim();
     var email = document.getElementById('email').value.trim();
-    var plz   = document.getElementById('plz').value.trim();
     var errEl = document.getElementById('error-msg');
     errEl.classList.remove('show');
 
-    if (!name) { errEl.textContent = 'Bitte Namen eingeben.'; errEl.classList.add('show'); return; }
-    if (!email || !email.includes('@')) { errEl.textContent = 'Bitte gültige E-Mail-Adresse eingeben.'; errEl.classList.add('show'); return; }
+    if (!name)                  { errEl.textContent = 'Bitte Namen eingeben.';              errEl.classList.add('show'); return; }
+    if (!email || !email.includes('@')) { errEl.textContent = 'Bitte gültige E-Mail eingeben.'; errEl.classList.add('show'); return; }
 
     var btn = document.getElementById('submit-btn');
     btn.disabled = true;
     btn.textContent = 'Wird gesendet …';
 
-    var m2 = parseInt(document.getElementById('m2-slider').value);
-
     try {
-      var r = await fetch(API + '/anfrage', {
+      var r    = await fetch(API + '/anfrage', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
-          name, email, plz,
+          name, email,
+          plz:     document.getElementById('plz').value.trim(),
           phone:   document.getElementById('phone').value.trim(),
           message: document.getElementById('message').value.trim(),
-          m2, product: aktiveSorte
+          m2:      Math.round(getNetto()),
+          product: qual
         })
       });
       var data = await r.json();
       if (r.ok && data.ok) {
         document.getElementById('anfrage-form').style.display = 'none';
-        var sc = document.getElementById('success-screen');
         document.getElementById('success-count').textContent =
           data.haendler_count + ' Händler' + (data.region ? ' in ' + data.region : '');
-        sc.classList.add('show');
-        window.scrollTo({ top: 0, behavior: 'smooth' });
+        document.getElementById('success-screen').classList.add('show');
+        window.scrollTo({ top: document.getElementById('anfrage').offsetTop - 80, behavior: 'smooth' });
       } else {
-        errEl.textContent = data.error || 'Fehler beim Absenden – bitte versuchen Sie es erneut.';
+        errEl.textContent = data.error || 'Fehler beim Absenden – bitte erneut versuchen.';
         errEl.classList.add('show');
         btn.disabled = false; btn.textContent = 'Anfrage kostenlos absenden →';
       }
-    } catch(e) {
+    } catch (e) {
       errEl.textContent = 'Verbindungsfehler – bitte Seite neu laden und erneut versuchen.';
       errEl.classList.add('show');
       btn.disabled = false; btn.textContent = 'Anfrage kostenlos absenden →';
     }
+  };
+
+  /* ══════════════════════════════════════
+     POLYGON-ZEICHENTOOL  (multi-polygon)
+  ══════════════════════════════════════ */
+  var CANVAS_W = 560, CANVAS_H = 360, CELL = 28;
+  var canvas   = document.getElementById('draw-canvas');
+  var ctx      = canvas.getContext('2d');
+  var polygons = [], curPts = [], scale = 1, hoverPt = null;
+  var COLORS   = ['#5f7c4f','#7a5c9e','#c07830','#2a7a8a','#b03050'];
+
+  canvas.width = CANVAS_W; canvas.height = CANVAS_H;
+  canvas.addEventListener('click',      onCanvasClick);
+  canvas.addEventListener('dblclick',   onCanvasDblClick);
+  canvas.addEventListener('touchstart', onCanvasTouch, { passive: false });
+  canvas.addEventListener('mousemove',  onCanvasMove);
+
+  function getCanvasXY(cx, cy) {
+    var r = canvas.getBoundingClientRect();
+    return { x: (cx - r.left) * CANVAS_W / r.width, y: (cy - r.top) * CANVAS_H / r.height };
+  }
+  function colorFor(idx) { return COLORS[idx % COLORS.length]; }
+
+  function onCanvasMove(e) { hoverPt = getCanvasXY(e.clientX, e.clientY); renderCanvas(); }
+
+  function onCanvasClick(e) {
+    var pt = getCanvasXY(e.clientX, e.clientY);
+    if (curPts.length >= 3) {
+      var dx = pt.x - curPts[0].x, dy = pt.y - curPts[0].y;
+      if (Math.sqrt(dx*dx+dy*dy) < 14) { closePolygon(); return; }
+    }
+    curPts.push(pt); renderCanvas();
   }
 
-  // Init
-  updateRechner();
-  updateHaendler();
+  function onCanvasDblClick(e) { if (curPts.length < 3) return; curPts.pop(); closePolygon(); }
+
+  function onCanvasTouch(e) {
+    e.preventDefault();
+    var t = e.touches[0], pt = getCanvasXY(t.clientX, t.clientY), now = Date.now();
+    if (onCanvasTouch._last && now - onCanvasTouch._last < 350) {
+      if (curPts.length > 0) curPts.pop();
+      closePolygon();
+    } else {
+      if (curPts.length >= 3) {
+        var dx = pt.x - curPts[0].x, dy = pt.y - curPts[0].y;
+        if (Math.sqrt(dx*dx+dy*dy) < 20) { closePolygon(); return; }
+      }
+      curPts.push(pt); renderCanvas();
+    }
+    onCanvasTouch._last = now;
+  }
+
+  function closePolygon() {
+    if (curPts.length < 3) return;
+    polygons.push({ points: curPts.slice(), area: shoelaceM2(curPts) });
+    curPts = []; hoverPt = null;
+    updateDrawNetto(); updatePolyList(); renderCanvas(); calculate();
+  }
+
+  function updateDrawNetto() {
+    drawNetto = polygons.reduce(function (s, p) { return s + p.area; }, 0);
+    var total = Math.round(drawNetto * 10) / 10;
+    document.getElementById('draw-area').textContent = polygons.length ? total + ' m²' : '–';
+    document.getElementById('draw-hint').textContent = polygons.length
+      ? 'Fläche ' + polygons.length + ' gezeichnet · Weitermachen für weitere Bereiche'
+      : 'Klicken um Punkte zu setzen · Doppelklick zum Abschließen';
+  }
+
+  function updatePolyList() {
+    var el = document.getElementById('draw-poly-list');
+    if (!polygons.length) { el.innerHTML = ''; return; }
+    el.innerHTML = polygons.map(function (p, i) {
+      var col = colorFor(i);
+      return '<div class="poly-item">' +
+        '<span class="poly-item__label">' +
+        '<span style="display:inline-block;width:10px;height:10px;border-radius:2px;background:' + col + ';margin-right:6px;vertical-align:middle"></span>' +
+        '<strong>Fläche ' + (i+1) + '</strong>' + (Math.round(p.area*10)/10) + ' m²</span>' +
+        '<button class="poly-item__remove" onclick="removePoly(' + i + ')">✕</button></div>';
+    }).join('');
+  }
+
+  window.removePoly = function (idx) {
+    polygons.splice(idx, 1);
+    updateDrawNetto(); updatePolyList(); renderCanvas(); calculate();
+  };
+
+  function shoelaceM2(pts) {
+    var n = pts.length, sum = 0;
+    for (var i = 0; i < n; i++) {
+      var j = (i+1)%n;
+      sum += pts[i].x * pts[j].y - pts[j].x * pts[i].y;
+    }
+    return Math.abs(sum) / 2 / (CELL*CELL) * (scale*scale);
+  }
+
+  function pxToM(px) { return Math.round(px/CELL*scale*10)/10; }
+
+  function drawSegLabel(x1,y1,x2,y2,active,color) {
+    var dx=x2-x1,dy=y2-y1,len=Math.sqrt(dx*dx+dy*dy);
+    if (len<10) return;
+    var lbl=pxToM(len)+' m', mx=(x1+x2)/2, my=(y1+y2)/2;
+    ctx.save();
+    ctx.font='bold 11px system-ui,sans-serif'; ctx.textAlign='center'; ctx.textBaseline='middle';
+    var tw=ctx.measureText(lbl).width, pad=3;
+    ctx.fillStyle   = active ? 'rgba(237,243,232,0.93)' : 'rgba(255,255,255,0.88)';
+    ctx.strokeStyle = active ? (color||'#5f7c4f') : '#c8d8be'; ctx.lineWidth=1;
+    ctx.beginPath(); ctx.roundRect(mx-tw/2-pad, my-9, tw+pad*2, 18, 3); ctx.fill(); ctx.stroke();
+    ctx.fillStyle = active ? (color||'#3d5c30') : '#5a7a4a';
+    ctx.fillText(lbl,mx,my); ctx.restore();
+  }
+
+  function drawPolygon(pts,color,alpha,labelIdx) {
+    if (pts.length<2) return;
+    if (pts.length>=3) {
+      ctx.beginPath(); ctx.moveTo(pts[0].x,pts[0].y);
+      for (var i=1;i<pts.length;i++) ctx.lineTo(pts[i].x,pts[i].y);
+      ctx.closePath(); ctx.globalAlpha=alpha; ctx.fillStyle=color; ctx.fill(); ctx.globalAlpha=1;
+    }
+    ctx.beginPath(); ctx.moveTo(pts[0].x,pts[0].y);
+    for (var i=1;i<pts.length;i++) ctx.lineTo(pts[i].x,pts[i].y);
+    ctx.closePath(); ctx.strokeStyle=color; ctx.lineWidth=2; ctx.stroke();
+    pts.forEach(function(p) {
+      ctx.beginPath(); ctx.arc(p.x,p.y,4,0,Math.PI*2);
+      ctx.fillStyle=color; ctx.fill(); ctx.strokeStyle='white'; ctx.lineWidth=1.5; ctx.stroke();
+    });
+    for (var i=0;i<pts.length-1;i++) drawSegLabel(pts[i].x,pts[i].y,pts[i+1].x,pts[i+1].y,false,color);
+    drawSegLabel(pts[pts.length-1].x,pts[pts.length-1].y,pts[0].x,pts[0].y,false,color);
+    var a=shoelaceM2(pts);
+    var cx=pts.reduce(function(s,p){return s+p.x;},0)/pts.length;
+    var cy=pts.reduce(function(s,p){return s+p.y;},0)/pts.length;
+    ctx.save(); ctx.font='bold 12px system-ui,sans-serif'; ctx.textAlign='center'; ctx.textBaseline='middle';
+    var lbl=(labelIdx!==undefined?'F'+(labelIdx+1)+': ':'')+( Math.round(a*10)/10)+' m²';
+    var tw=ctx.measureText(lbl).width;
+    ctx.fillStyle='rgba(255,255,255,0.85)'; ctx.fillRect(cx-tw/2-4,cy-10,tw+8,20);
+    ctx.fillStyle=color; ctx.fillText(lbl,cx,cy); ctx.restore();
+  }
+
+  function renderCanvas() {
+    if (!ctx) return;
+    ctx.clearRect(0,0,CANVAS_W,CANVAS_H);
+    ctx.strokeStyle='#e8e2d9'; ctx.lineWidth=1;
+    for (var x=0;x<=CANVAS_W;x+=CELL) { ctx.beginPath(); ctx.moveTo(x,0); ctx.lineTo(x,CANVAS_H); ctx.stroke(); }
+    for (var y=0;y<=CANVAS_H;y+=CELL) { ctx.beginPath(); ctx.moveTo(0,y); ctx.lineTo(CANVAS_W,y); ctx.stroke(); }
+    ctx.fillStyle='#a09880'; ctx.font='11px system-ui,sans-serif';
+    ctx.fillText(scale+' m / Kästchen',4,CANVAS_H-6);
+    if (!polygons.length && !curPts.length) {
+      ctx.fillStyle='#b0a898'; ctx.font='13px system-ui,sans-serif'; ctx.textAlign='center';
+      ctx.fillText('Hier klicken um Punkte zu setzen',CANVAS_W/2,CANVAS_H/2);
+      ctx.textAlign='left'; return;
+    }
+    polygons.forEach(function(p,i) { drawPolygon(p.points,colorFor(i),0.12,i); });
+    if (curPts.length>0) {
+      var col=colorFor(polygons.length);
+      if (curPts.length>=3) {
+        ctx.beginPath(); ctx.moveTo(curPts[0].x,curPts[0].y);
+        for (var i=1;i<curPts.length;i++) ctx.lineTo(curPts[i].x,curPts[i].y);
+        ctx.closePath(); ctx.fillStyle='rgba(95,124,79,0.10)'; ctx.fill();
+      }
+      ctx.beginPath(); ctx.moveTo(curPts[0].x,curPts[0].y);
+      for (var i=1;i<curPts.length;i++) ctx.lineTo(curPts[i].x,curPts[i].y);
+      if (hoverPt) ctx.lineTo(hoverPt.x,hoverPt.y);
+      ctx.strokeStyle=col; ctx.lineWidth=2; ctx.setLineDash([5,3]); ctx.stroke(); ctx.setLineDash([]);
+      curPts.forEach(function(p,idx) {
+        ctx.beginPath(); ctx.arc(p.x,p.y,idx===0&&curPts.length>=3?7:5,0,Math.PI*2);
+        ctx.fillStyle=col; ctx.fill(); ctx.strokeStyle='white'; ctx.lineWidth=1.5; ctx.stroke();
+      });
+      for (var i=0;i<curPts.length-1;i++) drawSegLabel(curPts[i].x,curPts[i].y,curPts[i+1].x,curPts[i+1].y,false,col);
+      if (hoverPt) drawSegLabel(curPts[curPts.length-1].x,curPts[curPts.length-1].y,hoverPt.x,hoverPt.y,true,col);
+    }
+  }
+
+  window.undoPoint = function () {
+    if (curPts.length>0) { curPts.pop(); renderCanvas(); }
+    else if (polygons.length>0) {
+      var last=polygons.pop(); curPts=last.points;
+      updateDrawNetto(); updatePolyList(); renderCanvas(); calculate();
+    }
+  };
+
+  window.resetDraw = function () {
+    polygons=[]; curPts=[]; hoverPt=null; drawNetto=0;
+    document.getElementById('draw-area').textContent='–';
+    document.getElementById('draw-hint').textContent='Klicken um Punkte zu setzen · Doppelklick zum Abschließen';
+    updatePolyList(); renderCanvas(); calculate();
+  };
+
+  window.updateScale = function () {
+    scale=parseFloat(document.getElementById('draw-scale').value);
+    polygons.forEach(function(p){p.area=shoelaceM2(p.points);});
+    updateDrawNetto(); updatePolyList(); renderCanvas(); calculate();
+  };
+
+  /* ── Init ── */
+  addArea();
+  setMode('rects');
+  calculate();
+
+})();
 </script>
 
 </body>
