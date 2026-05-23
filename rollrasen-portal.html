@@ -1007,21 +1007,24 @@
       (hasExtra ? ' · inkl. Lieferung' : '') +
       ' · Richtwert: ' + (hasExtra ? fmtRange(mat + livMin, mat + livMax) : fmtEur(mat));
 
-    /* Nachrichtenfeld automatisch befüllen (sofern Nutzer es nicht selbst bearbeitet hat) */
+    /* Nachrichtenfeld live aktualisieren, solange Nutzer nichts Eigenes eingetippt hat */
     window._rechnerText =
       'Fläche: ' + Math.round(netto) + ' m² (Bestellmenge inkl. Verschnitt: ' + brutto + ' m²)\n' +
       'Sorte: ' + q.label + '\n' +
       (livMin > 0 ? 'Gewünschte Leistungen: Lieferung\n' : '') +
       'Kostenrichtwert: ' + (hasExtra ? fmtRange(mat + livMin, mat + livMax) : fmtEur(mat));
     var msgEl = document.getElementById('message');
-    if (msgEl && !msgEl.dataset.userEdited) { msgEl.value = window._rechnerText; }
+    if (msgEl && (msgEl.value === '' || msgEl.value === window._msgAutoText)) {
+      msgEl.value = window._rechnerText;
+      window._msgAutoText = window._rechnerText;
+    }
   }
 
   window.anfrageVomRechner = function () {
     var msgEl = document.getElementById('message');
     if (msgEl && window._rechnerText) {
       msgEl.value = window._rechnerText;
-      msgEl.dataset.userEdited = '';
+      window._msgAutoText = window._rechnerText;
     }
     document.getElementById('anfrage').scrollIntoView({ behavior: 'smooth' });
     setTimeout(function () { document.getElementById('name').focus(); }, 600);
@@ -1098,9 +1101,6 @@
   });
 
   document.getElementById('opt-lieferung').addEventListener('change', calculate);
-  document.getElementById('message').addEventListener('input', function () {
-    this.dataset.userEdited = '1';
-  });
 
   /* ── PLZ / Händler ── */
   var haendlerTimer = null;
