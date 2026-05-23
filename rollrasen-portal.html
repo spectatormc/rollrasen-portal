@@ -502,7 +502,7 @@
             <div class="result__menge" id="res-menge"></div>
             <div class="result__note">Orientierungswert auf Basis typischer Marktpreise. Kein verbindliches Angebot.</div>
             <div class="result__cta">
-              <button class="result__cta-btn" onclick="document.getElementById('anfrage').scrollIntoView({behavior:'smooth'})">
+              <button class="result__cta-btn" onclick="anfrageVomRechner()">
                 Kostenlose Angebote von Händlern anfragen →
               </button>
             </div>
@@ -671,8 +671,8 @@
           </div>
           <div class="field-group" style="margin-top:0.75rem">
             <div>
-              <label for="message">Nachricht <span class="opt">(optional)</span></label>
-              <textarea id="message" placeholder="Wunschtermin, besondere Anforderungen, Hanglage …"></textarea>
+              <label for="message">Nachricht / Rechner-Ergebnis <span class="opt">(optional)</span></label>
+              <textarea id="message" placeholder="Wunschtermin, besondere Anforderungen, Hanglage … (wird automatisch befüllt wenn du den Rechner nutzt)" rows="5"></textarea>
             </div>
           </div>
 
@@ -1033,7 +1033,29 @@
     sumEl.textContent = 'Aus dem Rechner: ' + Math.round(netto) + ' m² · ' + q.label +
       (hasExtra ? ' · inkl. Zusatzleistungen' : '') +
       ' · Richtwert: ' + (hasExtra ? fmtRange(mat + verMin + boMin + livMin, mat + verMax + boMax + livMax) : fmtEur(mat));
+
+    /* Vorausfüll-Text für das Nachrichtenfeld merken */
+    var extras = [];
+    if (document.getElementById('opt-verlegen').checked) extras.push('Verlegen durch Fachbetrieb');
+    if (document.getElementById('opt-boden').checked)    extras.push('Bodenarbeit');
+    if (document.getElementById('opt-lieferung').checked) extras.push('Lieferung');
+    window._rechnerText =
+      'Fläche: ' + Math.round(netto) + ' m² (Bestellmenge inkl. Verschnitt: ' + brutto + ' m²)\n' +
+      'Sorte: ' + q.label + '\n' +
+      (extras.length ? 'Gewünschte Leistungen: ' + extras.join(', ') + '\n' : '') +
+      'Kostenrichtwert: ' + (hasExtra
+        ? fmtRange(mat + verMin + boMin + livMin, mat + verMax + boMax + livMax)
+        : fmtEur(mat));
   }
+
+  window.anfrageVomRechner = function () {
+    var msgEl = document.getElementById('message');
+    if (msgEl && window._rechnerText) {
+      msgEl.value = window._rechnerText;
+    }
+    document.getElementById('anfrage').scrollIntoView({ behavior: 'smooth' });
+    setTimeout(function () { document.getElementById('name').focus(); }, 600);
+  };
 
   /* ── Modus-Wechsel ── */
   window.setMode = function (m) {
