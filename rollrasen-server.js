@@ -30,13 +30,29 @@ db.exec(`
 `);
 console.log('✓ Datenbank bereit');
 
+// Sichere Migration: neue Spalten falls noch nicht vorhanden
+for (const sql of [
+  "ALTER TABLE hersteller ADD COLUMN paket TEXT DEFAULT 'free'",
+  "ALTER TABLE hersteller ADD COLUMN paket_start DATE",
+  "ALTER TABLE hersteller ADD COLUMN paket_ende DATE",
+  "ALTER TABLE hersteller ADD COLUMN video_url TEXT",
+  "ALTER TABLE hersteller ADD COLUMN profil_slug TEXT",
+  "ALTER TABLE hersteller ADD COLUMN profil_text TEXT",
+  "ALTER TABLE hersteller ADD COLUMN logo_url TEXT",
+  "ALTER TABLE hersteller ADD COLUMN webseite_status TEXT",
+  "ALTER TABLE hersteller ADD COLUMN google_status TEXT",
+  "ALTER TABLE hersteller ADD COLUMN kontakt_status TEXT DEFAULT 'offen'",
+  "ALTER TABLE hersteller ADD COLUMN notizen_intern TEXT",
+]) { try { db.exec(sql); } catch (_) {} }
+
 // Findet die 3 nächsten aktiven Betriebe aus der hersteller-Tabelle.
 // Sortierung: ABS(PLZ-Differenz) aufsteigend, Einträge ohne PLZ kommen zuletzt.
 function findNearestHaendler(plz) {
   const plzNum = parseInt((plz || '').replace(/\D/g, ''), 10) || 0;
   return db.prepare(`
     SELECT id, name, typ, strasse, plz, ort, region,
-           telefon, email, website, google_bewertung, google_bewertungen_anzahl
+           telefon, email, website, google_bewertung, google_bewertungen_anzahl,
+           paket, profil_slug
     FROM   hersteller
     WHERE  aktiv = 1
     ORDER BY CASE WHEN plz IS NULL OR plz = '' THEN 99999
@@ -205,6 +221,93 @@ app.get('/datenschutz', (req, res) => res.send(`<!DOCTYPE html>
   </footer>
 </div></body></html>`));
 
+// ─── HÄNDLER PROFILSEITE ──────────────────────────────────────────────────────
+
+const BADGE_HTML = {
+  partner: '<span style="display:inline-flex;align-items:center;gap:6px;background:#dcfce7;color:#166534;border:1px solid #86efac;border-radius:20px;padding:4px 14px;font-size:0.82rem;font-weight:700">✓ Geprüfter Händler</span>',
+  pro:     '<span style="display:inline-flex;align-items:center;gap:6px;background:#dbeafe;color:#1e40af;border:1px solid #93c5fd;border-radius:20px;padding:4px 14px;font-size:0.82rem;font-weight:700">⭐ Professional Partner</span>',
+  premium: '<span style="display:inline-flex;align-items:center;gap:6px;background:#fef9c3;color:#854d0e;border:1px solid #fcd34d;border-radius:20px;padding:4px 14px;font-size:0.82rem;font-weight:700">🏆 Premium Partner</span>',
+};
+
+app.get('/haendler/:slug', (req, res) => {
+  const h = db.prepare('SELECT * FROM hersteller WHERE profil_slug = ? AND aktiv = 1').get(req.params.slug);
+  if (!h) return res.status(404).send(`<!DOCTYPE html><html lang="de"><head><meta charset="UTF-8"><title>Nicht gefunden</title>${pageCss}</head><body><div class="wrap"><a class="back" href="/">← Startseite</a><h1>Händler nicht gefunden</h1><p>Dieses Profil existiert nicht oder ist nicht mehr aktiv.</p></div></body></html>`);
+
+  const badge   = BADGE_HTML[h.paket] || '';
+  const adresse = [h.strasse, h.plz && h.ort ? `${h.plz} ${h.ort}` : h.ort].filter(Boolean).join(', ');
+  const mapsUrl = adresse ? `https://www.google.com/maps/search/${encodeURIComponent(h.name + ' ' + adresse)}` : null;
+  const sterne  = h.google_bewertung ? `<span style="color:#f59e0b;font-size:1.1rem">★</span> <strong>${h.google_bewertung.toFixed(1)}</strong> <span style="color:#888;font-size:0.85rem">(${h.google_bewertungen_anzahl} Bewertungen auf Google)</span>` : '';
+
+  const videoBlock = h.video_url ? `
+    <div style="margin:2rem 0;border-radius:10px;overflow:hidden;aspect-ratio:16/9;background:#000">
+      <iframe src="${h.video_url}" style="width:100%;height:100%;border:none" allowfullscreen loading="lazy"></iframe>
+    </div>` : '';
+
+  res.send(`<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>${h.name} – Rollrasen-Händler | rasenrechner.de</title>
+  <meta name="description" content="${h.name} aus ${h.ort || 'Bayern'} – regionaler Rollrasen-Fachbetrieb. ${h.profil_text ? h.profil_text.slice(0,120) + '...' : 'Kostenlose Angebote anfragen auf rasenrechner.de.'}">
+  ${pageCss}
+  <style>
+    .profile-hero{background:linear-gradient(135deg,#1a3d12 0%,#2d6a2d 100%);color:#fff;padding:2.5rem 1.5rem;border-radius:0 0 16px 16px;text-align:center;margin-bottom:2rem}
+    .profile-hero h1{font-size:1.9rem;margin:.75rem 0 .5rem;color:#fff}
+    .profile-hero p{opacity:.8;font-size:.9rem;margin:0}
+    .profile-back{display:inline-block;color:#a8d5a8;font-size:.85rem;text-decoration:none;margin-bottom:.5rem}
+    .profile-back:hover{color:#fff}
+    .contact-card{background:#f4f8f4;border:1px solid #d4e8c8;border-radius:10px;padding:1.5rem;margin:1.5rem 0}
+    .contact-row{display:flex;gap:.5rem;align-items:center;margin:.4rem 0;font-size:.93rem}
+    .contact-row a{color:#2d6a2d;text-decoration:none}
+    .contact-row a:hover{text-decoration:underline}
+    .cta-block{background:#2d6a2d;color:#fff;border-radius:10px;padding:1.75rem;text-align:center;margin:2rem 0}
+    .cta-block h2{font-size:1.15rem;margin:0 0 .75rem;color:#fff}
+    .cta-btn{display:inline-block;background:#fff;color:#2d6a2d;font-weight:700;padding:.75rem 2rem;border-radius:6px;text-decoration:none;font-size:1rem;margin-top:.5rem}
+    .cta-btn:hover{background:#f0f7f0}
+    .profil-text{line-height:1.75;color:#444;margin:1.5rem 0}
+    .maps-link{display:inline-flex;align-items:center;gap:6px;color:#2d6a2d;font-size:.87rem;text-decoration:none;margin-top:.75rem}
+    .maps-link:hover{text-decoration:underline}
+  </style>
+</head>
+<body>
+  <div class="profile-hero">
+    <a class="profile-back" href="/">← rasenrechner.de</a>
+    ${h.logo_url ? `<div style="margin:.5rem auto;width:80px;height:80px;border-radius:50%;background:#fff;display:flex;align-items:center;justify-content:center;overflow:hidden"><img src="${h.logo_url}" alt="${h.name} Logo" style="width:100%;height:100%;object-fit:contain"></div>` : ''}
+    <h1>${h.name}</h1>
+    <div style="margin:.5rem 0">${badge}</div>
+    <p>${h.typ === 'Hersteller' ? 'Rollrasen-Hersteller' : 'Rollrasen-Fachbetrieb'}${h.ort ? ' · ' + h.ort : ''}${h.region ? ' · ' + h.region : ''}</p>
+  </div>
+
+  <div class="wrap" style="padding-top:0">
+    ${videoBlock}
+
+    ${h.profil_text ? `<p class="profil-text">${h.profil_text}</p>` : ''}
+
+    ${sterne ? `<p style="margin:1rem 0">${sterne}</p>` : ''}
+
+    <div class="contact-card">
+      <strong style="color:#1a3d12;font-size:.85rem;text-transform:uppercase;letter-spacing:.05em">Kontakt</strong>
+      ${h.telefon ? `<div class="contact-row">📞 <a href="tel:${h.telefon.replace(/\s/g,'')}">${h.telefon}</a></div>` : ''}
+      ${h.email   ? `<div class="contact-row">✉️ <a href="mailto:${h.email}">${h.email}</a></div>` : ''}
+      ${h.website ? `<div class="contact-row">🌐 <a href="${h.website}" target="_blank" rel="noopener">${h.website.replace(/^https?:\/\//,'')}</a></div>` : ''}
+      ${adresse   ? `<div class="contact-row">📍 ${adresse}</div>` : ''}
+      ${mapsUrl   ? `<a class="maps-link" href="${mapsUrl}" target="_blank" rel="noopener">🗺️ Auf Google Maps anzeigen →</a>` : ''}
+    </div>
+
+    <div class="cta-block">
+      <h2>Kostenloses Angebot anfragen</h2>
+      <p style="opacity:.85;font-size:.9rem;margin:0 0 .25rem">Unverbindlich, direkt vom Fachbetrieb, Antwort in 24h</p>
+      <a class="cta-btn" href="/${h.plz ? '#anfrage' : '#anfrage'}">Jetzt Angebot anfragen</a>
+    </div>
+
+    <footer>rasenrechner.de · Ein Service der Gartenschmiede GmbH ·
+      <a href="/impressum">Impressum</a> · <a href="/datenschutz">Datenschutz</a>
+    </footer>
+  </div>
+</body>
+</html>`);
+});
+
 // ─── ADMIN ────────────────────────────────────────────────────────────────────
 
 function requireAdmin(req, res, next) {
@@ -246,19 +349,23 @@ app.get('/admin', requireAdmin, (req, res) => {
       <td style="max-width:180px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap" title="${esc(a.message || '')}">${esc(a.message || '–')}</td>
     </tr>`).join('');
 
+  const PAKET_BADGE = { partner: '<span class="badge" style="background:#dcfce7;color:#166534">Partner</span>', pro: '<span class="badge" style="background:#dbeafe;color:#1e40af">Pro</span>', premium: '<span class="badge" style="background:#fef9c3;color:#854d0e">Premium</span>' };
+  const KS_BADGE   = { offen: '<span class="badge badge-off">Offen</span>', kontaktiert: '<span class="badge" style="background:#fef3c7;color:#92400e">Kontaktiert</span>', interessiert: '<span class="badge" style="background:#e0f2fe;color:#0369a1">Interessiert</span>', abonniert: '<span class="badge badge-on">Abonniert</span>', abgelehnt: '<span class="badge" style="background:#f1f5f9;color:#64748b">Abgelehnt</span>' };
+
   const haendlerRows = haendler.map(h => `
     <tr>
-      <td><strong>${esc(h.name)}</strong><br><small style="color:#888">${esc(h.typ || '')}</small></td>
+      <td><strong>${esc(h.name)}</strong><br><small style="color:#888">${esc(h.typ || '')}</small>${h.profil_slug ? `<br><small><a href="/haendler/${esc(h.profil_slug)}" target="_blank" style="color:#2d6a2d">↗ Profil</a></small>` : ''}</td>
       <td>${h.plz ? h.plz + ' ' : ''}${esc(h.ort || '')}${h.region ? '<br><small style="color:#888">'+esc(h.region)+'</small>' : ''}</td>
       <td style="white-space:nowrap">${h.google_bewertung ? '⭐ ' + h.google_bewertung.toFixed(1) + '<br><small>' + h.google_bewertungen_anzahl + ' Bew.</small>' : '–'}</td>
       <td>${h.email ? '<a href="mailto:'+esc(h.email)+'">'+esc(h.email)+'</a>' : '–'}</td>
-      <td style="white-space:nowrap">${esc(h.telefon || '–')}</td>
-      <td>${esc(h.website || '–')}</td>
+      <td>${PAKET_BADGE[h.paket] || '<span class="badge" style="background:#f1f5f9;color:#64748b">Free</span>'}</td>
+      <td>${KS_BADGE[h.kontakt_status] || KS_BADGE['offen']}</td>
       <td><span class="badge ${h.aktiv ? 'badge-on' : 'badge-off'}">${h.aktiv ? 'Aktiv' : 'Inaktiv'}</span></td>
-      <td>
-        <form method="POST" action="/admin/haendler/${h.id}/toggle">
+      <td style="white-space:nowrap">
+        <a href="/admin/haendler/${h.id}" style="display:inline-block;padding:4px 10px;background:#2d6a2d;color:#fff;border-radius:4px;font-size:0.75rem;text-decoration:none;font-weight:600;margin-right:4px">✏️ Edit</a>
+        <form method="POST" action="/admin/haendler/${h.id}/toggle" style="display:inline">
           <button class="btn-toggle ${h.aktiv ? 'btn-off' : 'btn-on'}" type="submit">
-            ${h.aktiv ? 'Deaktivieren' : 'Aktivieren'}
+            ${h.aktiv ? 'Aus' : 'An'}
           </button>
         </form>
       </td>
@@ -328,7 +435,7 @@ app.get('/admin', requireAdmin, (req, res) => {
       <table>
         <thead><tr>
           <th>Name / Typ</th><th>PLZ / Ort</th><th>Bewertung</th>
-          <th>E-Mail</th><th>Telefon</th><th>Website</th><th>Status</th><th>Aktion</th>
+          <th>E-Mail</th><th>Paket</th><th>Kontakt</th><th>Status</th><th>Aktionen</th>
         </tr></thead>
         <tbody>${haendlerRows}</tbody>
       </table>
@@ -343,15 +450,164 @@ app.post('/admin/haendler/:id/toggle', requireAdmin, (req, res) => {
   res.redirect('/admin');
 });
 
+app.get('/admin/haendler/:id', requireAdmin, (req, res) => {
+  const h = db.prepare('SELECT * FROM hersteller WHERE id = ?').get(req.params.id);
+  if (!h) return res.status(404).send('Händler nicht gefunden');
+  const esc = s => String(s || '').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+  const val = (v) => esc(v || '');
+  const sel = (field, opt) => h[field] === opt ? ' selected' : '';
+
+  res.send(`<!DOCTYPE html>
+<html lang="de"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Händler bearbeiten – ${esc(h.name)}</title>
+${pageCss}
+<style>
+  .edit-grid{display:grid;grid-template-columns:1fr 1fr;gap:1rem}
+  @media(max-width:600px){.edit-grid{grid-template-columns:1fr}}
+  label{display:block;font-size:.82rem;font-weight:600;color:#444;margin:.1rem 0}
+  input,select,textarea{width:100%;border:1.5px solid #d1d5db;border-radius:6px;padding:.55rem .8rem;font-size:.9rem;font-family:inherit;color:#222;background:#fff;margin-bottom:.75rem}
+  input:focus,select:focus,textarea:focus{outline:2px solid #2d6a2d;border-color:#2d6a2d}
+  textarea{min-height:100px;resize:vertical}
+  .btn-save{background:#2d6a2d;color:#fff;border:none;border-radius:6px;padding:.7rem 2rem;font-size:1rem;font-weight:700;cursor:pointer;font-family:inherit}
+  .btn-save:hover{background:#245a24}
+  .section-title{font-size:.75rem;text-transform:uppercase;letter-spacing:.07em;color:#2d6a2d;font-weight:700;margin:1.5rem 0 .5rem;padding-bottom:.3rem;border-bottom:2px solid #d4e8c8}
+  .readonly-note{color:#888;font-size:.78rem;margin-bottom:.5rem}
+</style>
+</head><body>
+<div class="wrap">
+  <a class="back" href="/admin">← Zurück zum Admin</a>
+  <h1 style="font-size:1.4rem">✏️ ${esc(h.name)}</h1>
+  <p class="readonly-note">ID: ${h.id} · Typ: ${esc(h.typ || '–')} · Erstellt: ${h.created_at || '–'}</p>
+
+  <form method="POST" action="/admin/haendler/${h.id}">
+    <div class="section-title">Paket & Status</div>
+    <div class="edit-grid">
+      <div>
+        <label>Paket</label>
+        <select name="paket">
+          <option value="free"${sel('paket','free')}>Free (kein Badge)</option>
+          <option value="partner"${sel('paket','partner')}>Partner – 49 €/Mo (✓ Geprüfter Händler)</option>
+          <option value="pro"${sel('paket','pro')}>Professional – 99 €/Mo (⭐ Professional Partner)</option>
+          <option value="premium"${sel('paket','premium')}>Premium – 199 €/Mo (🏆 Premium Partner)</option>
+        </select>
+      </div>
+      <div>
+        <label>Kontakt-Status</label>
+        <select name="kontakt_status">
+          <option value="offen"${sel('kontakt_status','offen')}>Offen</option>
+          <option value="kontaktiert"${sel('kontakt_status','kontaktiert')}>Kontaktiert</option>
+          <option value="interessiert"${sel('kontakt_status','interessiert')}>Interessiert</option>
+          <option value="abonniert"${sel('kontakt_status','abonniert')}>Abonniert</option>
+          <option value="abgelehnt"${sel('kontakt_status','abgelehnt')}>Abgelehnt</option>
+        </select>
+      </div>
+      <div>
+        <label>Paket Start</label>
+        <input type="date" name="paket_start" value="${val(h.paket_start)}">
+      </div>
+      <div>
+        <label>Paket Ende</label>
+        <input type="date" name="paket_ende" value="${val(h.paket_ende)}">
+      </div>
+    </div>
+
+    <div class="section-title">Webpräsenz-Status</div>
+    <div class="edit-grid">
+      <div>
+        <label>Webseite-Qualität</label>
+        <select name="webseite_status">
+          <option value=""${sel('webseite_status','')}>– nicht geprüft –</option>
+          <option value="gut"${sel('webseite_status','gut')}>Gut</option>
+          <option value="mittel"${sel('webseite_status','mittel')}>Mittel</option>
+          <option value="schlecht"${sel('webseite_status','schlecht')}>Schlecht</option>
+          <option value="keine"${sel('webseite_status','keine')}>Keine Webseite</option>
+        </select>
+      </div>
+      <div>
+        <label>Google Business</label>
+        <select name="google_status">
+          <option value=""${sel('google_status','')}>– nicht geprüft –</option>
+          <option value="gut"${sel('google_status','gut')}>Gut (viele Bewertungen)</option>
+          <option value="mittel"${sel('google_status','mittel')}>Vorhanden, wenig Bewertungen</option>
+          <option value="schlecht"${sel('google_status','schlecht')}>Vorhanden, schlechte Bewertungen</option>
+          <option value="kein"${sel('google_status','kein')}>Kein Google-Eintrag</option>
+        </select>
+      </div>
+    </div>
+
+    <div class="section-title">Profil-Seite</div>
+    <div class="edit-grid">
+      <div>
+        <label>URL-Slug (z.B. isar-rollrasen)</label>
+        <input type="text" name="profil_slug" value="${val(h.profil_slug)}" placeholder="name-des-betriebs">
+      </div>
+      <div>
+        <label>Logo-URL</label>
+        <input type="url" name="logo_url" value="${val(h.logo_url)}" placeholder="https://...">
+      </div>
+    </div>
+    <div>
+      <label>Video-Embed-URL (YouTube: https://www.youtube.com/embed/ID)</label>
+      <input type="url" name="video_url" value="${val(h.video_url)}" placeholder="https://www.youtube.com/embed/...">
+    </div>
+    <div>
+      <label>Profil-Text (öffentlich sichtbar)</label>
+      <textarea name="profil_text">${val(h.profil_text)}</textarea>
+    </div>
+
+    <div class="section-title">Interne Notizen</div>
+    <div>
+      <label>Notizen (nur intern)</label>
+      <textarea name="notizen_intern">${val(h.notizen_intern)}</textarea>
+    </div>
+
+    <div style="margin-top:1.5rem;display:flex;gap:1rem;align-items:center">
+      <button class="btn-save" type="submit">💾 Speichern</button>
+      <a href="/admin" style="color:#666;font-size:.9rem">Abbrechen</a>
+    </div>
+  </form>
+</div>
+</body></html>`);
+});
+
+app.post('/admin/haendler/:id', requireAdmin, (req, res) => {
+  const { paket, paket_start, paket_ende, kontakt_status, webseite_status, google_status,
+          profil_slug, logo_url, video_url, profil_text, notizen_intern } = req.body;
+  db.prepare(`
+    UPDATE hersteller SET
+      paket = ?, paket_start = ?, paket_ende = ?,
+      kontakt_status = ?, webseite_status = ?, google_status = ?,
+      profil_slug = ?, logo_url = ?, video_url = ?,
+      profil_text = ?, notizen_intern = ?
+    WHERE id = ?
+  `).run(
+    paket || 'free',
+    paket_start || null, paket_ende || null,
+    kontakt_status || 'offen', webseite_status || null, google_status || null,
+    profil_slug?.trim().toLowerCase().replace(/[^a-z0-9-]/g, '') || null,
+    logo_url?.trim() || null, video_url?.trim() || null,
+    profil_text?.trim() || null, notizen_intern?.trim() || null,
+    req.params.id
+  );
+  res.redirect('/admin');
+});
+
 // ─── HÄNDLER ENDPOINT ─────────────────────────────────────────────────────────
 
 app.get('/haendler', (req, res) => {
   const plz  = (req.query.plz || '').replace(/\D/g, '');
   const top3 = findNearestHaendler(plz);
+  const BADGE = { partner: '✓ Geprüfter Händler', pro: '⭐ Professional Partner', premium: '🏆 Premium Partner' };
   res.json({
     count:    top3.length,
     region:   top3[0]?.region || 'Bayern',
     haendler: top3.map(h => h.name),
+    list:     top3.map(h => ({
+      name:  h.name,
+      paket: h.paket || 'free',
+      slug:  h.profil_slug || null,
+      badge: BADGE[h.paket] || null,
+    })),
   });
 });
 
