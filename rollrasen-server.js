@@ -166,6 +166,39 @@ app.post('/anfrage', async (req, res) => {
   }
 });
 
+// ─── PARTNER-ANFRAGE ENDPOINT ─────────────────────────────────────────────────
+
+app.post('/partner-anfrage', async (req, res) => {
+  const { name, email, tel, type, msg } = req.body;
+
+  if (!name?.trim() || !email?.trim())
+    return res.status(400).json({ ok: false, error: 'Name und E-Mail sind Pflichtfelder' });
+
+  console.log(`🤝 Partner-Anfrage: ${name} (${email}) – Typ: ${type || 'unbekannt'}`);
+
+  const adminMail = `
+    <div style="font-family:sans-serif;max-width:560px;color:#222">
+      <h2 style="color:#2d6a2d">Neue Partner-Anfrage</h2>
+      <table style="border-collapse:collapse;width:100%;margin:1rem 0">
+        <tr><td style="padding:6px 12px;color:#666;width:140px">Name / Firma</td><td style="padding:6px 12px;font-weight:600">${name}</td></tr>
+        <tr style="background:#f5f5f5"><td style="padding:6px 12px;color:#666">E-Mail</td><td style="padding:6px 12px"><a href="mailto:${email}">${email}</a></td></tr>
+        ${tel ? `<tr><td style="padding:6px 12px;color:#666">Telefon</td><td style="padding:6px 12px">${tel}</td></tr>` : ''}
+        <tr style="background:#f5f5f5"><td style="padding:6px 12px;color:#666">Typ</td><td style="padding:6px 12px">${type || '–'}</td></tr>
+        ${msg ? `<tr><td style="padding:6px 12px;color:#666">Nachricht</td><td style="padding:6px 12px">${msg}</td></tr>` : ''}
+      </table>
+      <p style="color:#666;font-size:0.9rem">Eingegangen über rollrasen.gartenbau-kosten.de</p>
+    </div>`;
+
+  try {
+    const empfaenger = ADMIN_EMAIL || 'info@gartenbau-kosten.de';
+    await sendMail(empfaenger, `Partner-Anfrage: ${name} (${type || 'unbekannt'})`, adminMail);
+    res.json({ ok: true });
+  } catch (err) {
+    console.error('Mail-Fehler:', err.message);
+    res.json({ ok: true });
+  }
+});
+
 // ─── START ────────────────────────────────────────────────────────────────────
 
 app.listen(PORT, () => {

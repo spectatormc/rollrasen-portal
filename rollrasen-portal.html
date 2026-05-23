@@ -567,25 +567,39 @@
         <h2 class="section__title">Werde Partner</h2>
         <p class="section__sub">Wir starten in Bayern. Rollrasen-Händler und Galabauer können 2026 kostenlos dabei sein.</p>
       </div>
-      <div class="partner-grid">
-        <div class="partner-card">
-          <div class="partner-card__icon">🏪</div>
-          <h4>Rollrasen-Händler</h4>
-          <p>Du verkaufst Rollrasen und lieferst regional? Wir listen dich mit PLZ-Matching, Profil und direkten Kundenanfragen.</p>
-          <a href="mailto:info@gartenbau-kosten.de?subject=Rollrasen Partner Anfrage">Als Händler anfragen →</a>
-        </div>
-        <div class="partner-card">
-          <div class="partner-card__icon">🌿</div>
-          <h4>Galabauer & Verleger</h4>
-          <p>Du verlegst Rollrasen als Dienstleistung? Wir vermitteln Anfragen aus deiner Region direkt an dich.</p>
-          <a href="mailto:info@gartenbau-kosten.de?subject=Rollrasen Galabauer Anfrage">Als Galabauer anfragen →</a>
-        </div>
-        <div class="partner-card">
-          <div class="partner-card__icon">📊</div>
-          <h4>Was du bekommst</h4>
-          <p>Profil-Eintrag, PLZ-basierte Sichtbarkeit und qualifizierte Kundenanfragen direkt in dein Postfach. Kostenlos im MVP.</p>
-          <a href="mailto:info@gartenbau-kosten.de?subject=Rollrasen Partner Info">Mehr erfahren →</a>
-        </div>
+      <div class="anfrage-box" id="partner-anfrage-box">
+        <h3>Partner-Anfrage</h3>
+        <div class="anfrage-box__sub">Du möchtest als Händler oder Galabauer Partner werden? Fülle das Formular aus – wir melden uns zeitnah!</div>
+        <form id="partnerForm">
+          <div class="field-group">
+            <label for="pname">Name / Firma *</label>
+            <input type="text" id="pname" name="pname" required>
+          </div>
+          <div class="field-group field-group--2">
+            <div>
+              <label for="pemail">E-Mail *</label>
+              <input type="email" id="pemail" name="pemail" required>
+            </div>
+            <div>
+              <label for="ptel">Telefon <span class="opt">(optional)</span></label>
+              <input type="tel" id="ptel" name="ptel">
+            </div>
+          </div>
+          <div class="field-group">
+            <label>Ich bin *</label>
+            <select id="partnertype" name="partnertype" required>
+              <option value="">Bitte wählen…</option>
+              <option value="Händler">Händler</option>
+              <option value="Galabauer">Galabauer / Verleger</option>
+            </select>
+          </div>
+          <div class="field-group">
+            <label for="pmsg">Nachricht <span class="opt">(optional)</span></label>
+            <textarea id="pmsg" name="pmsg" rows="3"></textarea>
+          </div>
+          <button class="btn-submit" type="submit">Anfrage absenden</button>
+          <div class="submit-hint" id="partner-submit-hint" style="display:none;">Vielen Dank! Wir haben deine Anfrage erhalten.</div>
+        </form>
       </div>
     </div>
   </section>
@@ -603,6 +617,36 @@
 
 <script>
 (function () {
+  // Partner-Anfrage Formular-Handling
+  var partnerForm = document.getElementById('partnerForm');
+  if (partnerForm) {
+    partnerForm.addEventListener('submit', function(e) {
+      e.preventDefault();
+      // Daten sammeln
+      var data = {
+        name: document.getElementById('pname').value,
+        email: document.getElementById('pemail').value,
+        tel: document.getElementById('ptel').value,
+        type: document.getElementById('partnertype').value,
+        msg: document.getElementById('pmsg').value
+      };
+      // Anfrage an Server senden (hier als Beispiel per fetch an /partner-anfrage)
+      fetch('/partner-anfrage', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(data)
+      }).then(function(res) {
+        if (res.ok) {
+          document.getElementById('partner-submit-hint').style.display = 'block';
+          partnerForm.reset();
+        } else {
+          alert('Fehler beim Senden der Anfrage. Bitte versuche es später erneut.');
+        }
+      }).catch(function() {
+        alert('Fehler beim Senden der Anfrage. Bitte versuche es später erneut.');
+      });
+    });
+  }
 
   var API = window.location.origin;
 
