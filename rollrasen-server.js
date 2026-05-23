@@ -211,19 +211,24 @@ app.post('/anfrage', async (req, res) => {
     </div>`;
 
   try {
+    console.log(`📧 Sende Kundenmail an: ${email}`);
     await sendMail(email, 'Ihre Rollrasen-Anfrage ist eingegangen – Kontaktierte Betriebe', kundenMail);
+    console.log(`✓ Kundenmail gesendet`);
 
     const empfaenger = ADMIN_EMAIL
       ? [ADMIN_EMAIL]
       : top3.filter(h => h.email).map(h => h.email);
 
+    console.log(`📧 ADMIN_EMAIL=${ADMIN_EMAIL} → Empfänger: ${empfaenger.join(', ')}`);
     for (const empf of empfaenger) {
+      console.log(`📧 Sende Admin-Mail an: ${empf}`);
       await sendMail(empf, `Neue Rollrasen-Anfrage – ${m2Display}, PLZ ${plzClean}`, haendlerMail);
+      console.log(`✓ Admin-Mail gesendet an ${empf}`);
     }
 
     res.json({ ok: true, haendler_count: top3.length, region: top3[0]?.region || 'Bayern' });
   } catch (err) {
-    console.error('Mail-Fehler:', err.message);
+    console.error(`❌ Mail-Fehler: ${err.message}`);
     res.json({ ok: true, haendler_count: top3.length, region: top3[0]?.region || 'Bayern' });
   }
 });
