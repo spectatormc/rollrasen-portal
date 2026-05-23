@@ -820,6 +820,66 @@ const STAEDTE = {
       { q: 'Gibt es einen Unterschied zwischen Rollrasen und Fertigrasen?', a: 'Nein – beides bezeichnet dasselbe Produkt. „Fertigrasen" ist die häufigere Bezeichnung im Fachhandel für Premiumsorten.' },
     ],
   },
+  landshut: {
+    name: 'Landshut', region: 'Niederbayern', plz: '84028',
+    title: 'Rollrasen Landshut – Kosten, Händler & kostenlose Angebote 2026',
+    desc:  'Rollrasen in Landshut kaufen & verlegen lassen: Preisrechner, regionale Händler & kostenlose Angebote. Geprüfte Fachbetriebe aus Niederbayern.',
+    intro: 'Landshut liegt mitten in Niederbayern und hat gleich zwei Rollrasen-Spezialisten in direkter Nachbarschaft: Isar Rollrasen aus Altheim und Nodes Gartenbau aus Essenbach. Beide Betriebe liefern frisch geernteten Rasen innerhalb weniger Stunden – ein klarer Vorteil gegenüber überregionalen Versandhändlern.',
+    faq: [
+      { q: 'Was kostet Rollrasen in Landshut?', a: 'Material: 5–12 €/m². Inkl. Lieferung und Verlegung: 15–25 €/m². Mit Bodenvorbereitung: 25–55 €/m². Landshut profitiert von kurzen Wegen zu regionalen Herstellern.' },
+      { q: 'Welche Händler liefern in Landshut?', a: 'Isar Rollrasen aus Altheim und Nodes Gartenbau aus Essenbach sind direkt vor Ort. Beide decken den Raum Niederbayern zuverlässig ab.' },
+      { q: 'Wann ist der beste Zeitpunkt für Rollrasen in Landshut?', a: 'April bis Juni und September/Oktober. Niederbayern hat ausreichend Niederschläge im Frühjahr – ideal für schnelles Anwachsen.' },
+      { q: 'Was ist der Vorteil von regionalem Rollrasen aus Niederbayern?', a: 'Kurze Transportwege bedeuten frischeren Rasen mit höherer Anwurzelungsrate. Isar Rollrasen liefert oft am selben oder nächsten Tag nach der Ernte.' },
+    ],
+  },
+  rosenheim: {
+    name: 'Rosenheim', region: 'Oberbayern', plz: '83022',
+    title: 'Rollrasen Rosenheim – Kosten, Händler & kostenlose Angebote 2026',
+    desc:  'Rollrasen in Rosenheim kaufen & verlegen lassen: Preisrechner, regionale Händler & kostenlose Angebote. Geprüfte Fachbetriebe aus dem Chiemgau.',
+    intro: 'Rosenheim und der Chiemgau haben mit Rasen Schwab einen lokalen Fachbetrieb direkt vor Ort. Die Voralpenregion stellt besondere Anforderungen an Rollrasen: Frostbeständige Sorten, die auch harten Wintern trotzen, sind hier entscheidend. Regionale Händler kennen die lokalen Bodenbedingungen und Hanglagen besser als überregionale Versandhändler.',
+    faq: [
+      { q: 'Was kostet Rollrasen in Rosenheim?', a: 'Material: 5–12 €/m². Inkl. Lieferung und Verlegung: 15–25 €/m². Mit Bodenvorbereitung: 25–55 €/m². Hanglagen im Chiemgau können die Verlegekosten leicht erhöhen.' },
+      { q: 'Welche Händler liefern in Rosenheim?', a: 'Rasen Schwab GmbH ist der lokale Spezialist direkt in Rosenheim. Für größere Projekte liefern auch überregionale Hersteller wie Isar Rollrasen und BayernRasen in die Region.' },
+      { q: 'Brauche ich in Rosenheim spezielle Rasensorten?', a: 'Für Lagen mit starker Sonneneinstrahlung und Hanglagen empfiehlt sich Strapazierrasen. In schattigen Gärten unter altem Baumbestand ist Halbschattenrasen die bessere Wahl.' },
+      { q: 'Wann ist der beste Zeitpunkt für Rollrasen im Chiemgau?', a: 'Mai bis Juni und September sind optimal. Die Voralpenregion hat längere Winternachkälten – Frühjahrspflanzungen erst nach den Eisheiligen (Mitte Mai) sind sicherer.' },
+    ],
+  },
+  ingolstadt: {
+    name: 'Ingolstadt', region: 'Oberbayern', plz: '85049',
+    title: 'Rollrasen Ingolstadt – Kosten, Händler & kostenlose Angebote 2026',
+    desc:  'Rollrasen in Ingolstadt kaufen & verlegen lassen: Preisrechner, regionale Händler & kostenlose Angebote. Geprüfte Fachbetriebe aus der Region.',
+    intro: 'Ingolstadt liegt zentral zwischen München und Nürnberg – und profitiert damit von Händlern aus beiden Richtungen. BayernRasen aus Schwabhausen und Schwab Rollrasen aus Pörnbach sind besonders nah. Ingolstadts Klima ist kontinental mit heißen Sommern: intensive Bewässerung in den ersten Wochen nach der Verlegung ist entscheidend.',
+    faq: [
+      { q: 'Was kostet Rollrasen in Ingolstadt?', a: 'Material: 5–12 €/m². Inkl. Lieferung und Verlegung: 15–25 €/m². Mit Bodenvorbereitung: 25–55 €/m². Ingolstadt liegt günstig zwischen mehreren Herstellern.' },
+      { q: 'Welche Händler liefern nach Ingolstadt?', a: 'BayernRasen (Schwabhausen), Schwab Rollrasen (Pörnbach) und Isar Rollrasen (Altheim) liefern alle in den Raum Ingolstadt. PLZ eingeben – wir finden die drei nächsten.' },
+      { q: 'Wann ist der beste Zeitpunkt für Rollrasen in Ingolstadt?', a: 'April bis Juni. Der Ingolstädter Sommer ist oft trocken und heiß – wer im Juli verlegt, muss täglich intensiv wässern. Herbst (September/Oktober) ist eine gute Alternative.' },
+      { q: 'Kann ich Rollrasen auch für größere Gewerbeflächen bestellen?', a: 'Ja – regionale Hersteller wie BayernRasen produzieren auf über 100 Hektar Eigenanbau und können auch größere Mengen kurzfristig liefern.' },
+    ],
+  },
+  freising: {
+    name: 'Freising', region: 'Oberbayern', plz: '85354',
+    title: 'Rollrasen Freising – Kosten, Händler & kostenlose Angebote 2026',
+    desc:  'Rollrasen in Freising kaufen & verlegen lassen: Preisrechner, regionale Händler & kostenlose Angebote. Geprüfte Fachbetriebe aus der Region.',
+    intro: 'Freising liegt zwischen München und dem Niederbayerischen Hügelland – und hat damit eine ideale Lage für schnelle Rollrasen-Lieferungen. Isar Rollrasen aus Altheim ist nur wenige Kilometer entfernt, die Münchner Betriebe rund um Unterschleißheim und Kirchheim decken den Raum ebenfalls ab. Freisings Böden sind oft tiefgründig und humos – gute Voraussetzungen für schnelles Anwachsen.',
+    faq: [
+      { q: 'Was kostet Rollrasen in Freising?', a: 'Material: 5–12 €/m². Inkl. Lieferung und Verlegung: 15–25 €/m². Komplett mit Bodenvorbereitung: 25–55 €/m². Freising liegt sehr günstig zu mehreren großen Herstellern.' },
+      { q: 'Welche Händler liefern nach Freising?', a: 'Isar Rollrasen (Altheim, Niederbayern) ist besonders nah. Zusätzlich liefern Wolf Gruen (Unterschleißheim) und Spiegl Gartenbau (Kirchheim) aus dem Münchner Raum nach Freising.' },
+      { q: 'Wann ist der beste Zeitpunkt für Rollrasen in Freising?', a: 'April bis Juni und September/Oktober. Das Klima in Freising ist gemäßigt – Frühjahrspflanzungen gelingen zuverlässig, wenn der Boden frost frei ist.' },
+      { q: 'Lohnt sich Rollrasen für Neubaugebiete in Freising?', a: 'Besonders ja – Rollrasen ist sofort nutzbar und schützt den Boden schnell vor Erosion. Bei Neubauprojekten oft die bevorzugte Wahl gegenüber Rasensaat.' },
+    ],
+  },
+  fuerth: {
+    name: 'Fürth', region: 'Mittelfranken', plz: '90762',
+    title: 'Rollrasen Fürth – Kosten, Händler & kostenlose Angebote 2026',
+    desc:  'Rollrasen in Fürth kaufen & verlegen lassen: Preisrechner, regionale Händler & kostenlose Angebote. Geprüfte Fachbetriebe aus Mittelfranken.',
+    intro: 'Fürth und Nürnberg bilden einen gemeinsamen Wirtschaftsraum – und sind rollrasenmäßig gut aufgestellt. Die Greenkeepers Gartenbau GbR hat ihren Sitz direkt in Fürth, Noris Rollrasen in Nürnberg ergänzt das Angebot. Mittelfranken hat ein klar kontinentales Klima mit trockenen Sommern: lokale Sorten sind darauf abgestimmt.',
+    faq: [
+      { q: 'Was kostet Rollrasen in Fürth?', a: 'Material: 5–12 €/m². Inkl. Lieferung und Verlegung: 15–25 €/m². Mit Bodenvorbereitung: 25–55 €/m². Preise entsprechen dem mittelfränkischen Durchschnitt.' },
+      { q: 'Welche Händler liefern in Fürth?', a: 'Greenkeepers Gartenbau GbR ist direkt in Fürth ansässig. Noris Rollrasen (Nürnberg) und überregionale Hersteller wie BayernRasen liefern ebenfalls in den Großraum Fürth.' },
+      { q: 'Wann ist der beste Zeitpunkt für Rollrasen in Fürth?', a: 'April bis Juni und September. Fürth und Nürnberg haben relativ trockene Sommer – intensive Bewässerung nach der Verlegung ist besonders wichtig.' },
+      { q: 'Kann ich Rollrasen in Fürth auch in Eigenleistung verlegen?', a: 'Ja, bei kleineren Flächen gut machbar. Wichtig ist eine ebene, ausreichend lockere Unterlage. Lokale Händler helfen mit Beratung zur richtigen Sorte und Bodenvorbereitung.' },
+    ],
+  },
 };
 
 const stadtCss = `<style>
