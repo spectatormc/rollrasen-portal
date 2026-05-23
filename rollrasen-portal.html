@@ -58,10 +58,15 @@
     .header-cta:hover { background: var(--color-accent-dark); }
 
     /* HERO */
-    @keyframes kenburns { from { transform: scale(1.0); } to { transform: scale(1.07); } }
     .hero { position: relative; min-height: 88vh; display: flex; align-items: center; border-bottom: 1px solid rgba(0,0,0,0.15); overflow: hidden; }
-    .hero__bg { position: absolute; inset: 0; background: radial-gradient(ellipse at 25% 55%, #3d8a20 0%, #245716 45%, #0f2908 100%); animation: kenburns 22s ease-in-out infinite alternate; z-index: 0; }
-    .hero__overlay { position: absolute; inset: 0; background: radial-gradient(ellipse at 50% 40%, rgba(80,160,40,0.18) 0%, rgba(0,0,0,0.55) 100%), linear-gradient(180deg, rgba(0,0,0,0.28) 0%, rgba(0,0,0,0.05) 45%, rgba(0,0,0,0.42) 100%); z-index: 1; }
+    .hero__bg { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; z-index: 0; background: #1a3d12; }
+    .hero__overlay { position: absolute; inset: 0; background: radial-gradient(ellipse at 50% 40%, rgba(0,0,0,0.15) 0%, rgba(0,0,0,0.62) 100%), linear-gradient(180deg, rgba(0,0,0,0.3) 0%, rgba(0,0,0,0.08) 45%, rgba(0,0,0,0.45) 100%); z-index: 1; }
+
+    /* BILD-TRENNSTREIFEN */
+    .img-divider { position: relative; height: 260px; overflow: hidden; }
+    .img-divider img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; object-position: center; }
+    .img-divider__overlay { position: absolute; inset: 0; background: rgba(0,0,0,0.35); display: flex; align-items: center; justify-content: center; }
+    .img-divider__text { color: #fff; font-family: var(--font-heading); font-size: clamp(1.2rem, 3vw, 1.8rem); text-align: center; padding: 0 2rem; text-shadow: 0 2px 12px rgba(0,0,0,0.5); line-height: 1.3; }
     .hero__inner { position: relative; z-index: 2; max-width: var(--max); margin-inline: auto; padding: 5rem 1.5rem 4rem; text-align: center; }
     .hero__eyebrow { display: inline-block; font-size: 0.72rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.12em; color: #a8d5a8; background: rgba(255,255,255,0.1); border: 1px solid rgba(255,255,255,0.25); padding: 0.3rem 1rem; border-radius: 999px; margin-bottom: 1.2rem; backdrop-filter: blur(4px); }
     .hero h1 { font-family: var(--font-heading); font-size: clamp(2.1rem, 5vw, 3.2rem); color: #fff; line-height: 1.12; margin-bottom: 1.1rem; text-shadow: 0 2px 12px rgba(0,0,0,0.35); }
@@ -356,7 +361,9 @@
   </header>
 
   <section class="hero">
-    <div class="hero__bg" role="img" aria-label="Frisch verlegter Rollrasen in einem bayerischen Garten"></div>
+    <video class="hero__bg" autoplay muted loop playsinline preload="auto" aria-hidden="true">
+      <source src="/public/hero.mp4" type="video/mp4">
+    </video>
     <div class="hero__overlay"></div>
     <div class="hero__inner">
       <span class="hero__eyebrow">Rollrasen in Bayern</span>
@@ -525,6 +532,15 @@
     </div>
   </section>
 
+  <!-- ── BILD-TRENNSTREIFEN ── -->
+  <div class="img-divider">
+    <img src="https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=1400&q=75&auto=format&fit=crop"
+         alt="Frisch verlegter Rollrasen in einem gepflegten Garten" loading="lazy">
+    <div class="img-divider__overlay">
+      <p class="img-divider__text">Vom Rechner zur fertigen Rasenfläche – in nur wenigen Tagen</p>
+    </div>
+  </div>
+
   <!-- ── VERLEGUNGSANLEITUNG ── -->
   <section class="section section--alt" id="verlegen">
     <div class="container">
@@ -609,6 +625,15 @@
       </div>
     </div>
   </section>
+
+  <!-- ── BILD-TRENNSTREIFEN REGIONAL ── -->
+  <div class="img-divider">
+    <img src="https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=1400&q=75&auto=format&fit=crop"
+         alt="Bayerische Landschaft – regionaler Rollrasen aus Bayern" loading="lazy">
+    <div class="img-divider__overlay">
+      <p class="img-divider__text">Regionaler Rollrasen aus Bayern – klimaangepasst & frisch geerntet</p>
+    </div>
+  </div>
 
   <!-- ── ANFRAGE FORMULAR ── -->
   <section class="section" id="anfrage">

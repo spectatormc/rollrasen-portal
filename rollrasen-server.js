@@ -108,8 +108,147 @@ function haendlerKontaktHtml(h, stripe) {
 
 app.use(cors({ origin: '*' }));
 app.use(express.json());
+app.use('/public', express.static(path.join(__dirname, 'public')));
 
 app.get('/', (req, res) => res.sendFile(path.join(__dirname, 'rollrasen-portal.html')));
+
+// ─── ADMIN ────────────────────────────────────────────────────────────────────
+
+function requireAdmin(req, res, next) {
+  const auth = req.headers.authorization;
+  if (!auth || !auth.startsWith('Basic ')) {
+    res.setHeader('WWW-Authenticate', 'Basic realm="Rollrasen Admin"');
+    return res.status(401).send('Anmeldung erforderlich');
+  }
+  const [, pass] = Buffer.from(auth.slice(6), 'base64').toString().split(':');
+  if (pass !== (process.env.ADMIN_PASSWORD || 'rollrasen2025')) {
+    res.setHeader('WWW-Authenticate', 'Basic realm="Rollrasen Admin"');
+    return res.status(401).send('Falsches Passwort');
+  }
+  next();
+}
+
+app.get('/admin', requireAdmin, (req, res) => {
+  const anfragen = db.prepare('SELECT * FROM anfragen ORDER BY created_at DESC').all();
+  const haendler = db.prepare('SELECT * FROM hersteller ORDER BY aktiv DESC, google_bewertung DESC').all();
+
+  const today = new Date().toISOString().slice(0, 10);
+  const todayCount = anfragen.filter(a => (a.created_at || '').startsWith(today)).length;
+  const aktivCount = haendler.filter(h => h.aktiv).length;
+
+  const fmt = dt => dt ? new Date(dt).toLocaleString('de-DE', { day:'2-digit', month:'2-digit', year:'numeric', hour:'2-digit', minute:'2-digit' }) : '–';
+  const esc = s => String(s || '').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+
+  const anfrageRows = anfragen.map(a => `
+    <tr>
+      <td>${a.id}</td>
+      <td style="white-space:nowrap">${fmt(a.created_at)}</td>
+      <td><strong>${esc(a.name)}</strong></td>
+      <td><a href="mailto:${esc(a.email)}">${esc(a.email)}</a></td>
+      <td>${esc(a.phone || '–')}</td>
+      <td>${a.plz || '–'}</td>
+      <td>${a.m2 ? Math.round(a.m2) + ' m²' : '–'}</td>
+      <td>${esc(a.product || '–')}</td>
+      <td style="max-width:220px" title="${esc(a.message || '')}">${esc(a.haendler_names || '–')}</td>
+      <td style="max-width:180px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap" title="${esc(a.message || '')}">${esc(a.message || '–')}</td>
+    </tr>`).join('');
+
+  const haendlerRows = haendler.map(h => `
+    <tr>
+      <td><strong>${esc(h.name)}</strong><br><small style="color:#888">${esc(h.typ || '')}</small></td>
+      <td>${h.plz ? h.plz + ' ' : ''}${esc(h.ort || '')}${h.region ? '<br><small style="color:#888">'+esc(h.region)+'</small>' : ''}</td>
+      <td style="white-space:nowrap">${h.google_bewertung ? '⭐ ' + h.google_bewertung.toFixed(1) + '<br><small>' + h.google_bewertungen_anzahl + ' Bew.</small>' : '–'}</td>
+      <td>${h.email ? '<a href="mailto:'+esc(h.email)+'">'+esc(h.email)+'</a>' : '–'}</td>
+      <td style="white-space:nowrap">${esc(h.telefon || '–')}</td>
+      <td>${esc(h.website || '–')}</td>
+      <td><span class="badge ${h.aktiv ? 'badge-on' : 'badge-off'}">${h.aktiv ? 'Aktiv' : 'Inaktiv'}</span></td>
+      <td>
+        <form method="POST" action="/admin/haendler/${h.id}/toggle">
+          <button class="btn-toggle ${h.aktiv ? 'btn-off' : 'btn-on'}" type="submit">
+            ${h.aktiv ? 'Deaktivieren' : 'Aktivieren'}
+          </button>
+        </form>
+      </td>
+    </tr>`).join('');
+
+  res.send(`<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>Admin – Rollrasen-Portal</title>
+  <style>
+    *{box-sizing:border-box;margin:0;padding:0}
+    body{font-family:system-ui,-apple-system,sans-serif;font-size:0.88rem;color:#222;background:#f7f9f7}
+    .topbar{background:#2d6a2d;color:#fff;padding:1rem 2rem;display:flex;align-items:center;gap:1rem}
+    .topbar h1{font-size:1.1rem;font-weight:700}
+    .topbar small{opacity:.7;font-size:0.78rem}
+    .content{max-width:1400px;margin:0 auto;padding:2rem}
+    .stats{display:flex;gap:1rem;flex-wrap:wrap;margin-bottom:2.5rem}
+    .stat{background:#fff;border:1px solid #e0eee0;border-radius:10px;padding:1rem 1.5rem;text-align:center;min-width:140px}
+    .stat strong{display:block;font-size:2rem;color:#2d6a2d;font-weight:700}
+    .stat span{font-size:0.78rem;color:#666}
+    h2{font-size:1rem;color:#2d6a2d;font-weight:700;text-transform:uppercase;letter-spacing:.06em;margin:2.5rem 0 0.75rem;padding-bottom:0.5rem;border-bottom:2px solid #e0eee0}
+    .table-wrap{overflow-x:auto;border-radius:8px;box-shadow:0 1px 6px rgba(0,0,0,.07)}
+    table{width:100%;border-collapse:collapse;background:#fff}
+    th{background:#2d6a2d;color:#fff;padding:9px 12px;text-align:left;font-size:0.78rem;white-space:nowrap}
+    td{padding:8px 12px;border-bottom:1px solid #f0f0f0;vertical-align:top}
+    tr:last-child td{border-bottom:none}
+    tr:hover td{background:#f9fbf9}
+    .badge{display:inline-block;padding:2px 8px;border-radius:4px;font-size:0.75rem;font-weight:600}
+    .badge-on{background:#dcfce7;color:#166534}
+    .badge-off{background:#fee2e2;color:#991b1b}
+    .btn-toggle{padding:4px 12px;border:none;border-radius:4px;cursor:pointer;font-size:0.78rem;font-weight:600;font-family:inherit}
+    .btn-off{background:#fee2e2;color:#991b1b}
+    .btn-on{background:#dcfce7;color:#166534}
+    .btn-toggle:hover{filter:brightness(.92)}
+  </style>
+</head>
+<body>
+  <div class="topbar">
+    <div>
+      <h1>🌿 Rollrasen-Portal Admin</h1>
+      <small>Stand: ${new Date().toLocaleString('de-DE')}</small>
+    </div>
+  </div>
+  <div class="content">
+    <div class="stats">
+      <div class="stat"><strong>${anfragen.length}</strong><span>Anfragen gesamt</span></div>
+      <div class="stat"><strong>${todayCount}</strong><span>Anfragen heute</span></div>
+      <div class="stat"><strong>${aktivCount}</strong><span>Händler aktiv</span></div>
+      <div class="stat"><strong>${haendler.length}</strong><span>Händler gesamt</span></div>
+    </div>
+
+    <h2>Anfragen</h2>
+    <div class="table-wrap">
+      <table>
+        <thead><tr>
+          <th>#</th><th>Datum</th><th>Name</th><th>E-Mail</th><th>Telefon</th>
+          <th>PLZ</th><th>Fläche</th><th>Sorte</th><th>Händler benachrichtigt</th><th>Nachricht</th>
+        </tr></thead>
+        <tbody>${anfrageRows || '<tr><td colspan="10" style="text-align:center;color:#888;padding:2rem">Noch keine Anfragen</td></tr>'}</tbody>
+      </table>
+    </div>
+
+    <h2>Händler</h2>
+    <div class="table-wrap">
+      <table>
+        <thead><tr>
+          <th>Name / Typ</th><th>PLZ / Ort</th><th>Bewertung</th>
+          <th>E-Mail</th><th>Telefon</th><th>Website</th><th>Status</th><th>Aktion</th>
+        </tr></thead>
+        <tbody>${haendlerRows}</tbody>
+      </table>
+    </div>
+  </div>
+</body>
+</html>`);
+});
+
+app.post('/admin/haendler/:id/toggle', requireAdmin, (req, res) => {
+  db.prepare('UPDATE hersteller SET aktiv = CASE WHEN aktiv = 1 THEN 0 ELSE 1 END WHERE id = ?').run(req.params.id);
+  res.redirect('/admin');
+});
 
 // ─── HÄNDLER ENDPOINT ─────────────────────────────────────────────────────────
 
