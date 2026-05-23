@@ -112,6 +112,99 @@ app.use('/public', express.static(path.join(__dirname, 'public')));
 
 app.get('/', (req, res) => res.sendFile(path.join(__dirname, 'rollrasen-portal.html')));
 
+// ─── IMPRESSUM / DATENSCHUTZ ──────────────────────────────────────────────────
+
+const pageCss = `<style>
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{font-family:system-ui,-apple-system,sans-serif;font-size:1rem;line-height:1.7;color:#222;background:#fafaf8}
+  .wrap{max-width:760px;margin:0 auto;padding:3rem 1.5rem 5rem}
+  h1{font-size:1.8rem;color:#1a3d12;margin-bottom:2rem;padding-bottom:.75rem;border-bottom:2px solid #d4e8c8}
+  h2{font-size:1.1rem;color:#2d6a2d;margin:2rem 0 .5rem}
+  p,li{color:#444;margin-bottom:.6rem}
+  ul{padding-left:1.25rem;margin-bottom:.6rem}
+  a{color:#2d6a2d}
+  .back{display:inline-block;margin-bottom:2rem;color:#2d6a2d;text-decoration:none;font-size:.9rem}
+  .back:hover{text-decoration:underline}
+  footer{text-align:center;font-size:.78rem;color:#999;margin-top:3rem;padding-top:1rem;border-top:1px solid #e0e8e0}
+</style>`;
+
+app.get('/impressum', (req, res) => res.send(`<!DOCTYPE html>
+<html lang="de"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Impressum – rasenrechner.de</title>${pageCss}</head><body>
+<div class="wrap">
+  <a class="back" href="/">← Zurück zur Startseite</a>
+  <h1>Impressum</h1>
+  <h2>Angaben gemäß § 5 TMG</h2>
+  <p><strong>Gartenschmiede GmbH</strong><br>
+  Ortsstr. 7<br>85354 Freising-Hohenbachern</p>
+  <h2>Vertreten durch</h2>
+  <p>Bastian Rohrhuber, Marco Holmer</p>
+  <h2>Kontakt</h2>
+  <p>E-Mail: <a href="mailto:info@gartenbau-kosten.de">info@gartenbau-kosten.de</a></p>
+  <h2>Registereintrag</h2>
+  <p>Amtsgericht München, HRB 239683</p>
+  <h2>Umsatzsteuer-ID</h2>
+  <p>DE316910542</p>
+  <h2>Inhaltlich Verantwortlicher</h2>
+  <p>Bastian Rohrhuber (Anschrift wie oben)</p>
+  <footer>rasenrechner.de · Ein Service der Gartenschmiede GmbH ·
+    <a href="/impressum">Impressum</a> · <a href="/datenschutz">Datenschutz</a>
+  </footer>
+</div></body></html>`));
+
+app.get('/datenschutz', (req, res) => res.send(`<!DOCTYPE html>
+<html lang="de"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Datenschutz – rasenrechner.de</title>${pageCss}</head><body>
+<div class="wrap">
+  <a class="back" href="/">← Zurück zur Startseite</a>
+  <h1>Datenschutzerklärung</h1>
+
+  <h2>1. Verantwortlicher</h2>
+  <p>Gartenschmiede GmbH, Ortsstr. 7, 85354 Freising-Hohenbachern<br>
+  E-Mail: <a href="mailto:info@gartenbau-kosten.de">info@gartenbau-kosten.de</a></p>
+
+  <h2>2. Welche Daten wir erheben</h2>
+  <p>Wenn Sie über unser Kontaktformular eine Anfrage stellen, erheben wir:</p>
+  <ul>
+    <li>Name</li>
+    <li>E-Mail-Adresse</li>
+    <li>Telefonnummer (optional)</li>
+    <li>Postleitzahl</li>
+    <li>Angaben zur gewünschten Rasenfläche und Sorte</li>
+    <li>Freitextnachricht (optional)</li>
+  </ul>
+
+  <h2>3. Zweck und Rechtsgrundlage</h2>
+  <p>Die Daten werden ausschließlich zur Vermittlung Ihrer Anfrage an regionale Rollrasen-Händler in Ihrer Nähe verwendet.
+  Rechtsgrundlage ist Art. 6 Abs. 1 lit. b DSGVO (Durchführung vorvertraglicher Maßnahmen).</p>
+
+  <h2>4. Weitergabe an Händler</h2>
+  <p>Ihre Kontaktdaten (Name, E-Mail, Telefon, PLZ, Anforderungen) werden an bis zu 3 regionale Fachbetriebe
+  in Ihrer Nähe übermittelt, damit diese Ihnen ein Angebot unterbreiten können. Die Händler sind
+  eigenverantwortliche Datenverantwortliche für die weitere Verarbeitung.</p>
+
+  <h2>5. Speicherdauer</h2>
+  <p>Ihre Anfragedaten werden für maximal 12 Monate gespeichert und anschließend gelöscht,
+  sofern keine gesetzlichen Aufbewahrungspflichten entgegenstehen.</p>
+
+  <h2>6. Cookies und Tracking</h2>
+  <p>Diese Website verwendet keine Tracking-Cookies und kein Web-Analytics. Es werden keine
+  Daten an Werbenetzwerke oder Drittanbieter übermittelt.</p>
+
+  <h2>7. Ihre Rechte</h2>
+  <p>Sie haben jederzeit das Recht auf Auskunft, Berichtigung, Löschung und Einschränkung der
+  Verarbeitung Ihrer personenbezogenen Daten sowie das Recht auf Datenübertragbarkeit.
+  Wenden Sie sich dazu an: <a href="mailto:info@gartenbau-kosten.de">info@gartenbau-kosten.de</a></p>
+
+  <h2>8. Beschwerderecht</h2>
+  <p>Sie haben das Recht, sich bei einer Datenschutzaufsichtsbehörde zu beschweren.
+  Zuständig ist das Bayerische Landesamt für Datenschutzaufsicht (BayLDA).</p>
+
+  <footer>rasenrechner.de · Ein Service der Gartenschmiede GmbH ·
+    <a href="/impressum">Impressum</a> · <a href="/datenschutz">Datenschutz</a>
+  </footer>
+</div></body></html>`));
+
 // ─── ADMIN ────────────────────────────────────────────────────────────────────
 
 function requireAdmin(req, res, next) {
