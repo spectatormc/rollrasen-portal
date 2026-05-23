@@ -448,7 +448,7 @@
             </div>
 
             <div class="flaeche-info">
-              <div class="flaeche-info__label">Bestellmenge<br>(inkl. 10 % Verschnitt)</div>
+              <div class="flaeche-info__label">Bestellmenge<br>(inkl. <span id="verschnitt-label">10</span> % Verschnitt)</div>
               <div class="flaeche-info__right">
                 <div class="flaeche-info__brutto" id="fl-brutto">–</div>
                 <div class="flaeche-info__sub" id="fl-netto">Grundfläche: –</div>
@@ -483,6 +483,16 @@
           <div class="rechner__section">
             <div class="field-label">Optionen</div>
             <div class="option-list">
+              <label class="option-item" style="cursor:default">
+                <div class="option-item__text" style="display:flex;align-items:center;gap:0.6rem;flex-wrap:wrap">
+                  <strong>Verschnitt</strong>
+                  <input type="number" id="verschnitt" value="10" min="0" max="50" step="1"
+                    style="width:62px;border:1.5px solid var(--color-border);border-radius:6px;padding:0.3rem 0.5rem;font-size:0.9rem;font-family:inherit;text-align:center"
+                    oninput="calculate()">
+                  <span style="font-size:0.9rem">%</span>
+                  <span style="font-size:0.78rem;color:var(--color-text-muted)">(Standard: 10 % – bei geraden Flächen weniger, bei Schrägen mehr)</span>
+                </div>
+              </label>
               <label class="option-item">
                 <input type="checkbox" id="opt-lieferung">
                 <div class="option-item__text">
@@ -986,8 +996,10 @@
 
   /* ── Hauptberechnung ── */
   function calculate() {
-    var netto  = getNetto();
-    var brutto = Math.ceil(netto * 1.10);
+    var netto      = getNetto();
+    var verschnitt = Math.max(0, parseInt(document.getElementById('verschnitt').value) || 0);
+    var brutto     = Math.ceil(netto * (1 + verschnitt / 100));
+    document.getElementById('verschnitt-label').textContent = verschnitt;
 
     document.getElementById('fl-brutto').textContent = brutto > 0 ? brutto + ' m²' : '–';
     document.getElementById('fl-netto').textContent  = netto  > 0 ? 'Grundfläche: ' + Math.round(netto) + ' m²' : '–';
