@@ -472,20 +472,6 @@
             <div class="field-label">Optionen</div>
             <div class="option-list">
               <label class="option-item">
-                <input type="checkbox" id="opt-verlegen">
-                <div class="option-item__text">
-                  <strong>Verlegen durch Fachbetrieb</strong>
-                  <span>Galabauer oder Gartenbauer – ca. 5–12 €/m² Lohn</span>
-                </div>
-              </label>
-              <label class="option-item">
-                <input type="checkbox" id="opt-boden">
-                <div class="option-item__text">
-                  <strong>Bodenarbeit einrechnen</strong>
-                  <span>Fräsen, Eggen, Planieren – ca. 5–15 €/m²</span>
-                </div>
-              </label>
-              <label class="option-item">
                 <input type="checkbox" id="opt-lieferung">
                 <div class="option-item__text">
                   <strong>Lieferung dazurechnen</strong>
@@ -941,8 +927,6 @@
     sport:       { price: 10.50, label: 'Sportrasen' },
     boeschung:   { price: 11.50, label: 'Böschungsrasen' }
   };
-  var VERLEGEN  = { min: 5,  max: 12 };
-  var BODEN     = { min: 5,  max: 15 };
   var LIEFERUNG = { min: 80, max: 150 };
 
   var mode      = 'rects';
@@ -988,35 +972,23 @@
     var q   = QUAL[qual];
     var mat = brutto * q.price;
 
-    var verMin = 0, verMax = 0;
-    if (document.getElementById('opt-verlegen').checked) {
-      verMin = brutto * VERLEGEN.min;
-      verMax = brutto * VERLEGEN.max;
-    }
-    var boMin = 0, boMax = 0;
-    if (document.getElementById('opt-boden').checked) {
-      boMin = netto * BODEN.min;
-      boMax = netto * BODEN.max;
-    }
     var livMin = 0, livMax = 0;
     if (document.getElementById('opt-lieferung').checked) {
       livMin = LIEFERUNG.min;
       livMax = LIEFERUNG.max;
     }
 
-    var hasExtra = (verMin + boMin + livMin) > 0;
+    var hasExtra = livMin > 0;
 
     if (hasExtra) {
       document.getElementById('res-total').textContent =
-        fmtRange(mat + verMin + boMin + livMin, mat + verMax + boMax + livMax);
+        fmtRange(mat + livMin, mat + livMax);
     } else {
       document.getElementById('res-total').textContent = fmtEur(mat);
     }
 
     var lines = [['Rollrasen ' + q.label + ' (' + brutto + ' m²)', fmtEur(mat)]];
-    if (verMin > 0) lines.push(['Verlegen (Fachbetrieb)', fmtRange(verMin, verMax)]);
-    if (boMin  > 0) lines.push(['Bodenarbeit',            fmtRange(boMin,  boMax)]);
-    if (livMin > 0) lines.push(['Lieferung',              fmtRange(livMin, livMax)]);
+    if (livMin > 0) lines.push(['Lieferung', fmtRange(livMin, livMax)]);
 
     document.getElementById('res-breakdown').innerHTML = lines.map(function (l) {
       return '<div class="result__line"><span class="result__line-label">' + l[0] +
@@ -1032,27 +1004,24 @@
     var sumEl = document.getElementById('anfrage-summary');
     sumEl.style.display = 'block';
     sumEl.textContent = 'Aus dem Rechner: ' + Math.round(netto) + ' m² · ' + q.label +
-      (hasExtra ? ' · inkl. Zusatzleistungen' : '') +
-      ' · Richtwert: ' + (hasExtra ? fmtRange(mat + verMin + boMin + livMin, mat + verMax + boMax + livMax) : fmtEur(mat));
+      (hasExtra ? ' · inkl. Lieferung' : '') +
+      ' · Richtwert: ' + (hasExtra ? fmtRange(mat + livMin, mat + livMax) : fmtEur(mat));
 
-    /* Vorausfüll-Text für das Nachrichtenfeld merken */
-    var extras = [];
-    if (document.getElementById('opt-verlegen').checked) extras.push('Verlegen durch Fachbetrieb');
-    if (document.getElementById('opt-boden').checked)    extras.push('Bodenarbeit');
-    if (document.getElementById('opt-lieferung').checked) extras.push('Lieferung');
+    /* Nachrichtenfeld automatisch befüllen (sofern Nutzer es nicht selbst bearbeitet hat) */
     window._rechnerText =
       'Fläche: ' + Math.round(netto) + ' m² (Bestellmenge inkl. Verschnitt: ' + brutto + ' m²)\n' +
       'Sorte: ' + q.label + '\n' +
-      (extras.length ? 'Gewünschte Leistungen: ' + extras.join(', ') + '\n' : '') +
-      'Kostenrichtwert: ' + (hasExtra
-        ? fmtRange(mat + verMin + boMin + livMin, mat + verMax + boMax + livMax)
-        : fmtEur(mat));
+      (livMin > 0 ? 'Gewünschte Leistungen: Lieferung\n' : '') +
+      'Kostenrichtwert: ' + (hasExtra ? fmtRange(mat + livMin, mat + livMax) : fmtEur(mat));
+    var msgEl = document.getElementById('message');
+    if (msgEl && !msgEl.dataset.userEdited) { msgEl.value = window._rechnerText; }
   }
 
   window.anfrageVomRechner = function () {
     var msgEl = document.getElementById('message');
     if (msgEl && window._rechnerText) {
       msgEl.value = window._rechnerText;
+      msgEl.dataset.userEdited = '';
     }
     document.getElementById('anfrage').scrollIntoView({ behavior: 'smooth' });
     setTimeout(function () { document.getElementById('name').focus(); }, 600);
@@ -1128,8 +1097,9 @@
     calculate();
   });
 
-  ['opt-verlegen','opt-boden','opt-lieferung'].forEach(function (id) {
-    document.getElementById(id).addEventListener('change', calculate);
+  document.getElementById('opt-lieferung').addEventListener('change', calculate);
+  document.getElementById('message').addEventListener('input', function () {
+    this.dataset.userEdited = '1';
   });
 
   /* ── PLZ / Händler ── */
