@@ -769,6 +769,190 @@ app.post('/partner-anfrage', async (req, res) => {
   }
 });
 
+// ─── STADTSEITEN ─────────────────────────────────────────────────────────────
+
+const STAEDTE = {
+  muenchen: {
+    name: 'München', region: 'Oberbayern', plz: '80331',
+    title: 'Rollrasen München – Kosten, Händler & kostenlose Angebote 2026',
+    desc:  'Rollrasen in München kaufen & verlegen lassen: Preisrechner, regionale Händler & kostenlose Angebote. Geprüfte Fachbetriebe aus dem Großraum München.',
+    intro: 'München und das Umland zählen zu den besten Gebieten für Rollrasen in Bayern: mild-kontinentales Klima, hoher Gartenanteil in den Vororten und eine dichte Dichte an erfahrenen Fachbetrieben. Ob Reihenhaus in Pasing, Garten in Grünwald oder Neubau in Unterschleißheim – regionale Händler aus dem Großraum liefern und verlegen meist noch im gleichen Wochenrhythmus.',
+    faq: [
+      { q: 'Was kostet Rollrasen in München?', a: 'Das Material liegt je nach Sorte bei 5–12 €/m². Mit Lieferung und Verlegung durch einen Fachbetrieb sind 15–25 €/m² realistisch. Bodenvorbereitung kommt bei Bedarf obendrauf – insgesamt sind 25–55 €/m² ein realistischer Gesamtrahmen.' },
+      { q: 'Welche Händler liefern im Großraum München?', a: 'Mehrere geprüfte Fachbetriebe aus Unterschleißheim, Kirchheim, Schwabhausen und Strasslach beliefern den gesamten Großraum München. Einfach PLZ eingeben – wir verbinden Sie mit den nächsten drei Betrieben.' },
+      { q: 'Wann ist die beste Zeit für Rollrasen in München?', a: 'April bis Juni und August bis Oktober sind ideal. Der Münchner Sommer kann trocken sein – wer im Juli verlegt, muss intensiv wässern. Im Herbst ist das Anwachsen oft sicherer.' },
+      { q: 'Kann ich Rollrasen in München selbst verlegen?', a: 'Ja, bei kleineren Flächen gut machbar. Die Bodenvorbereitung (Fräsen, Planieren) ist der anspruchsvollere Teil. Für Flächen ab 100 m² lohnt sich ein Fachbetrieb zeitlich und qualitativ.' },
+    ],
+  },
+  nuernberg: {
+    name: 'Nürnberg', region: 'Mittelfranken', plz: '90402',
+    title: 'Rollrasen Nürnberg – Kosten, Händler & kostenlose Angebote 2026',
+    desc:  'Rollrasen in Nürnberg kaufen & verlegen lassen: Preisrechner, regionale Händler & kostenlose Angebote. Geprüfte Fachbetriebe aus Mittelfranken.',
+    intro: 'Nürnberg und der Großraum Mittelfranken haben eine aktive Gartenkultur – und mit Noris Rollrasen sowie den Greenkeepers aus Fürth gleich zwei spezialisierte Betriebe vor Ort. Die kontinentale Lage bedeutet heiße Sommer und kalte Winter: lokale Sorten sind auf diese Bedingungen abgestimmt, was das Anwachsrisiko deutlich senkt.',
+    faq: [
+      { q: 'Was kostet Rollrasen in Nürnberg?', a: 'Material: 5–12 €/m². Inkl. Lieferung und Verlegung: 15–25 €/m². Komplett mit Bodenvorbereitung: 25–55 €/m². Für eine typische Gartenfläche von 80 m² sind 1.200–4.400 € ein realistischer Gesamtrahmen.' },
+      { q: 'Welche Händler liefern in Nürnberg und Umgebung?', a: 'Noris Rollrasen (Nürnberg) und die Greenkeepers Gartenbau (Fürth) sind direkt vor Ort. Überregionale Hersteller wie Isar Rollrasen und BayernRasen liefern ebenfalls nach Mittelfranken.' },
+      { q: 'Wann ist die beste Zeit für Rollrasen in Nürnberg?', a: 'Frühjahr (April/Mai) und Frühherbst (September/Oktober) sind ideal. Der Nürnberger Sommer ist trocken und heiß – Verlegung im Juli/August erfordert intensive Bewässerung.' },
+      { q: 'Gibt es Rollrasen auch für schattige Gärten in Nürnberg?', a: 'Ja. Halbschattenrasen ist für Gärten mit altem Baumbestand geeignet. Lokale Händler beraten zu den richtigen Sorten für Ihren Standort.' },
+    ],
+  },
+  augsburg: {
+    name: 'Augsburg', region: 'Schwaben', plz: '86150',
+    title: 'Rollrasen Augsburg – Kosten, Händler & kostenlose Angebote 2026',
+    desc:  'Rollrasen in Augsburg kaufen & verlegen lassen: Preisrechner, regionale Händler & kostenlose Angebote. Geprüfte Fachbetriebe aus Schwaben.',
+    intro: 'Augsburg und der Raum Schwaben sind gut versorgt: Mit Walter Schwab GmbH aus Waidhofen gibt es einen der ältesten Rollrasen-Hersteller Deutschlands in direkter Nähe – gegründet in den 1970er Jahren, heute mit rund 250 Hektar Eigenproduktion. Dazu liefern überregionale Hersteller aus Oberbayern zuverlässig in den Augsburger Raum.',
+    faq: [
+      { q: 'Was kostet Rollrasen in Augsburg?', a: 'Material: 5–12 €/m². Mit Lieferung und Verlegung: 15–25 €/m². Komplett mit Bodenvorbereitung: 25–55 €/m². Augsburg hat kurze Wege zu mehreren Herstellern, was die Lieferkosten niedrig hält.' },
+      { q: 'Welche Händler liefern in Augsburg?', a: 'Walter Schwab GmbH aus Waidhofen bei Augsburg ist einer der bekanntesten Produzenten in Schwaben. Ergänzend liefern BayernRasen und Isar Rollrasen bayernweit – auch nach Augsburg.' },
+      { q: 'Wann ist der beste Zeitpunkt für Rollrasen in Augsburg?', a: 'April bis Juni und September/Oktober sind ideal. Der Augsburger Sommer kann trocken ausfallen – intensive Bewässerung in den ersten zwei Wochen ist entscheidend.' },
+      { q: 'Lohnt sich Rollrasen gegenüber Rasensaat in Augsburg?', a: 'Bei schnell genutzten Flächen (Garten fertigstellen, Neubau, Event) ist Rollrasen klar besser. Bei großen Flächen und Zeit ist Rasensaat günstiger – die Bodenvorbereitung ist bei beiden ähnlich aufwendig.' },
+    ],
+  },
+  regensburg: {
+    name: 'Regensburg', region: 'Oberpfalz', plz: '93047',
+    title: 'Rollrasen Regensburg – Kosten, Händler & kostenlose Angebote 2026',
+    desc:  'Rollrasen in Regensburg kaufen & verlegen lassen: Preisrechner, regionale Händler & kostenlose Angebote. Geprüfte Fachbetriebe aus der Oberpfalz.',
+    intro: 'Regensburg und die Oberpfalz haben mit Gartenbau Schaknat aus Seubersdorf einen regionalen Fachbetrieb direkt in der Region. Für größere Projekte stehen überregionale Hersteller wie Isar Rollrasen und Sued-Rasen zur Verfügung, die bayernweit liefern. Das Regensburger Klima – mit deutlichen Jahreszeiten und gelegentlich kalten Wintern – spricht für lokal adaptierte Rasensorten.',
+    faq: [
+      { q: 'Was kostet Rollrasen in Regensburg?', a: 'Material: 5–12 €/m². Mit Lieferung und Verlegung: 15–25 €/m². Komplett mit Bodenvorbereitung: 25–55 €/m². Preise sind vergleichbar mit dem bayerischen Durchschnitt.' },
+      { q: 'Welche Händler liefern in Regensburg?', a: 'Gartenbau Schaknat aus der Oberpfalz ist regional tätig. Zusätzlich liefern Isar Rollrasen (Niederbayern) und BayernRasen bayernweit – auch nach Regensburg.' },
+      { q: 'Wann ist der beste Zeitpunkt für Rollrasen in Regensburg?', a: 'April bis Juni und September sind ideal. Das kontinentale Klima Regensburgs macht Frühjahrspflanzungen besonders erfolgreich – die Böden erwärmen sich gut und die Niederschläge sind ausreichend.' },
+      { q: 'Gibt es einen Unterschied zwischen Rollrasen und Fertigrasen?', a: 'Nein – beides bezeichnet dasselbe Produkt. „Fertigrasen" ist die häufigere Bezeichnung im Fachhandel für Premiumsorten.' },
+    ],
+  },
+};
+
+const stadtCss = `<style>
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{font-family:system-ui,-apple-system,sans-serif;font-size:1rem;line-height:1.7;color:#222;background:#fafaf8}
+  .st-header{background:#2d6a2d;padding:1rem 1.5rem;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:.75rem}
+  .st-header a{color:#fff;text-decoration:none;font-weight:700;font-size:1rem}
+  .st-header .nav-links{display:flex;gap:1.25rem}
+  .st-header .nav-links a{font-size:.85rem;font-weight:400;opacity:.85}
+  .st-header .nav-links a:hover{opacity:1}
+  .st-hero{background:linear-gradient(135deg,#1a3d12 0%,#2d6a2d 100%);color:#fff;padding:3rem 1.5rem 2.5rem;text-align:center}
+  .st-hero h1{font-size:2rem;font-weight:800;margin:.5rem 0;color:#fff}
+  .st-hero p{opacity:.85;max-width:560px;margin:.75rem auto 0;font-size:.95rem}
+  .st-hero .breadcrumb{font-size:.78rem;opacity:.6;margin-bottom:.5rem}
+  .wrap{max-width:800px;margin:0 auto;padding:2.5rem 1.5rem 5rem}
+  h2{font-size:1.25rem;color:#1a3d12;font-weight:700;margin:2.5rem 0 .75rem;padding-bottom:.5rem;border-bottom:2px solid #d4e8c8}
+  h3{font-size:1rem;color:#2d6a2d;font-weight:700;margin:1.25rem 0 .4rem}
+  p{color:#444;margin-bottom:.75rem}
+  .intro-box{background:#f4f8f4;border-left:4px solid #2d6a2d;border-radius:4px;padding:1.25rem 1.5rem;margin:2rem 0;color:#333;line-height:1.8}
+  .dealer-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(240px,1fr));gap:1rem;margin:1rem 0 2rem}
+  .dealer-card{background:#fff;border:1px solid #d4e8c8;border-radius:10px;padding:1.25rem;box-shadow:0 1px 4px rgba(0,50,0,.06)}
+  .dealer-card strong{color:#1a3d12;font-size:1rem;display:block;margin-bottom:.25rem}
+  .dealer-card small{color:#888;font-size:.78rem}
+  .dealer-card .rating{color:#f59e0b;font-size:.88rem;margin:.3rem 0}
+  .dealer-badge-pill{display:inline-block;background:#dcfce7;color:#166534;border-radius:10px;padding:1px 8px;font-size:.72rem;font-weight:700;margin-left:4px;vertical-align:middle}
+  .cta-block{background:#2d6a2d;color:#fff;border-radius:12px;padding:2rem;text-align:center;margin:2.5rem 0}
+  .cta-block h2{color:#fff;border:none;margin:0 0 .5rem;font-size:1.2rem}
+  .cta-block p{color:rgba(255,255,255,.8);margin:0 0 1.25rem;font-size:.92rem}
+  .cta-btn{display:inline-block;background:#fff;color:#2d6a2d;font-weight:700;padding:.75rem 2rem;border-radius:6px;text-decoration:none;font-size:1rem}
+  .cta-btn:hover{background:#f0f7f0}
+  .faq-item{border-bottom:1px solid #e8f0e8;padding:.75rem 0}
+  .faq-item:last-child{border-bottom:none}
+  .faq-q{font-weight:600;color:#1a3d12;margin-bottom:.3rem}
+  .faq-a{color:#555;font-size:.93rem}
+  footer{text-align:center;font-size:.78rem;color:#999;margin-top:3rem;padding-top:1rem;border-top:1px solid #e0e8e0}
+  footer a{color:#2d6a2d}
+  @media(max-width:600px){.st-hero h1{font-size:1.5rem}.dealer-grid{grid-template-columns:1fr}}
+</style>`;
+
+app.get('/:city', (req, res, next) => {
+  const stadt = STAEDTE[req.params.city];
+  if (!stadt) return next();
+
+  const top3  = findNearestHaendler(stadt.plz);
+  const BADGE = { partner: 'Geprüfter Händler', pro: 'Professional Partner', premium: 'Premium Partner' };
+
+  const dealerCards = top3.map(h => `
+    <div class="dealer-card">
+      <strong>${h.name}</strong>
+      ${h.typ === 'Hersteller' ? '<small>Rollrasen-Hersteller</small>' : '<small>Fachbetrieb</small>'}
+      ${h.google_bewertung ? `<div class="rating">★ ${h.google_bewertung.toFixed(1)} <span style="color:#999">(${h.google_bewertungen_anzahl} Bewertungen)</span></div>` : ''}
+      ${h.ort ? `<div style="font-size:.82rem;color:#666;margin:.2rem 0">📍 ${h.ort}</div>` : ''}
+      ${BADGE[h.paket] ? `<span class="dealer-badge-pill">${BADGE[h.paket]}</span>` : ''}
+      ${h.profil_slug ? `<div style="margin-top:.5rem"><a href="/haendler/${h.profil_slug}" style="color:#2d6a2d;font-size:.82rem;text-decoration:none">→ Profil ansehen</a></div>` : ''}
+    </div>`).join('');
+
+  const faqHtml = stadt.faq.map(f => `
+    <div class="faq-item">
+      <div class="faq-q">${f.q}</div>
+      <div class="faq-a">${f.a}</div>
+    </div>`).join('');
+
+  const faqSchema = JSON.stringify({
+    '@context': 'https://schema.org',
+    '@type': 'FAQPage',
+    mainEntity: stadt.faq.map(f => ({
+      '@type': 'Question',
+      name: f.q,
+      acceptedAnswer: { '@type': 'Answer', text: f.a },
+    })),
+  });
+
+  res.send(`<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>${stadt.title}</title>
+  <meta name="description" content="${stadt.desc}">
+  <link rel="canonical" href="https://www.rasenrechner.de/${req.params.city}">
+  <meta property="og:title" content="${stadt.title}">
+  <meta property="og:description" content="${stadt.desc}">
+  <meta property="og:url" content="https://www.rasenrechner.de/${req.params.city}">
+  <meta property="og:type" content="website">
+  <script type="application/ld+json">${faqSchema}</script>
+  ${stadtCss}
+</head>
+<body>
+  <header class="st-header">
+    <a href="/">🌿 rasenrechner.de</a>
+    <nav class="nav-links">
+      <a href="/#rechner">Preisrechner</a>
+      <a href="/#anfrage">Angebot anfragen</a>
+    </nav>
+  </header>
+
+  <div class="st-hero">
+    <div class="breadcrumb"><a href="/" style="color:rgba(255,255,255,.6);text-decoration:none">rasenrechner.de</a> › ${stadt.name}</div>
+    <h1>Rollrasen ${stadt.name}</h1>
+    <p>Preise, geprüfte Händler & kostenlose Angebote aus ${stadt.region}</p>
+  </div>
+
+  <div class="wrap">
+    <div class="intro-box">${stadt.intro}</div>
+
+    <h2>Händler in ${stadt.name} & Umgebung</h2>
+    <div class="dealer-grid">${dealerCards || '<p>Aktuell keine Händler-Daten verfügbar.</p>'}</div>
+
+    <div class="cta-block">
+      <h2>Kostenloses Angebot für ${stadt.name} anfragen</h2>
+      <p>PLZ eingeben – wir verbinden Sie sofort mit den nächsten Fachbetrieben. Kostenlos & unverbindlich.</p>
+      <a class="cta-btn" href="/?plz=${stadt.plz}#anfrage">Jetzt Angebot anfragen →</a>
+    </div>
+
+    <h2>Preise für Rollrasen in ${stadt.name}</h2>
+    <p>Die Preise in ${stadt.name} entsprechen dem bayerischen Durchschnitt:</p>
+    <table style="width:100%;border-collapse:collapse;margin:1rem 0;font-size:.92rem">
+      <tr style="background:#f4f8f4"><td style="padding:9px 14px;color:#555">Rollrasen Material</td><td style="padding:9px 14px;font-weight:700;color:#2d6a2d">5–12 €/m²</td></tr>
+      <tr><td style="padding:9px 14px;color:#555">Inkl. Lieferung & Verlegung</td><td style="padding:9px 14px;font-weight:700;color:#2d6a2d">15–25 €/m²</td></tr>
+      <tr style="background:#f4f8f4"><td style="padding:9px 14px;color:#555">Komplett inkl. Bodenvorbereitung</td><td style="padding:9px 14px;font-weight:700;color:#2d6a2d">25–55 €/m²</td></tr>
+    </table>
+    <p style="font-size:.85rem;color:#888">Alle Angaben inkl. MwSt. Bodenvorbereitung (Fräsen, Planieren, Humus) wird separat kalkuliert. <a href="/" style="color:#2d6a2d">Preisrechner nutzen →</a></p>
+
+    <h2>Häufige Fragen – Rollrasen ${stadt.name}</h2>
+    <div>${faqHtml}</div>
+
+    <footer>rasenrechner.de · Ein Service der Gartenschmiede GmbH ·
+      <a href="/impressum">Impressum</a> · <a href="/datenschutz">Datenschutz</a>
+    </footer>
+  </div>
+</body>
+</html>`);
+});
+
 // ─── START ────────────────────────────────────────────────────────────────────
 
 const haendlerCount = db.prepare('SELECT COUNT(*) as c FROM hersteller WHERE aktiv = 1').get().c;
