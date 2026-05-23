@@ -193,42 +193,58 @@ app.post('/anfrage', async (req, res) => {
       </div>
     </div>`;
 
-  // ── Admin-/Händler-Info-Mail ───────────────────────────────────────────────
+  // ── Händler-Mail ──────────────────────────────────────────────────────────
   const haendlerMail = `
-    <div style="font-family:sans-serif;max-width:560px;color:#222">
-      <h2 style="color:#2d6a2d">Neue Rollrasen-Anfrage</h2>
-      <table style="border-collapse:collapse;width:100%;margin:1rem 0">
-        <tr><td style="padding:6px 12px;color:#666;width:140px">Name</td><td style="padding:6px 12px;font-weight:600">${name}</td></tr>
-        <tr style="background:#f5f5f5"><td style="padding:6px 12px;color:#666">E-Mail</td><td style="padding:6px 12px"><a href="mailto:${email}">${email}</a></td></tr>
-        ${phone ? `<tr><td style="padding:6px 12px;color:#666">Telefon</td><td style="padding:6px 12px">${phone}</td></tr>` : ''}
-        <tr style="background:#f5f5f5"><td style="padding:6px 12px;color:#666">PLZ</td><td style="padding:6px 12px">${plzClean || '–'}</td></tr>
-        <tr><td style="padding:6px 12px;color:#666">Fläche</td><td style="padding:6px 12px;font-weight:600">${m2Display}</td></tr>
-        <tr style="background:#f5f5f5"><td style="padding:6px 12px;color:#666">Sorte</td><td style="padding:6px 12px">${produktLabel}</td></tr>
-        ${message ? `<tr><td style="padding:6px 12px;color:#666;vertical-align:top">Nachricht</td><td style="padding:6px 12px">${message}</td></tr>` : ''}
-      </table>
-      <p><strong>Weitergeleitet an:</strong> ${top3.map(h => h.name).join(', ')}</p>
-      <p style="color:#666;font-size:0.9rem">Eingegangen über rollrasen.gartenbau-kosten.de</p>
+    <div style="font-family:sans-serif;max-width:600px;color:#222;margin:0 auto">
+      <div style="background:#2d6a2d;padding:24px 28px;border-radius:8px 8px 0 0">
+        <div style="color:#a8d5a8;font-size:0.8rem;letter-spacing:.08em;text-transform:uppercase;margin-bottom:4px">Neue Kundenanfrage</div>
+        <h2 style="color:#fff;margin:0;font-size:1.25rem">Rollrasen-Anfrage in Ihrer Region</h2>
+      </div>
+      <div style="background:#fff;padding:28px;border:1px solid #dde8dd;border-top:none;border-radius:0 0 8px 8px">
+        <p style="margin-top:0">Guten Tag,</p>
+        <p>über <a href="https://rollrasen.gartenbau-kosten.de" style="color:#2d6a2d">rollrasen.gartenbau-kosten.de</a> ist eine neue Anfrage eingegangen, die wir Ihnen als nächstgelegenem Fachbetrieb weiterleiten.</p>
+        <div style="background:#f4f8f4;border-left:4px solid #2d6a2d;border-radius:4px;padding:16px 20px;margin:20px 0">
+          <div style="font-size:0.75rem;color:#2d6a2d;text-transform:uppercase;letter-spacing:.08em;font-weight:700;margin-bottom:12px">Anfrage-Details</div>
+          <table style="border-collapse:collapse;width:100%;font-size:0.92rem">
+            <tr><td style="padding:5px 0;color:#555;width:130px">Name</td><td style="padding:5px 0;font-weight:600">${name}</td></tr>
+            <tr><td style="padding:5px 0;color:#555">E-Mail</td><td style="padding:5px 0"><a href="mailto:${email}" style="color:#2d6a2d">${email}</a></td></tr>
+            ${phone ? `<tr><td style="padding:5px 0;color:#555">Telefon</td><td style="padding:5px 0">${phone}</td></tr>` : ''}
+            <tr><td style="padding:5px 0;color:#555">PLZ / Ort</td><td style="padding:5px 0">${plzClean || '–'}</td></tr>
+            <tr><td style="padding:5px 0;color:#555">Fläche</td><td style="padding:5px 0;font-weight:600">${m2Display}</td></tr>
+            <tr><td style="padding:5px 0;color:#555">Sorte</td><td style="padding:5px 0;font-weight:600">${produktLabel}</td></tr>
+            ${message ? `<tr><td style="padding:5px 0;color:#555;vertical-align:top">Nachricht</td><td style="padding:5px 0;font-style:italic;color:#444">${message}</td></tr>` : ''}
+          </table>
+        </div>
+        <p>Der Kunde erwartet eine Rückmeldung <strong>innerhalb von 24 Stunden</strong>. Bitte nehmen Sie direkt per E-Mail oder Telefon Kontakt auf.</p>
+        <div style="text-align:center;margin:28px 0 8px">
+          <a href="mailto:${email}?subject=Ihr%20Rollrasen-Angebot"
+             style="background:#2d6a2d;color:#fff;text-decoration:none;padding:12px 28px;border-radius:5px;font-weight:600;font-size:0.95rem;display:inline-block">
+            Jetzt Angebot senden
+          </a>
+        </div>
+        <hr style="border:none;border-top:1px solid #e0e8e0;margin:24px 0">
+        <p style="color:#999;font-size:0.78rem;margin:0">
+          Diese Anfrage wurde automatisch über <a href="https://rollrasen.gartenbau-kosten.de" style="color:#2d6a2d">rollrasen.gartenbau-kosten.de</a> weitergeleitet.
+          Sie erhalten diese E-Mail, weil Ihr Betrieb als regionaler Fachpartner registriert ist.<br>
+          Bei Fragen: <a href="mailto:info@gartenbau-kosten.de" style="color:#2d6a2d">info@gartenbau-kosten.de</a>
+        </p>
+      </div>
     </div>`;
 
   try {
-    console.log(`📧 Sende Kundenmail an: ${email}`);
     await sendMail(email, 'Ihre Rollrasen-Anfrage ist eingegangen – Kontaktierte Betriebe', kundenMail);
-    console.log(`✓ Kundenmail gesendet`);
 
     const empfaenger = ADMIN_EMAIL
       ? [ADMIN_EMAIL]
       : top3.filter(h => h.email).map(h => h.email);
 
-    console.log(`📧 ADMIN_EMAIL=${ADMIN_EMAIL} → Empfänger: ${empfaenger.join(', ')}`);
     for (const empf of empfaenger) {
-      console.log(`📧 Sende Admin-Mail an: ${empf}`);
       await sendMail(empf, `Neue Rollrasen-Anfrage – ${m2Display}, PLZ ${plzClean}`, haendlerMail);
-      console.log(`✓ Admin-Mail gesendet an ${empf}`);
     }
 
     res.json({ ok: true, haendler_count: top3.length, region: top3[0]?.region || 'Bayern' });
   } catch (err) {
-    console.error(`❌ Mail-Fehler: ${err.message}`);
+    console.error(`Mail-Fehler: ${err.message}`);
     res.json({ ok: true, haendler_count: top3.length, region: top3[0]?.region || 'Bayern' });
   }
 });
