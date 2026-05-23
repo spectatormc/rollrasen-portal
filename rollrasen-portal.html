@@ -235,6 +235,31 @@
     .footer-links a { font-size: 0.8rem; color: rgba(255,255,255,0.5); text-decoration: none; transition: color 0.15s; }
     .footer-links a:hover { color: rgba(255,255,255,0.85); }
 
+    /* VERLEGUNGSSCHRITTE */
+    .steps { display: grid; gap: 1rem; }
+    @media(min-width: 640px) { .steps { grid-template-columns: repeat(5, 1fr); } }
+    .step { background: white; border: 1px solid var(--color-border); border-radius: var(--radius-md); padding: 1.5rem 1rem; text-align: center; position: relative; box-shadow: var(--shadow-soft); }
+    .step__num { display: inline-flex; align-items: center; justify-content: center; width: 2.2rem; height: 2.2rem; background: var(--color-accent); color: white; border-radius: 50%; font-weight: 700; font-size: 1rem; margin-bottom: 0.75rem; }
+    .step__title { display: block; font-family: var(--font-heading); font-size: 0.95rem; font-weight: 700; color: var(--color-heading); margin-bottom: 0.4rem; }
+    .step__desc { font-size: 0.82rem; color: var(--color-text-muted); line-height: 1.55; }
+    @media(min-width: 640px) {
+      .step + .step::before { content: '→'; position: absolute; left: -0.75rem; top: 1.8rem; color: var(--color-accent-mid); font-size: 1.1rem; }
+    }
+
+    /* FAQ ACCORDION */
+    .faq-list { max-width: var(--max); margin-inline: auto; display: grid; gap: 0.5rem; }
+    .faq-item { background: white; border: 1px solid var(--color-border); border-radius: var(--radius-md); overflow: hidden; }
+    .faq-q { display: flex; justify-content: space-between; align-items: center; padding: 1rem 1.25rem; cursor: pointer; font-weight: 600; font-size: 0.95rem; color: var(--color-heading); gap: 1rem; background: none; border: none; width: 100%; text-align: left; font-family: var(--font-body); transition: background 0.12s; }
+    .faq-q:hover { background: var(--color-accent-soft); }
+    .faq-icon { flex-shrink: 0; width: 1.5rem; height: 1.5rem; border-radius: 50%; background: var(--color-accent-soft); border: 1px solid var(--color-accent-mid); display: flex; align-items: center; justify-content: center; font-size: 1rem; font-weight: 400; color: var(--color-accent-dark); transition: transform 0.2s; line-height: 1; }
+    .faq-item.open .faq-icon { transform: rotate(45deg); }
+    .faq-a { display: none; padding: 0.85rem 1.25rem 1rem; font-size: 0.9rem; color: var(--color-text-muted); line-height: 1.7; border-top: 1px solid var(--color-border); }
+    .faq-item.open .faq-a { display: block; }
+
+    /* VERGLEICH */
+    .vergleich-wrap { max-width: var(--max); margin-inline: auto; margin-top: 2.5rem; }
+    .vergleich-wrap h3 { font-family: var(--font-heading); font-size: 1.2rem; color: var(--color-heading); margin-bottom: 1rem; text-align: center; }
+
     @media (max-width: 600px) {
       .header-nav { display: none; }
       .area-row { grid-template-columns: 1fr auto 1fr auto auto; }
@@ -254,6 +279,8 @@
           <li><a href="#rechner">Verlegerechner</a></li>
           <li><a href="#preise">Preise</a></li>
           <li><a href="#anfrage">Händler anfragen</a></li>
+          <li><a href="#verlegen">Verlegen</a></li>
+          <li><a href="#faq">FAQ</a></li>
           <li><a href="#wissen">Wissen</a></li>
         </ul>
       </nav>
@@ -443,6 +470,44 @@
     </div>
   </section>
 
+  <!-- ── VERLEGUNGSANLEITUNG ── -->
+  <section class="section section--alt" id="verlegen">
+    <div class="container">
+      <div class="section__header">
+        <div class="section__label">Anleitung</div>
+        <h2 class="section__title">Rollrasen verlegen – Schritt für Schritt</h2>
+        <p class="section__sub">Von der Vorbereitung bis zum ersten Schnitt – so gelingt dein Rollrasen.</p>
+      </div>
+      <div class="steps">
+        <div class="step">
+          <span class="step__num">1</span>
+          <span class="step__title">Fläche messen &amp; bestellen</span>
+          <p class="step__desc">Länge × Breite berechnen, 10 % Verschnitt einplanen. Rechtzeitig bestellen – Rollrasen ist ein Frischprodukt und sollte am Liefertag verlegt werden.</p>
+        </div>
+        <div class="step">
+          <span class="step__num">2</span>
+          <span class="step__title">Boden vorbereiten</span>
+          <p class="step__desc">Unkraut entfernen, Boden 20 cm tief lockern, eggen und planieren. Eine feine Krümelstruktur ist der wichtigste Schritt für gutes Anwurzeln.</p>
+        </div>
+        <div class="step">
+          <span class="step__num">3</span>
+          <span class="step__title">Rollen verlegen</span>
+          <p class="step__desc">Bahnen im Versatz legen (wie Mauerwerk). Nicht ziehen oder schieben – Fugen satt andrücken, damit keine Lücken entstehen.</p>
+        </div>
+        <div class="step">
+          <span class="step__num">4</span>
+          <span class="step__title">Andrücken &amp; wässern</span>
+          <p class="step__desc">Rasen mit Walze oder Brett andrücken. Die ersten 2 Wochen täglich wässern – der Boden muss durchgängig feucht bleiben.</p>
+        </div>
+        <div class="step">
+          <span class="step__num">5</span>
+          <span class="step__title">Erster Schnitt</span>
+          <p class="step__desc">Nach 2–3 Wochen, wenn die Wurzeln halten (leichter Zugtest). Auf 5–6 cm kürzen – nie mehr als ein Drittel auf einmal.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
   <!-- ── ANFRAGE FORMULAR ── -->
   <section class="section" id="anfrage">
     <div class="container--narrow">
@@ -554,6 +619,109 @@
           <h3>Verlegen – selbst oder Fachbetrieb?</h3>
           <p>Rollrasen selbst verlegen ist grundsätzlich möglich. Die Vorbereitung des Bodens ist dabei der kritischste Schritt: gut gefrästes und geplaniertes Bett, kein Unkraut, feine Krümelstruktur.</p>
           <p>Ein Galabauer lohnt sich bei großen Flächen, schwierigem Gelände oder wenn du auf Nummer sicher gehen möchtest. Die Kosten für das Verlegen liegen meist bei 5–12 €/m².</p>
+        </div>
+        <div class="content-card">
+          <h3>Erste Wochen: Bewässerung</h3>
+          <p>Frisch gelegter Rollrasen braucht in den ersten 14 Tagen täglich Wasser – am besten morgens. Der Boden sollte 5–10 cm tief feucht sein.</p>
+          <ul class="content-list">
+            <li>Die ersten 2 Wochen nicht betreten</li>
+            <li>Bei Hitze auch abends leicht nachbewässern</li>
+            <li>Nach dem Anwurzeln auf 2–3× pro Woche reduzieren</li>
+          </ul>
+        </div>
+        <div class="content-card">
+          <h3>Langfristige Pflege</h3>
+          <ul class="content-list">
+            <li><strong>Mähen:</strong> Erster Schnitt nach 2–3 Wochen, auf 5 cm</li>
+            <li><strong>Düngen:</strong> 4–6 Wochen nach dem Verlegen, Langzeitdünger</li>
+            <li><strong>Vertikutieren:</strong> 1× jährlich im Frühjahr</li>
+            <li><strong>Nachsäen:</strong> Kahle Stellen im Herbst oder Frühjahr schließen</li>
+          </ul>
+        </div>
+      </div>
+      <div class="vergleich-wrap">
+        <h3>Rollrasen vs. Rasensaat – ein Vergleich</h3>
+        <table class="preistabelle">
+          <thead>
+            <tr><th>Kriterium</th><th>Rollrasen</th><th>Rasensaat</th></tr>
+          </thead>
+          <tbody>
+            <tr><td>Sofort nutzbar</td><td><strong>Ja</strong> – nach 2–3 Wochen Anwurzeln</td><td>Nein – 6–8 Wochen Wartezeit</td></tr>
+            <tr><td>Kosten</td><td>Höher (6–12 €/m²)</td><td>Günstiger (0,50–2 €/m²)</td></tr>
+            <tr><td>Keimrisiko</td><td>Keines – Gras bereits gewachsen</td><td>Abhängig von Wetter &amp; Vögeln</td></tr>
+            <tr><td>Optik direkt</td><td>Sofort gleichmäßig &amp; dicht</td><td>Zunächst lückig</td></tr>
+            <tr><td>Verlegezeit</td><td>März–November</td><td>April–Mai oder Aug.–Sept.</td></tr>
+            <tr><td>Empfehlung</td><td>Repräsentative Flächen, Böschungen, schnelles Ergebnis</td><td>Große Flächen mit Budget und Zeit</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </section>
+
+  <!-- ── FAQ ── -->
+  <section class="section section--alt" id="faq">
+    <div class="container--narrow">
+      <div class="section__header">
+        <div class="section__label">Häufige Fragen</div>
+        <h2 class="section__title">FAQ – Rollrasen</h2>
+        <p class="section__sub">Die wichtigsten Fragen rund um Kauf, Verlegung und Pflege.</p>
+      </div>
+      <div class="faq-list">
+        <div class="faq-item">
+          <button class="faq-q" onclick="toggleFaq(this)">
+            Wann ist die beste Zeit, Rollrasen zu verlegen?
+            <span class="faq-icon">+</span>
+          </button>
+          <div class="faq-a">Rollrasen kann von März bis November verlegt werden, solange der Boden nicht gefroren ist. Ideal sind Frühjahr (April–Mai) und Spätsommer (August–September) – dann sind Temperaturen moderat und Niederschläge ausreichend. Im Hochsommer ist deutlich mehr Bewässerung nötig.</div>
+        </div>
+        <div class="faq-item">
+          <button class="faq-q" onclick="toggleFaq(this)">
+            Wie lange dauert es, bis der Rollrasen angewurzelt ist?
+            <span class="faq-icon">+</span>
+          </button>
+          <div class="faq-a">In der Regel 2–3 Wochen bei ausreichender Bewässerung. Du kannst es testen, indem du leicht an einer Ecke ziehst – hält er stand, sind die Wurzeln im Boden verankert. Ab dann ist der Rasen belastbar.</div>
+        </div>
+        <div class="faq-item">
+          <button class="faq-q" onclick="toggleFaq(this)">
+            Kann man sofort nach dem Verlegen auf den Rasen?
+            <span class="faq-icon">+</span>
+          </button>
+          <div class="faq-a">Nein – die ersten 2 Wochen sollte der Rasen nicht betreten werden, damit er ungestört anwurzeln kann. Danach ist leichtes Betreten möglich; voll belastbar ist er nach ca. 3–4 Wochen.</div>
+        </div>
+        <div class="faq-item">
+          <button class="faq-q" onclick="toggleFaq(this)">
+            Wie viel wässern in den ersten Wochen?
+            <span class="faq-icon">+</span>
+          </button>
+          <div class="faq-a">Täglich wässern, am besten morgens. Der Boden sollte 5–10 cm tief feucht sein – das entspricht je nach Boden ca. 10–20 Litern pro m² pro Woche. Bei großer Hitze auch abends leicht nachbewässern. Nach dem Anwurzeln genügen 2–3× pro Woche.</div>
+        </div>
+        <div class="faq-item">
+          <button class="faq-q" onclick="toggleFaq(this)">
+            Was kostet Rollrasen verlegen insgesamt?
+            <span class="faq-icon">+</span>
+          </button>
+          <div class="faq-a">Der Rollrasen selbst kostet je nach Sorte 6,50–11,50 €/m² (inkl. 10 % Verschnitt). Dazu kommen bei Fachverlegung 5–12 €/m² Lohn und ggf. 5–15 €/m² für Bodenarbeiten. Für 100 m² Premium-Rasen mit Verlegung und Bodenarbeit rechne grob mit 2.000–3.500 €. Unser Rechner oben gibt dir eine individuelle Schätzung.</div>
+        </div>
+        <div class="faq-item">
+          <button class="faq-q" onclick="toggleFaq(this)">
+            Wie lange hält sich Rollrasen nach der Lieferung?
+            <span class="faq-icon">+</span>
+          </button>
+          <div class="faq-a">Rollrasen ist ein Frischprodukt und sollte idealerweise am Liefertag verlegt werden. Kühl und schattig gelagert (nicht in praller Sonne, gerollt) hält er bis zu 24–48 Stunden. Danach erwärmt sich die Rolle und das Gras leidet unter Sauerstoffmangel.</div>
+        </div>
+        <div class="faq-item">
+          <button class="faq-q" onclick="toggleFaq(this)">
+            Rollrasen im Sommer verlegen – geht das?
+            <span class="faq-icon">+</span>
+          </button>
+          <div class="faq-a">Ja, aber mit erhöhtem Pflegeaufwand. Bei großer Hitze (über 30 °C) trocknet der Rollrasen schnell aus – dann muss täglich, ggf. morgens und abends, gewässert werden. Wenn möglich, lieber in den frühen Morgenstunden verlegen und bis zur Verlegung schattig lagern.</div>
+        </div>
+        <div class="faq-item">
+          <button class="faq-q" onclick="toggleFaq(this)">
+            Was tun, wenn der Rasen nach dem Verlegen gelb wird?
+            <span class="faq-icon">+</span>
+          </button>
+          <div class="faq-a">Gelbe Stellen entstehen meist durch zu wenig Wasser oder zu lange Lagerung vor dem Verlegen. Zuerst prüfen, ob der Boden wirklich durchgehend feucht ist. Hat der Rasen noch Wurzelkontakt und wird er bewässert, erholt er sich meist innerhalb von 1–2 Wochen. Komplett braune, trockene Flächen lassen sich leider nicht mehr retten.</div>
         </div>
       </div>
     </div>
@@ -1081,6 +1249,11 @@
     scale=parseFloat(document.getElementById('draw-scale').value);
     polygons.forEach(function(p){p.area=shoelaceM2(p.points);});
     updateDrawNetto(); updatePolyList(); renderCanvas(); calculate();
+  };
+
+  /* ── FAQ Accordion ── */
+  window.toggleFaq = function (btn) {
+    btn.closest('.faq-item').classList.toggle('open');
   };
 
   /* ── Init ── */
