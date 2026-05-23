@@ -60,8 +60,8 @@
     /* HERO */
     @keyframes kenburns { from { transform: scale(1.0); } to { transform: scale(1.07); } }
     .hero { position: relative; min-height: 88vh; display: flex; align-items: center; border-bottom: 1px solid rgba(0,0,0,0.15); overflow: hidden; }
-    .hero__bg { position: absolute; inset: 0; background: radial-gradient(ellipse at 25% 65%, #2e6b1e 0%, transparent 55%), radial-gradient(ellipse at 75% 35%, #3a7a22 0%, transparent 50%), linear-gradient(160deg, #1a3d12 0%, #2d6a1a 45%, #3d7a25 75%, #1e4a15 100%); animation: kenburns 22s ease-in-out infinite alternate; z-index: 0; }
-    .hero__overlay { position: absolute; inset: 0; background: linear-gradient(160deg, rgba(10,25,10,0.58) 0%, rgba(20,40,15,0.48) 100%); z-index: 1; }
+    .hero__bg { position: absolute; inset: 0; background: radial-gradient(ellipse at 25% 55%, #3d8a20 0%, #245716 45%, #0f2908 100%); animation: kenburns 22s ease-in-out infinite alternate; z-index: 0; }
+    .hero__overlay { position: absolute; inset: 0; background: radial-gradient(ellipse at 50% 40%, rgba(80,160,40,0.18) 0%, rgba(0,0,0,0.55) 100%), linear-gradient(180deg, rgba(0,0,0,0.28) 0%, rgba(0,0,0,0.05) 45%, rgba(0,0,0,0.42) 100%); z-index: 1; }
     .hero__inner { position: relative; z-index: 2; max-width: var(--max); margin-inline: auto; padding: 5rem 1.5rem 4rem; text-align: center; }
     .hero__eyebrow { display: inline-block; font-size: 0.72rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.12em; color: #a8d5a8; background: rgba(255,255,255,0.1); border: 1px solid rgba(255,255,255,0.25); padding: 0.3rem 1rem; border-radius: 999px; margin-bottom: 1.2rem; backdrop-filter: blur(4px); }
     .hero h1 { font-family: var(--font-heading); font-size: clamp(2.1rem, 5vw, 3.2rem); color: #fff; line-height: 1.12; margin-bottom: 1.1rem; text-shadow: 0 2px 12px rgba(0,0,0,0.35); }
@@ -73,10 +73,11 @@
     .btn-secondary:hover { background: rgba(255,255,255,0.22); border-color: #fff; transform: translateY(-2px); }
 
     /* TRUST STRIP */
-    .trust-strip { background: white; border-bottom: 1px solid var(--color-border); padding: 0.75rem 0; }
-    .trust-strip__inner { max-width: var(--max-wide); margin-inline: auto; padding-inline: 1.5rem; display: flex; gap: 2rem; justify-content: center; flex-wrap: wrap; }
-    .trust-item { font-size: 0.82rem; color: var(--color-text-muted); display: flex; align-items: center; gap: 0.4rem; }
-    .trust-item::before { content: '✓'; color: var(--color-accent); font-weight: 700; }
+    .trust-strip { background: var(--color-accent); padding: 0.85rem 0; }
+    .trust-strip__inner { max-width: var(--max-wide); margin-inline: auto; padding-inline: 1.5rem; display: flex; gap: 1.75rem; justify-content: center; flex-wrap: wrap; }
+    .trust-item { font-size: 0.84rem; font-weight: 600; color: rgba(255,255,255,0.95); display: flex; align-items: center; gap: 0.55rem; letter-spacing: 0.01em; }
+    .trust-item__icon { width: 18px; height: 18px; background: rgba(255,255,255,0.22); border-radius: 50%; display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
+    .trust-item__icon svg { width: 11px; height: 11px; fill: none; stroke: #fff; stroke-width: 2.5; stroke-linecap: round; stroke-linejoin: round; }
 
     /* SECTIONS */
     .section { padding: 3.5rem 0; }
@@ -370,10 +371,10 @@
 
   <div class="trust-strip">
     <div class="trust-strip__inner">
-      <span class="trust-item">Unabhängige Kostenübersicht</span>
-      <span class="trust-item">Kostenlose Händleranfrage</span>
-      <span class="trust-item">Regionale Händler in Bayern</span>
-      <span class="trust-item">Rechner mit Verschnittberechnung</span>
+      <span class="trust-item"><span class="trust-item__icon"><svg viewBox="0 0 12 12"><polyline points="2,6 5,9 10,3"/></svg></span>Unabhängige Kostenübersicht</span>
+      <span class="trust-item"><span class="trust-item__icon"><svg viewBox="0 0 12 12"><polyline points="2,6 5,9 10,3"/></svg></span>Kostenlose Händleranfrage</span>
+      <span class="trust-item"><span class="trust-item__icon"><svg viewBox="0 0 12 12"><polyline points="2,6 5,9 10,3"/></svg></span>Regionale Händler in Bayern</span>
+      <span class="trust-item"><span class="trust-item__icon"><svg viewBox="0 0 12 12"><polyline points="2,6 5,9 10,3"/></svg></span>Rechner mit Verschnittberechnung</span>
     </div>
   </div>
 
