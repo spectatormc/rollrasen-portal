@@ -991,6 +991,7 @@
       document.getElementById('res-total').textContent = '–';
       document.getElementById('res-breakdown').innerHTML = '';
       document.getElementById('res-menge').textContent = '';
+      document.getElementById('anfrage-summary').style.display = 'none';
       return;
     }
 
@@ -1082,10 +1083,10 @@
     row.className = 'area-row';
     row.dataset.id = id;
     row.innerHTML =
-      '<div class="field"><label>Länge (m)</label><input type="number" class="area-l" value="10" min="0.1" max="500" step="0.5"></div>' +
+      '<div class="field"><label>Länge (m)</label><input type="number" class="area-l" placeholder="z.B. 10" min="0.1" max="500" step="0.5"></div>' +
       '<div class="area-sep">×</div>' +
-      '<div class="field"><label>Breite (m)</label><input type="number" class="area-b" value="8" min="0.1" max="500" step="0.5"></div>' +
-      '<span class="area-m2">80 m²</span>' +
+      '<div class="field"><label>Breite (m)</label><input type="number" class="area-b" placeholder="z.B. 8" min="0.1" max="500" step="0.5"></div>' +
+      '<span class="area-m2">–</span>' +
       '<button class="area-remove" title="Fläche entfernen" onclick="removeArea(this)">✕</button>';
 
     function updateRow() {
