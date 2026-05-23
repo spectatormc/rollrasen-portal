@@ -15,9 +15,9 @@ from pathlib import Path
 from datetime import datetime
 
 # ── Config ──────────────────────────────────────────────────────────────────
-DB_PATH   = Path(__file__).parent / "rollrasen.db"
+DB_PATH   = Path(os.environ.get("DB_PATH", str(Path(__file__).parent / "rollrasen.db")))
 FROM_ADDR = "info@gartenbau-kosten.de"
-FROM_NAME = "Bastian Rohrhuber · rasenrechner.de"
+FROM_NAME = "Bastian Rohrhuber - rasenrechner.de"
 TEST_ADDR = "rohrhuberbastian@gmail.com"
 PORTAL_URL = "https://www.rasenrechner.de"
 
@@ -151,7 +151,7 @@ def send_mail(to_addr, subject, html_body, dry_run=False):
         return True
     msg = MIMEMultipart("alternative")
     msg["Subject"] = subject
-    msg["From"]    = f"{FROM_NAME} <{SMTP_USER}>"
+    msg["From"]    = f"{FROM_NAME} <{FROM_ADDR}>"
     msg["To"]      = to_addr
     msg.attach(MIMEText(html_body, "html", "utf-8"))
     ctx = ssl.create_default_context()
