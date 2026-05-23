@@ -51,8 +51,8 @@
     .site-logo { font-family: var(--font-heading); font-size: 1.05rem; font-weight: 700; color: var(--color-heading); text-decoration: none; line-height: 1.2; }
     .site-logo span { color: var(--color-accent); }
     .site-logo small { display: block; font-family: var(--font-body); font-size: 0.7rem; font-weight: 400; color: var(--color-text-muted); }
-    .header-nav { display: flex; gap: 1.5rem; list-style: none; }
-    .header-nav a { font-size: 0.875rem; color: var(--color-text-muted); text-decoration: none; transition: color 0.15s; }
+    .header-nav { display: flex; gap: 1.25rem; list-style: none; }
+    .header-nav a { font-size: 0.82rem; color: var(--color-text-muted); text-decoration: none; transition: color 0.15s; white-space: nowrap; }
     .header-nav a:hover { color: var(--color-accent-dark); }
     .header-cta { background: var(--color-accent); color: white; padding: 0.45rem 1rem; border-radius: var(--radius-sm); font-size: 0.875rem; font-weight: 600; text-decoration: none; transition: background 0.15s; white-space: nowrap; }
     .header-cta:hover { background: var(--color-accent-dark); }
@@ -60,7 +60,7 @@
     /* HERO */
     @keyframes kenburns { from { transform: scale(1.0); } to { transform: scale(1.07); } }
     .hero { position: relative; min-height: 88vh; display: flex; align-items: center; border-bottom: 1px solid rgba(0,0,0,0.15); overflow: hidden; }
-    .hero__bg { position: absolute; inset: 0; background: url('https://images.unsplash.com/photo-1589923158776-cb4485d99fd6?w=1600&q=80') center/cover no-repeat, linear-gradient(160deg,#2d5a27,#1a3d1a); animation: kenburns 20s ease-in-out infinite alternate; z-index: 0; }
+    .hero__bg { position: absolute; inset: 0; background: radial-gradient(ellipse at 25% 65%, #2e6b1e 0%, transparent 55%), radial-gradient(ellipse at 75% 35%, #3a7a22 0%, transparent 50%), linear-gradient(160deg, #1a3d12 0%, #2d6a1a 45%, #3d7a25 75%, #1e4a15 100%); animation: kenburns 22s ease-in-out infinite alternate; z-index: 0; }
     .hero__overlay { position: absolute; inset: 0; background: linear-gradient(160deg, rgba(10,25,10,0.58) 0%, rgba(20,40,15,0.48) 100%); z-index: 1; }
     .hero__inner { position: relative; z-index: 2; max-width: var(--max); margin-inline: auto; padding: 5rem 1.5rem 4rem; text-align: center; }
     .hero__eyebrow { display: inline-block; font-size: 0.72rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.12em; color: #a8d5a8; background: rgba(255,255,255,0.1); border: 1px solid rgba(255,255,255,0.25); padding: 0.3rem 1rem; border-radius: 999px; margin-bottom: 1.2rem; backdrop-filter: blur(4px); }
@@ -280,11 +280,11 @@
     .regional-card__icon { font-size: 2rem; margin-bottom: 0.75rem; display: block; }
     .regional-card h3 { font-family: var(--font-heading); font-size: 1rem; color: var(--color-heading); margin-bottom: 0.4rem; }
     .regional-card p { font-size: 0.875rem; color: var(--color-text-muted); line-height: 1.65; margin: 0; }
-    .warn-box { background: #fff5f5; border: 1.5px solid #fecaca; border-radius: var(--radius-md); padding: 1.5rem 1.75rem; max-width: 760px; margin-inline: auto; }
-    .warn-box__title { font-family: var(--font-heading); font-size: 1.05rem; color: #b91c1c; margin-bottom: 1rem; display: flex; align-items: center; gap: 0.5rem; }
+    .warn-box { background: #fffbeb; border: 1.5px solid #fcd34d; border-radius: var(--radius-md); padding: 1.5rem 1.75rem; max-width: 760px; margin-inline: auto; }
+    .warn-box__title { font-family: var(--font-heading); font-size: 1.05rem; color: #92400e; margin-bottom: 1rem; display: flex; align-items: center; gap: 0.5rem; }
     .warn-list { list-style: none; display: grid; gap: 0.55rem; }
-    .warn-list li { font-size: 0.9rem; color: #7f1d1d; padding-left: 1.5rem; position: relative; line-height: 1.55; }
-    .warn-list li::before { content: '✗'; position: absolute; left: 0; color: #b91c1c; font-weight: 700; }
+    .warn-list li { font-size: 0.9rem; color: #78350f; padding-left: 1.5rem; position: relative; line-height: 1.55; }
+    .warn-list li::before { content: '–'; position: absolute; left: 0; color: #d97706; font-weight: 700; }
 
     @media (max-width: 600px) {
       .header-nav { display: none; }
@@ -341,11 +341,11 @@
       </a>
       <nav>
         <ul class="header-nav">
-          <li><a href="#rechner">Verlegerechner</a></li>
+          <li><a href="#rechner">Rechner</a></li>
           <li><a href="#preise">Preise</a></li>
           <li><a href="#verlegen">Verlegen</a></li>
-          <li><a href="#regional">Regionale Qualität</a></li>
-          <li><a href="#anfrage">Händler anfragen</a></li>
+          <li><a href="#regional">Regional</a></li>
+          <li><a href="#anfrage">Anfragen</a></li>
           <li><a href="#faq">FAQ</a></li>
           <li><a href="#wissen">Wissen</a></li>
         </ul>
