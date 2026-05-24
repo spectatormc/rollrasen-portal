@@ -1140,6 +1140,8 @@
     }
   }
 
+  window.calculate = calculate;
+
   window.anfrageVomRechner = function () {
     var msgEl = document.getElementById('message');
     if (msgEl && window._rechnerText) {
@@ -1458,7 +1460,8 @@
   function renderCanvas() {
     if (!ctx) return;
     ctx.clearRect(0,0,CANVAS_W,CANVAS_H);
-    ctx.strokeStyle='#e8e2d9'; ctx.lineWidth=1;
+    ctx.fillStyle='#ffffff'; ctx.fillRect(0,0,CANVAS_W,CANVAS_H);
+    ctx.strokeStyle='#99cc99'; ctx.lineWidth=1;
     for (var x=0;x<=CANVAS_W;x+=CELL) { ctx.beginPath(); ctx.moveTo(x,0); ctx.lineTo(x,CANVAS_H); ctx.stroke(); }
     for (var y=0;y<=CANVAS_H;y+=CELL) { ctx.beginPath(); ctx.moveTo(0,y); ctx.lineTo(CANVAS_W,y); ctx.stroke(); }
     ctx.fillStyle='#a09880'; ctx.font='11px system-ui,sans-serif';
