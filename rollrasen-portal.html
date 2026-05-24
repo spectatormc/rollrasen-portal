@@ -515,7 +515,7 @@
                 <input type="checkbox" id="opt-lieferung">
                 <div class="option-item__text">
                   <strong>Lieferung dazurechnen</strong>
-                  <span>Pauschal ca. 80–150 € je nach Anbieter und Region</span>
+                  <span>Je nach Menge ca. 60–280 € (1–2 Paletten günstiger, LKW teurer)</span>
                 </div>
               </label>
             </div>
@@ -559,7 +559,7 @@
           <tr><td>Spielwiese / Landschaftsrasen</td><td><strong>5,50 €/m²</strong></td><td>Günstigster Einstieg, naturnahe Optik, wenig Pflegeaufwand</td></tr>
           <tr><td>Verlegen (Fachbetrieb)</td><td><strong>5–12 €/m²</strong></td><td>Lohnanteil, regional unterschiedlich</td></tr>
           <tr><td>Bodenarbeit</td><td><strong>5–15 €/m²</strong></td><td>Fräsen, Eggen, Planieren</td></tr>
-          <tr><td>Lieferung</td><td><strong>80–150 €</strong></td><td>Pauschal, abhängig von Entfernung</td></tr>
+          <tr><td>Lieferung</td><td><strong>60–280 €</strong></td><td>Mengenabhängig: kleine Flächen günstiger, große Aufträge (LKW) teurer</td></tr>
         </tbody>
       </table></div>
       <p style="font-size:0.78rem;color:var(--color-text-muted);margin-top:0.75rem;text-align:center">Alle Preise inkl. MwSt. · Orientierungswerte, kein verbindliches Angebot</p>
@@ -1070,7 +1070,12 @@
     sport:       { price: 6.50,  label: 'Sportrasen' },
     spielrasen:  { price: 5.50,  label: 'Spielwiese / Landschaftsrasen' }
   };
-  var LIEFERUNG = { min: 80, max: 150 };
+  function getLieferung(brutto) {
+    if (brutto <= 40)  return { min: 60,  max: 100 };   // 1–2 Paletten
+    if (brutto <= 100) return { min: 80,  max: 140 };   // 3–5 Paletten
+    if (brutto <= 200) return { min: 110, max: 190 };   // 6–10 Paletten
+    return                    { min: 150, max: 280 };   // 10+ Paletten (LKW)
+  }
 
   var mode      = 'rects';
   var qual      = 'premium';
@@ -1120,8 +1125,8 @@
 
     var livMin = 0, livMax = 0;
     if (document.getElementById('opt-lieferung').checked) {
-      livMin = LIEFERUNG.min;
-      livMax = LIEFERUNG.max;
+      var liv = getLieferung(brutto);
+      livMin = liv.min; livMax = liv.max;
     }
 
     var hasExtra = livMin > 0;
