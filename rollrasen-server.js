@@ -766,7 +766,7 @@ app.post('/partner-anfrage', partnerLimit, async (req, res) => {
         <tr style="background:#f5f5f5"><td style="padding:6px 12px;color:#666">Typ</td><td style="padding:6px 12px">${type || '–'}</td></tr>
         ${msg ? `<tr><td style="padding:6px 12px;color:#666">Nachricht</td><td style="padding:6px 12px">${msg}</td></tr>` : ''}
       </table>
-      <p style="color:#666;font-size:0.9rem">Eingegangen über rollrasen.gartenbau-kosten.de</p>
+      <p style="color:#666;font-size:0.9rem">Eingegangen über rasenrechner.de</p>
     </div>`;
 
   const bestaetigung = `<!DOCTYPE html>
