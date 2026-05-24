@@ -305,7 +305,7 @@ app.get('/haendler/:slug', (req, res) => {
     <div class="cta-block">
       <h2>Kostenloses Angebot anfragen</h2>
       <p style="opacity:.85;font-size:.9rem;margin:0 0 .25rem">Unverbindlich, direkt vom Fachbetrieb, Antwort in 24h</p>
-      <a class="cta-btn" href="/${h.plz ? '?plz=' + h.plz + '#anfrage' : '#anfrage'}">Jetzt Angebot anfragen</a>
+      <a class="cta-btn" href="/${h.plz ? '?plz=' + h.plz + '#rechner' : '#rechner'}">Jetzt Bedarf berechnen &amp; anfragen</a>
     </div>
 
     <footer>rasenrechner.de · Ein Service der Gartenschmiede GmbH ·
@@ -1079,7 +1079,7 @@ app.get('/:city', (req, res, next) => {
     <div class="cta-block">
       <h2>Kostenloses Angebot für ${stadt.name} anfragen</h2>
       <p>PLZ eingeben – wir verbinden Sie sofort mit den nächsten Fachbetrieben. Kostenlos & unverbindlich.</p>
-      <a class="cta-btn" href="/?plz=${stadt.plz}#anfrage">Jetzt Angebot anfragen →</a>
+      <a class="cta-btn" href="/?plz=${stadt.plz}#rechner">Jetzt Bedarf berechnen &amp; anfragen →</a>
     </div>
 
     <h2>Preise für Rollrasen in ${stadt.name}</h2>

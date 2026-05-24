@@ -1554,17 +1554,20 @@
   setMode('rects');
   calculate();
 
-  /* PLZ aus URL-Parameter befüllen (z.B. /?plz=80331#anfrage von Stadtseiten) */
+  /* PLZ aus URL-Parameter befüllen (von Stadtseiten) */
   (function () {
     var urlPlz = new URLSearchParams(window.location.search).get('plz');
     if (urlPlz) {
       var plzEl = document.getElementById('plz');
       if (plzEl) { plzEl.value = urlPlz; updateHaendler(); }
-      if (window.location.hash === '#anfrage') {
-        setTimeout(function () {
+      var hash = window.location.hash;
+      setTimeout(function () {
+        if (hash === '#rechner') {
+          document.getElementById('rechner').scrollIntoView({ behavior: 'smooth' });
+        } else if (hash === '#anfrage') {
           document.getElementById('anfrage').scrollIntoView({ behavior: 'smooth' });
-        }, 300);
-      }
+        }
+      }, 300);
     }
   })();
 
