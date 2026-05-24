@@ -769,6 +769,44 @@ app.post('/partner-anfrage', async (req, res) => {
   }
 });
 
+// ─── SITEMAP ─────────────────────────────────────────────────────────────────
+
+app.get('/sitemap.xml', (req, res) => {
+  const base = 'https://www.rasenrechner.de';
+  const today = new Date().toISOString().slice(0, 10);
+
+  const staticUrls = ['', '/muenchen', '/nuernberg', '/augsburg', '/regensburg',
+    '/landshut', '/rosenheim', '/ingolstadt', '/freising', '/fuerth'];
+
+  const profileSlugs = db.prepare("SELECT profil_slug FROM hersteller WHERE profil_slug IS NOT NULL AND profil_slug != '' AND aktiv = 1").all();
+
+  const urls = [
+    ...staticUrls.map((path, i) => ({
+      loc: base + path,
+      priority: i === 0 ? '1.0' : '0.8',
+      changefreq: i === 0 ? 'weekly' : 'monthly',
+    })),
+    ...profileSlugs.map(h => ({
+      loc: `${base}/haendler/${h.profil_slug}`,
+      priority: '0.7',
+      changefreq: 'monthly',
+    })),
+  ];
+
+  const xml = `<?xml version="1.0" encoding="UTF-8"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+${urls.map(u => `  <url>
+    <loc>${u.loc}</loc>
+    <lastmod>${today}</lastmod>
+    <changefreq>${u.changefreq}</changefreq>
+    <priority>${u.priority}</priority>
+  </url>`).join('\n')}
+</urlset>`;
+
+  res.set('Content-Type', 'application/xml');
+  res.send(xml);
+});
+
 // ─── STADTSEITEN ─────────────────────────────────────────────────────────────
 
 const STAEDTE = {
