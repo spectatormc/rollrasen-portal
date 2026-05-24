@@ -1104,7 +1104,7 @@ app.get('/:city', (req, res, next) => {
 
 // ─── CHATBOT ─────────────────────────────────────────────────────────────────
 
-const OPENAI_KEY = process.env.OPENAI_API_KEY || '';
+const ANTHROPIC_KEY = process.env.ANTHROPIC_API_KEY || '';
 
 const CHAT_SYSTEM = `Du bist "Rassi", ein freundlicher Rollrasen-Experte für rasenrechner.de – das bayerische Portal für Rollrasen und Fertigrasen.
 
@@ -1140,7 +1140,7 @@ app.post('/chat', chatLimiter, async (req, res) => {
   if (!message || typeof message !== 'string' || message.length > 800) {
     return res.status(400).json({ error: 'Ungültige Nachricht' });
   }
-  if (!OPENAI_KEY) {
+  if (!ANTHROPIC_KEY) {
     return res.json({ reply: 'Der Assistent ist gerade nicht verfügbar. Bitte nutzen Sie das Kontaktformular.' });
   }
   try {
@@ -1148,17 +1148,20 @@ app.post('/chat', chatLimiter, async (req, res) => {
       ? history.slice(-10).filter(m => m && (m.role === 'user' || m.role === 'assistant') && typeof m.content === 'string')
       : [];
     const messages = [
-      { role: 'system', content: CHAT_SYSTEM },
       ...safeHistory.map(m => ({ role: m.role, content: m.content.slice(0, 800) })),
       { role: 'user', content: String(message).slice(0, 800) }
     ];
-    const apiRes = await fetch('https://api.openai.com/v1/chat/completions', {
+    const apiRes = await fetch('https://api.anthropic.com/v1/messages', {
       method: 'POST',
-      headers: { 'Content-Type': 'application/json', 'Authorization': 'Bearer ' + OPENAI_KEY },
-      body: JSON.stringify({ model: 'gpt-4o-mini', max_tokens: 220, temperature: 0.65, messages })
+      headers: {
+        'Content-Type': 'application/json',
+        'x-api-key': ANTHROPIC_KEY,
+        'anthropic-version': '2023-06-01'
+      },
+      body: JSON.stringify({ model: 'claude-haiku-4-5-20251001', max_tokens: 220, system: CHAT_SYSTEM, messages })
     });
     const data = await apiRes.json();
-    const reply = data.choices?.[0]?.message?.content?.trim() || 'Ich konnte Ihre Frage leider nicht beantworten.';
+    const reply = data.content?.[0]?.text?.trim() || 'Ich konnte Ihre Frage leider nicht beantworten.';
     res.json({ reply });
   } catch (e) {
     console.error('Chat-Fehler:', e.message);
