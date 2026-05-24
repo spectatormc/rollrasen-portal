@@ -1106,7 +1106,7 @@ app.get('/:city', (req, res, next) => {
 
 const ANTHROPIC_KEY = process.env.ANTHROPIC_API_KEY || '';
 
-const CHAT_SYSTEM = `Du bist "Rassi", ein freundlicher Rollrasen-Experte für rasenrechner.de – das bayerische Portal für Rollrasen und Fertigrasen.
+const CHAT_SYSTEM = `Du bist "Grasi", ein freundlicher Rollrasen-Experte für rasenrechner.de – das bayerische Portal für Rollrasen und Fertigrasen.
 
 Dein Wissen:
 - Rollrasen / Fertigrasen: 5–12 €/m² Material je nach Sorte, sofort grün und begehbar
