@@ -7,10 +7,10 @@
   <meta name="google-site-verification" content="eOE43-2znUw52hYLeHxITt7yI_I2AMmooKwwgO6crRU">
   <meta name="description" content="Rollrasen in Bayern: Preisrechner mit Verschnittberechnung, Verlegeanleitung & kostenlose Angebote von regionalen Händlern. Bayerische Qualität, klimaangepasst, sofort lieferbar.">
   <meta name="keywords" content="Rollrasen Bayern, Rollrasen kaufen, Rollrasen Kosten, Rollrasen verlegen, regionaler Rollrasen, Rollrasen München, Rollrasen Preise, Rollrasen Händler Bayern">
-  <link rel="canonical" href="https://rollrasen.gartenbau-kosten.de/">
+  <link rel="canonical" href="https://www.rasenrechner.de/">
   <meta property="og:title" content="Rollrasen Bayern – Kosten, Rechner & regionale Händler">
   <meta property="og:description" content="Verlegerechner, Preisübersicht & kostenlose Angebote von Bayerns besten Rollrasen-Händlern. Klimaangepasst, frisch geerntet, sofort lieferbar.">
-  <meta property="og:url" content="https://rollrasen.gartenbau-kosten.de/">
+  <meta property="og:url" content="https://www.rasenrechner.de/">
   <meta property="og:type" content="website">
   <meta property="og:locale" content="de_DE">
   <meta name="twitter:card" content="summary_large_image">
@@ -296,8 +296,18 @@
     .warn-list li { font-size: 0.9rem; color: #78350f; padding-left: 1.5rem; position: relative; line-height: 1.55; }
     .warn-list li::before { content: '–'; position: absolute; left: 0; color: #d97706; font-weight: 700; }
 
+    /* HAMBURGER */
+    .hamburger { display: none; background: none; border: none; cursor: pointer; padding: 0.4rem; }
+    .hamburger span { display: block; width: 22px; height: 2px; background: var(--color-text); margin: 4px 0; border-radius: 2px; transition: all 0.2s; }
+    .hamburger.open span:nth-child(1) { transform: translateY(6px) rotate(45deg); }
+    .hamburger.open span:nth-child(2) { opacity: 0; }
+    .hamburger.open span:nth-child(3) { transform: translateY(-6px) rotate(-45deg); }
     @media (max-width: 600px) {
-      .header-nav { display: none; }
+      .hamburger { display: block; }
+      .header-nav { display: none; flex-direction: column; position: absolute; top: 56px; left: 0; right: 0; background: white; border-top: 1px solid var(--color-border); padding: 0.75rem 1rem; box-shadow: 0 4px 12px rgba(0,0,0,.1); z-index: 100; }
+      .header-nav.open { display: flex; }
+      .header-nav li a { display: block; padding: 0.6rem 0; font-size: 0.95rem; border-bottom: 1px solid var(--color-border); }
+      .header-nav li:last-child a { border-bottom: none; }
       .header-cta { font-size: 0.78rem; padding: 0.4rem 0.7rem; }
       .site-logo small { display: none; }
       .area-row { grid-template-columns: 1fr auto 1fr auto auto; }
@@ -308,9 +318,9 @@
     "@context": "https://schema.org",
     "@type": "WebSite",
     "name": "Rollrasen Bayern – Kosten & regionale Händler",
-    "url": "https://rollrasen.gartenbau-kosten.de/",
+    "url": "https://www.rasenrechner.de/",
     "description": "Verlegerechner, Preisübersicht und kostenlose Angebote von regionalen Rollrasen-Händlern in Bayern.",
-    "potentialAction": { "@type": "SearchAction", "target": "https://rollrasen.gartenbau-kosten.de/?plz={plz}", "query-input": "required name=plz" }
+    "potentialAction": { "@type": "SearchAction", "target": "https://www.rasenrechner.de/?plz={plz}", "query-input": "required name=plz" }
   }
   </script>
   <script type="application/ld+json">
@@ -347,15 +357,18 @@
 
   <header class="site-header">
     <div class="header-inner">
-      <a class="site-logo" href="#">
-        <span>rollrasen</span>.gartenbau-kosten.de
+      <a class="site-logo" href="/">
+        <span>rasen</span>rechner.de
         <small>Kosten · Rechner · Regionale Händler</small>
       </a>
+      <button class="hamburger" id="hamburger" onclick="document.querySelector('.header-nav').classList.toggle('open');this.classList.toggle('open')" aria-label="Menü öffnen">
+        <span></span><span></span><span></span>
+      </button>
       <nav>
         <ul class="header-nav">
-          <li><a href="#rechner">Rechner</a></li>
-          <li><a href="#preise">Preise</a></li>
-          <li><a href="#verlegen">Verlegen</a></li>
+          <li><a href="#rechner" onclick="document.querySelector('.header-nav').classList.remove('open');document.getElementById('hamburger').classList.remove('open')">Rechner</a></li>
+          <li><a href="#preise" onclick="document.querySelector('.header-nav').classList.remove('open');document.getElementById('hamburger').classList.remove('open')">Preise</a></li>
+          <li><a href="#verlegen" onclick="document.querySelector('.header-nav').classList.remove('open');document.getElementById('hamburger').classList.remove('open')">Verlegen</a></li>
           <li><a href="#regional">Regional</a></li>
           <li><a href="#anfrage">Anfragen</a></li>
           <li><a href="#faq">FAQ</a></li>
@@ -543,6 +556,7 @@
           <tr><td>Lieferung</td><td><strong>80–150 €</strong></td><td>Pauschal, abhängig von Entfernung</td></tr>
         </tbody>
       </table></div>
+      <p style="font-size:0.78rem;color:var(--color-text-muted);margin-top:0.75rem;text-align:center">Alle Preise inkl. MwSt. · Orientierungswerte, kein verbindliches Angebot</p>
     </div>
   </section>
 
@@ -642,7 +656,7 @@
 
   <!-- ── BILD-TRENNSTREIFEN REGIONAL ── -->
   <div class="img-divider">
-    <img src="https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=1400&q=75&auto=format&fit=crop"
+    <img src="https://images.unsplash.com/photo-1635860232428-9a7a57ccfe76?w=1400&q=75&auto=format&fit=crop"
          alt="Bayerische Landschaft – regionaler Rollrasen aus Bayern" loading="lazy">
     <div class="img-divider__overlay">
       <p class="img-divider__text">Regionaler Rollrasen aus Bayern – klimaangepasst & frisch geerntet</p>
@@ -707,10 +721,16 @@
 
           <div class="error-msg" id="error-msg"></div>
 
+          <label class="option-item" style="margin-top:0.75rem">
+            <input type="checkbox" id="dsgvo-check" required>
+            <div class="option-item__text">
+              <span style="font-size:0.82rem">Ich habe die <a href="/datenschutz" target="_blank" style="color:var(--color-accent)">Datenschutzerklärung</a> gelesen und stimme der Weitergabe meiner Daten an regionale Rollrasen-Händler zu.</span>
+            </div>
+          </label>
           <button class="btn-submit" id="submit-btn" onclick="submitAnfrage()">
             Anfrage kostenlos absenden →
           </button>
-          <p class="submit-hint">Kostenlos & unverbindlich · Ihre Daten werden nur zur Händlervermittlung genutzt</p>
+          <p class="submit-hint">Kostenlos & unverbindlich · Kein Spam</p>
         </div>
       </div>
 
@@ -909,6 +929,12 @@
             <label for="pmsg">Nachricht <span class="opt">(optional)</span></label>
             <textarea id="pmsg" name="pmsg" rows="3"></textarea>
           </div>
+          <label class="option-item" style="margin-top:0.75rem">
+            <input type="checkbox" required>
+            <div class="option-item__text">
+              <span style="font-size:0.82rem">Ich habe die <a href="/datenschutz" target="_blank" style="color:var(--color-accent)">Datenschutzerklärung</a> gelesen und bin mit der Verarbeitung meiner Daten zur Bearbeitung meiner Anfrage einverstanden.</span>
+            </div>
+          </label>
           <button class="btn-submit" type="submit">Anfrage absenden</button>
           <div class="submit-hint" id="partner-submit-hint" style="display:none;">Vielen Dank! Wir haben deine Anfrage erhalten.</div>
         </form>
@@ -1255,6 +1281,8 @@
 
     if (!name)                  { errEl.textContent = 'Bitte Namen eingeben.';              errEl.classList.add('show'); return; }
     if (!email || !email.includes('@')) { errEl.textContent = 'Bitte gültige E-Mail eingeben.'; errEl.classList.add('show'); return; }
+    var dsgvo = document.getElementById('dsgvo-check');
+    if (dsgvo && !dsgvo.checked) { errEl.textContent = 'Bitte Datenschutz-Einwilligung bestätigen.'; errEl.classList.add('show'); return; }
 
     var btn = document.getElementById('submit-btn');
     btn.disabled = true;
@@ -1491,6 +1519,20 @@
   addArea();
   setMode('rects');
   calculate();
+
+  /* PLZ aus URL-Parameter befüllen (z.B. /?plz=80331#anfrage von Stadtseiten) */
+  (function () {
+    var urlPlz = new URLSearchParams(window.location.search).get('plz');
+    if (urlPlz) {
+      var plzEl = document.getElementById('plz');
+      if (plzEl) { plzEl.value = urlPlz; updateHaendler(); }
+      if (window.location.hash === '#anfrage') {
+        setTimeout(function () {
+          document.getElementById('anfrage').scrollIntoView({ behavior: 'smooth' });
+        }, 300);
+      }
+    }
+  })();
 
 })();
 </script>

@@ -7,9 +7,10 @@
   },
   "dependencies": {
     "better-sqlite3": "^12.10.0",
-    "dotenv": "^16.5.0",
     "cors": "^2.8.6",
+    "dotenv": "^16.5.0",
     "express": "^5.2.1",
+    "express-rate-limit": "^8.5.2",
     "nodemailer": "^8.0.7"
   }
 }

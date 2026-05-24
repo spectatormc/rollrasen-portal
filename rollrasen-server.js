@@ -1,6 +1,7 @@
 require('dotenv').config({ override: true });
 const express    = require('express');
 const cors       = require('cors');
+const rateLimit  = require('express-rate-limit');
 const path       = require('path');
 const Database   = require('better-sqlite3');
 const nodemailer = require('nodemailer');
@@ -90,11 +91,15 @@ async function sendMail(to, subject, html) {
 }
 
 const PRODUKT_LABELS = {
-  halbschatten: 'Halbschattenrasen (6,50 €/m²)',
-  premium:      'Premium-Fertigrasen (9,00 €/m²)',
-  sport:        'Sportrasen (10,50 €/m²)',
-  boeschung:    'Böschungsrasen (11,50 €/m²)',
+  premium:     'Premium-Fertigrasen (9,00 €/m²)',
+  halbschatten:'Halbschattenrasen (8,50 €/m²)',
+  sport:       'Sportrasen (6,50 €/m²)',
+  spielrasen:  'Spielwiese / Landschaftsrasen (5,50 €/m²)',
 };
+
+function escHtml(s) {
+  return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+}
 
 // Erzeugt einen HTML-Block mit den Kontaktdaten eines Betriebs
 function haendlerKontaktHtml(h, stripe) {
@@ -122,8 +127,11 @@ function haendlerKontaktHtml(h, stripe) {
 
 // ─── MIDDLEWARE ───────────────────────────────────────────────────────────────
 
-app.use(cors({ origin: '*' }));
+app.use(cors({ origin: ['https://www.rasenrechner.de', 'https://rasenrechner.de'] }));
 app.use(express.json());
+
+const anfrageLimit = rateLimit({ windowMs: 15 * 60 * 1000, max: 5, message: { error: 'Zu viele Anfragen. Bitte in 15 Minuten erneut versuchen.' } });
+const partnerLimit = rateLimit({ windowMs: 60 * 60 * 1000, max: 3, message: { error: 'Zu viele Anfragen. Bitte später erneut versuchen.' } });
 app.use('/public', express.static(path.join(__dirname, 'public')));
 
 app.get('/', (req, res) => res.sendFile(path.join(__dirname, 'rollrasen-portal.html')));
@@ -297,7 +305,7 @@ app.get('/haendler/:slug', (req, res) => {
     <div class="cta-block">
       <h2>Kostenloses Angebot anfragen</h2>
       <p style="opacity:.85;font-size:.9rem;margin:0 0 .25rem">Unverbindlich, direkt vom Fachbetrieb, Antwort in 24h</p>
-      <a class="cta-btn" href="/${h.plz ? '#anfrage' : '#anfrage'}">Jetzt Angebot anfragen</a>
+      <a class="cta-btn" href="/${h.plz ? '?plz=' + h.plz + '#anfrage' : '#anfrage'}">Jetzt Angebot anfragen</a>
     </div>
 
     <footer>rasenrechner.de · Ein Service der Gartenschmiede GmbH ·
@@ -317,7 +325,7 @@ function requireAdmin(req, res, next) {
     return res.status(401).send('Anmeldung erforderlich');
   }
   const [, pass] = Buffer.from(auth.slice(6), 'base64').toString().split(':');
-  if (pass !== (process.env.ADMIN_PASSWORD || 'rollrasen2025')) {
+  if (!process.env.ADMIN_PASSWORD || pass !== process.env.ADMIN_PASSWORD) {
     res.setHeader('WWW-Authenticate', 'Basic realm="Rollrasen Admin"');
     return res.status(401).send('Falsches Passwort');
   }
@@ -376,6 +384,7 @@ app.get('/admin', requireAdmin, (req, res) => {
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta name="robots" content="noindex, nofollow">
   <title>Admin – Rollrasen-Portal</title>
   <style>
     *{box-sizing:border-box;margin:0;padding:0}
@@ -613,7 +622,7 @@ app.get('/haendler', (req, res) => {
 
 // ─── ANFRAGE ENDPOINT ─────────────────────────────────────────────────────────
 
-app.post('/anfrage', async (req, res) => {
+app.post('/anfrage', anfrageLimit, async (req, res) => {
   const { name, email, phone, plz, m2, product, message } = req.body;
 
   if (!name?.trim() || !email?.trim())
@@ -646,21 +655,21 @@ app.post('/anfrage', async (req, res) => {
         <h2 style="color:#fff;margin:0;font-size:1.3rem">Ihre Rollrasen-Anfrage ist eingegangen</h2>
       </div>
       <div style="background:#fff;padding:24px;border:1px solid #dde8dd;border-top:none;border-radius:0 0 8px 8px">
-        <p>Hallo ${name},</p>
+        <p>Hallo ${escHtml(name)},</p>
         <p>wir haben Ihre Anfrage erhalten und <strong>${top3.length} Fachbetrieb${top3.length !== 1 ? 'e' : ''}</strong> in Ihrer Region kontaktiert.
            Diese melden sich in der Regel <strong>innerhalb von 24 Stunden</strong> direkt bei Ihnen.</p>
 
         <table style="border-collapse:collapse;width:100%;margin:1.2rem 0;font-size:0.9rem">
           <tr style="background:#f0f4f0">
             <td style="padding:8px 16px;color:#666">Fläche</td>
-            <td style="padding:8px 16px;font-weight:600">${m2Display}</td>
+            <td style="padding:8px 16px;font-weight:600">${escHtml(m2Display)}</td>
           </tr>
           <tr>
             <td style="padding:8px 16px;color:#666">Sorte</td>
-            <td style="padding:8px 16px;font-weight:600">${produktLabel}</td>
+            <td style="padding:8px 16px;font-weight:600">${escHtml(produktLabel)}</td>
           </tr>
-          ${plzClean ? `<tr style="background:#f0f4f0"><td style="padding:8px 16px;color:#666">Ihre PLZ</td><td style="padding:8px 16px;font-weight:600">${plzClean}</td></tr>` : ''}
-          ${message ? `<tr><td style="padding:8px 16px;color:#666;vertical-align:top">Ihre Nachricht</td><td style="padding:8px 16px">${message}</td></tr>` : ''}
+          ${plzClean ? `<tr style="background:#f0f4f0"><td style="padding:8px 16px;color:#666">Ihre PLZ</td><td style="padding:8px 16px;font-weight:600">${escHtml(plzClean)}</td></tr>` : ''}
+          ${message ? `<tr><td style="padding:8px 16px;color:#666;vertical-align:top">Ihre Nachricht</td><td style="padding:8px 16px">${escHtml(message)}</td></tr>` : ''}
         </table>
 
         <h3 style="color:#2d6a2d;margin:1.5rem 0 0.5rem;font-size:1rem;text-transform:uppercase;letter-spacing:.05em">
@@ -676,7 +685,7 @@ app.post('/anfrage', async (req, res) => {
         <hr style="border:none;border-top:1px solid #e0e8e0;margin:1.5rem 0">
         <p style="color:#999;font-size:0.8rem;margin:0">
           Diese E-Mail wurde automatisch versendet von
-          <a href="https://rollrasen.gartenbau-kosten.de" style="color:#2d6a2d">rollrasen.gartenbau-kosten.de</a>
+          <a href="https://www.rasenrechner.de" style="color:#2d6a2d">rasenrechner.de</a>
         </p>
       </div>
     </div>`;
@@ -690,17 +699,17 @@ app.post('/anfrage', async (req, res) => {
       </div>
       <div style="background:#fff;padding:28px;border:1px solid #dde8dd;border-top:none;border-radius:0 0 8px 8px">
         <p style="margin-top:0">Guten Tag,</p>
-        <p>über <a href="https://rollrasen.gartenbau-kosten.de" style="color:#2d6a2d">rollrasen.gartenbau-kosten.de</a> ist eine neue Anfrage eingegangen, die wir Ihnen als nächstgelegenem Fachbetrieb weiterleiten.</p>
+        <p>über <a href="https://www.rasenrechner.de" style="color:#2d6a2d">rasenrechner.de</a> ist eine neue Anfrage eingegangen, die wir Ihnen als nächstgelegenem Fachbetrieb weiterleiten.</p>
         <div style="background:#f4f8f4;border-left:4px solid #2d6a2d;border-radius:4px;padding:16px 20px;margin:20px 0">
           <div style="font-size:0.75rem;color:#2d6a2d;text-transform:uppercase;letter-spacing:.08em;font-weight:700;margin-bottom:12px">Anfrage-Details</div>
           <table style="border-collapse:collapse;width:100%;font-size:0.92rem">
-            <tr><td style="padding:5px 0;color:#555;width:130px">Name</td><td style="padding:5px 0;font-weight:600">${name}</td></tr>
-            <tr><td style="padding:5px 0;color:#555">E-Mail</td><td style="padding:5px 0"><a href="mailto:${email}" style="color:#2d6a2d">${email}</a></td></tr>
-            ${phone ? `<tr><td style="padding:5px 0;color:#555">Telefon</td><td style="padding:5px 0">${phone}</td></tr>` : ''}
-            <tr><td style="padding:5px 0;color:#555">PLZ / Ort</td><td style="padding:5px 0">${plzClean || '–'}</td></tr>
-            <tr><td style="padding:5px 0;color:#555">Fläche</td><td style="padding:5px 0;font-weight:600">${m2Display}</td></tr>
-            <tr><td style="padding:5px 0;color:#555">Sorte</td><td style="padding:5px 0;font-weight:600">${produktLabel}</td></tr>
-            ${message ? `<tr><td style="padding:5px 0;color:#555;vertical-align:top">Nachricht</td><td style="padding:5px 0;font-style:italic;color:#444">${message}</td></tr>` : ''}
+            <tr><td style="padding:5px 0;color:#555;width:130px">Name</td><td style="padding:5px 0;font-weight:600">${escHtml(name)}</td></tr>
+            <tr><td style="padding:5px 0;color:#555">E-Mail</td><td style="padding:5px 0"><a href="mailto:${escHtml(email)}" style="color:#2d6a2d">${escHtml(email)}</a></td></tr>
+            ${phone ? `<tr><td style="padding:5px 0;color:#555">Telefon</td><td style="padding:5px 0">${escHtml(phone)}</td></tr>` : ''}
+            <tr><td style="padding:5px 0;color:#555">PLZ / Ort</td><td style="padding:5px 0">${escHtml(plzClean || '–')}</td></tr>
+            <tr><td style="padding:5px 0;color:#555">Fläche</td><td style="padding:5px 0;font-weight:600">${escHtml(m2Display)}</td></tr>
+            <tr><td style="padding:5px 0;color:#555">Sorte</td><td style="padding:5px 0;font-weight:600">${escHtml(produktLabel)}</td></tr>
+            ${message ? `<tr><td style="padding:5px 0;color:#555;vertical-align:top">Nachricht</td><td style="padding:5px 0;font-style:italic;color:#444">${escHtml(message)}</td></tr>` : ''}
           </table>
         </div>
         <p>Der Kunde erwartet eine Rückmeldung <strong>innerhalb von 24 Stunden</strong>. Bitte nehmen Sie direkt per E-Mail oder Telefon Kontakt auf.</p>
@@ -712,7 +721,7 @@ app.post('/anfrage', async (req, res) => {
         </div>
         <hr style="border:none;border-top:1px solid #e0e8e0;margin:24px 0">
         <p style="color:#999;font-size:0.78rem;margin:0">
-          Diese Anfrage wurde automatisch über <a href="https://rollrasen.gartenbau-kosten.de" style="color:#2d6a2d">rollrasen.gartenbau-kosten.de</a> weitergeleitet.
+          Diese Anfrage wurde automatisch über <a href="https://www.rasenrechner.de" style="color:#2d6a2d">rasenrechner.de</a> weitergeleitet.
           Sie erhalten diese E-Mail, weil Ihr Betrieb als regionaler Fachpartner registriert ist.<br>
           Bei Fragen: <a href="mailto:info@gartenbau-kosten.de" style="color:#2d6a2d">info@gartenbau-kosten.de</a>
         </p>
@@ -739,7 +748,7 @@ app.post('/anfrage', async (req, res) => {
 
 // ─── PARTNER-ANFRAGE ENDPOINT ─────────────────────────────────────────────────
 
-app.post('/partner-anfrage', async (req, res) => {
+app.post('/partner-anfrage', partnerLimit, async (req, res) => {
   const { name, email, tel, type, msg } = req.body;
 
   if (!name?.trim() || !email?.trim())
