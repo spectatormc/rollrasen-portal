@@ -134,7 +134,9 @@ const anfrageLimit = rateLimit({ windowMs: 15 * 60 * 1000, max: 5, message: { er
 const partnerLimit = rateLimit({ windowMs: 60 * 60 * 1000, max: 3, message: { error: 'Zu viele Anfragen. Bitte später erneut versuchen.' } });
 app.use('/public', express.static(path.join(__dirname, 'public')));
 
-app.get('/', (req, res) => res.sendFile(path.join(__dirname, 'rollrasen-portal.html')));
+app.get('/', (req, res) => res.redirect(301, '/bayern/'));
+app.get('/bayern/', (req, res) => res.sendFile(path.join(__dirname, 'rollrasen-portal.html')));
+app.get('/bayern', (req, res) => res.redirect(301, '/bayern/'));
 
 // ─── IMPRESSUM / DATENSCHUTZ ──────────────────────────────────────────────────
 
@@ -156,7 +158,7 @@ app.get('/impressum', (req, res) => res.send(`<!DOCTYPE html>
 <html lang="de"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1">
 <title>Impressum – rasenrechner.de</title>${pageCss}</head><body>
 <div class="wrap">
-  <a class="back" href="/">← Zurück zur Startseite</a>
+  <a class="back" href="/bayern/">← Zurück zur Startseite</a>
   <h1>Impressum</h1>
   <h2>Angaben gemäß § 5 TMG</h2>
   <p><strong>Gartenschmiede GmbH</strong><br>
@@ -180,7 +182,7 @@ app.get('/datenschutz', (req, res) => res.send(`<!DOCTYPE html>
 <html lang="de"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1">
 <title>Datenschutz – rasenrechner.de</title>${pageCss}</head><body>
 <div class="wrap">
-  <a class="back" href="/">← Zurück zur Startseite</a>
+  <a class="back" href="/bayern/">← Zurück zur Startseite</a>
   <h1>Datenschutzerklärung</h1>
 
   <h2>1. Verantwortlicher</h2>
@@ -305,7 +307,7 @@ app.get('/haendler/:slug', (req, res) => {
     <div class="cta-block">
       <h2>Kostenloses Angebot anfragen</h2>
       <p style="opacity:.85;font-size:.9rem;margin:0 0 .25rem">Unverbindlich, direkt vom Fachbetrieb, Antwort in 24h</p>
-      <a class="cta-btn" href="/${h.plz ? '?plz=' + h.plz + '#rechner' : '#rechner'}">Jetzt Bedarf berechnen &amp; anfragen</a>
+      <a class="cta-btn" href="/bayern/${h.plz ? '?plz=' + h.plz + '#rechner' : '#rechner'}">Jetzt Bedarf berechnen &amp; anfragen</a>
     </div>
 
     <footer>rasenrechner.de · Ein Service der Gartenschmiede GmbH ·
@@ -826,8 +828,8 @@ app.get('/sitemap.xml', (req, res) => {
   const base = 'https://www.rasenrechner.de';
   const today = new Date().toISOString().slice(0, 10);
 
-  const staticUrls = ['', '/muenchen', '/nuernberg', '/augsburg', '/regensburg',
-    '/landshut', '/rosenheim', '/ingolstadt', '/freising', '/fuerth'];
+  const staticUrls = ['/bayern/', '/bayern/muenchen', '/bayern/nuernberg', '/bayern/augsburg', '/bayern/regensburg',
+    '/bayern/landshut', '/bayern/rosenheim', '/bayern/ingolstadt', '/bayern/freising', '/bayern/fuerth'];
 
   const profileSlugs = db.prepare("SELECT profil_slug FROM hersteller WHERE profil_slug IS NOT NULL AND profil_slug != '' AND aktiv = 1").all();
 
@@ -1011,6 +1013,12 @@ const stadtCss = `<style>
 app.get('/:city', (req, res, next) => {
   const stadt = STAEDTE[req.params.city];
   if (!stadt) return next();
+  return res.redirect(301, `/bayern/${req.params.city}`);
+});
+
+app.get('/bayern/:city', (req, res, next) => {
+  const stadt = STAEDTE[req.params.city];
+  if (!stadt) return next();
 
   const top3  = findNearestHaendler(stadt.plz);
   const BADGE = { partner: 'Geprüfter Händler', pro: 'Professional Partner', premium: 'Premium Partner' };
@@ -1047,25 +1055,25 @@ app.get('/:city', (req, res, next) => {
   <meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1">
   <title>${stadt.title}</title>
   <meta name="description" content="${stadt.desc}">
-  <link rel="canonical" href="https://www.rasenrechner.de/${req.params.city}">
+  <link rel="canonical" href="https://www.rasenrechner.de/bayern/${req.params.city}">
   <meta property="og:title" content="${stadt.title}">
   <meta property="og:description" content="${stadt.desc}">
-  <meta property="og:url" content="https://www.rasenrechner.de/${req.params.city}">
+  <meta property="og:url" content="https://www.rasenrechner.de/bayern/${req.params.city}">
   <meta property="og:type" content="website">
   <script type="application/ld+json">${faqSchema}</script>
   ${stadtCss}
 </head>
 <body>
   <header class="st-header">
-    <a href="/">🌿 rasenrechner.de</a>
+    <a href="/bayern/">🌿 rasenrechner.de</a>
     <nav class="nav-links">
-      <a href="/#rechner">Preisrechner</a>
-      <a href="/#anfrage">Angebot anfragen</a>
+      <a href="/bayern/#rechner">Preisrechner</a>
+      <a href="/bayern/#anfrage">Angebot anfragen</a>
     </nav>
   </header>
 
   <div class="st-hero">
-    <div class="breadcrumb"><a href="/" style="color:rgba(255,255,255,.6);text-decoration:none">rasenrechner.de</a> › ${stadt.name}</div>
+    <div class="breadcrumb"><a href="/bayern/" style="color:rgba(255,255,255,.6);text-decoration:none">rasenrechner.de</a> › ${stadt.name}</div>
     <h1>Rollrasen ${stadt.name}</h1>
     <p>Preise, geprüfte Händler & kostenlose Angebote aus ${stadt.region}</p>
   </div>
@@ -1079,7 +1087,7 @@ app.get('/:city', (req, res, next) => {
     <div class="cta-block">
       <h2>Kostenloses Angebot für ${stadt.name} anfragen</h2>
       <p>PLZ eingeben – wir verbinden Sie sofort mit den nächsten Fachbetrieben. Kostenlos & unverbindlich.</p>
-      <a class="cta-btn" href="/?plz=${stadt.plz}#rechner">Jetzt Bedarf berechnen &amp; anfragen →</a>
+      <a class="cta-btn" href="/bayern/?plz=${stadt.plz}#rechner">Jetzt Bedarf berechnen &amp; anfragen →</a>
     </div>
 
     <h2>Preise für Rollrasen in ${stadt.name}</h2>
@@ -1089,7 +1097,7 @@ app.get('/:city', (req, res, next) => {
       <tr><td style="padding:9px 14px;color:#555">Inkl. Lieferung & Verlegung</td><td style="padding:9px 14px;font-weight:700;color:#2d6a2d">15–25 €/m²</td></tr>
       <tr style="background:#f4f8f4"><td style="padding:9px 14px;color:#555">Komplett inkl. Bodenvorbereitung</td><td style="padding:9px 14px;font-weight:700;color:#2d6a2d">25–55 €/m²</td></tr>
     </table>
-    <p style="font-size:.85rem;color:#888">Alle Angaben inkl. MwSt. Bodenvorbereitung (Fräsen, Planieren, Humus) wird separat kalkuliert. <a href="/" style="color:#2d6a2d">Preisrechner nutzen →</a></p>
+    <p style="font-size:.85rem;color:#888">Alle Angaben inkl. MwSt. Bodenvorbereitung (Fräsen, Planieren, Humus) wird separat kalkuliert. <a href="/bayern/" style="color:#2d6a2d">Preisrechner nutzen →</a></p>
 
     <h2>Häufige Fragen – Rollrasen ${stadt.name}</h2>
     <div>${faqHtml}</div>
