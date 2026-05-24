@@ -1698,16 +1698,18 @@
     if (e.key === 'Enter') { e.preventDefault(); window.sendChat(); }
   });
 
-  setTimeout(function () {
-    chatOpen = true;
-    document.getElementById('chat-panel').classList.add('open');
-    document.getElementById('chat-badge').style.display = 'none';
-    var typing = addMsg('…', false);
+  if (window.innerWidth > 768) {
     setTimeout(function () {
-      typing.textContent = 'Hallo! Ich bin Grasi, Ihr Rollrasen-Assistent 🌿 Fragen zu Sorten, Preisen oder Verlegung – einfach fragen!';
-      document.getElementById('chat-messages').scrollTop = 9999;
-    }, 800);
-  }, 5000);
+      chatOpen = true;
+      document.getElementById('chat-panel').classList.add('open');
+      document.getElementById('chat-badge').style.display = 'none';
+      var typing = addMsg('…', false);
+      setTimeout(function () {
+        typing.textContent = 'Hallo! Ich bin Grasi, Ihr Rollrasen-Assistent 🌿 Fragen zu Sorten, Preisen oder Verlegung – einfach fragen!';
+        document.getElementById('chat-messages').scrollTop = 9999;
+      }, 800);
+    }, 5000);
+  }
 })();
 </script>
 
