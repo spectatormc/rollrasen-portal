@@ -1102,6 +1102,70 @@ app.get('/:city', (req, res, next) => {
 </html>`);
 });
 
+// ─── CHATBOT ─────────────────────────────────────────────────────────────────
+
+const OPENAI_KEY = process.env.OPENAI_API_KEY || '';
+
+const CHAT_SYSTEM = `Du bist "Rassi", ein freundlicher Rollrasen-Experte für rasenrechner.de – das bayerische Portal für Rollrasen und Fertigrasen.
+
+Dein Wissen:
+- Rollrasen / Fertigrasen: 5–12 €/m² Material je nach Sorte, sofort grün und begehbar
+- Sorten auf rasenrechner.de: Premium-Fertigrasen 9 €/m², Halbschattenrasen 8,50 €/m², Sportrasen 6,50 €/m², Spielwiese/Landschaftsrasen 5,50 €/m²
+- Verlegen durch Fachbetrieb: 5–12 €/m² zusätzlich
+- Bodenvorbereitung (Fräsen, Planieren, Humus): 5–15 €/m² – wird oft unterschätzt
+- Lieferkosten: gestaffelt je nach Bestellmenge, ca. 60–280 €
+- Gesamtkosten komplett: realistisch 25–55 €/m²
+- Verschnitt: 5–10 % extra einplanen; bei unregelmäßigen Flächen bis 15 %
+- Beste Verlegezeit: Frühling und Herbst; im Sommer täglich wässern
+- Nach Verlegung 2–3 Wochen täglich bewässern bis die Wurzeln greifen
+- Rollrasen ist sofort betretbar (kurze Anwachszeit ca. 2 Wochen)
+
+Über rasenrechner.de:
+- Kostenloses bayerisches Vergleichsportal
+- Nutzer berechnen ihren Bedarf mit dem Verlegerechner (Rechtecke, Freihand oder Direkteingabe)
+- Danach können sie kostenlos und unverbindlich Angebote von regionalen Händlern anfordern
+- Händler aus ganz Bayern: München, Nürnberg, Augsburg und weitere Regionen
+
+Dein Kommunikationsstil:
+- Antworte auf Deutsch, kurz und konkret (2–4 Sätze)
+- Nenne immer konkrete Zahlen wo möglich
+- Empfiehl bei konkretem Interesse: Rechner nutzen → Angebot von regionalem Händler anfragen
+- Stelle maximal eine Rückfrage wenn nötig
+- Kein Marketing-Sprech, einfache ehrliche Sprache`;
+
+const chatLimiter = rateLimit({ windowMs: 60_000, max: 30, standardHeaders: true, legacyHeaders: false });
+
+app.post('/chat', chatLimiter, async (req, res) => {
+  const { message, history = [] } = req.body || {};
+  if (!message || typeof message !== 'string' || message.length > 800) {
+    return res.status(400).json({ error: 'Ungültige Nachricht' });
+  }
+  if (!OPENAI_KEY) {
+    return res.json({ reply: 'Der Assistent ist gerade nicht verfügbar. Bitte nutzen Sie das Kontaktformular.' });
+  }
+  try {
+    const safeHistory = Array.isArray(history)
+      ? history.slice(-10).filter(m => m && (m.role === 'user' || m.role === 'assistant') && typeof m.content === 'string')
+      : [];
+    const messages = [
+      { role: 'system', content: CHAT_SYSTEM },
+      ...safeHistory.map(m => ({ role: m.role, content: m.content.slice(0, 800) })),
+      { role: 'user', content: String(message).slice(0, 800) }
+    ];
+    const apiRes = await fetch('https://api.openai.com/v1/chat/completions', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json', 'Authorization': 'Bearer ' + OPENAI_KEY },
+      body: JSON.stringify({ model: 'gpt-4o-mini', max_tokens: 220, temperature: 0.65, messages })
+    });
+    const data = await apiRes.json();
+    const reply = data.choices?.[0]?.message?.content?.trim() || 'Ich konnte Ihre Frage leider nicht beantworten.';
+    res.json({ reply });
+  } catch (e) {
+    console.error('Chat-Fehler:', e.message);
+    res.status(500).json({ reply: 'Der Assistent ist gerade nicht erreichbar. Bitte nutzen Sie das Kontaktformular.' });
+  }
+});
+
 // ─── START ────────────────────────────────────────────────────────────────────
 
 const haendlerCount = db.prepare('SELECT COUNT(*) as c FROM hersteller WHERE aktiv = 1').get().c;
