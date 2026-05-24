@@ -66,10 +66,14 @@
     .hero__overlay { position: absolute; inset: 0; background: radial-gradient(ellipse at 50% 40%, rgba(0,0,0,0.15) 0%, rgba(0,0,0,0.62) 100%), linear-gradient(180deg, rgba(0,0,0,0.3) 0%, rgba(0,0,0,0.08) 45%, rgba(0,0,0,0.45) 100%); z-index: 1; }
 
     /* BILD-TRENNSTREIFEN */
-    .img-divider { position: relative; height: 260px; overflow: hidden; }
+    .img-divider { position: relative; height: 280px; overflow: hidden; }
     .img-divider img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; object-position: center; }
     .img-divider__overlay { position: absolute; inset: 0; background: rgba(0,0,0,0.35); display: flex; align-items: center; justify-content: center; }
     .img-divider__text { color: #fff; font-family: var(--font-heading); font-size: clamp(1.2rem, 3vw, 1.8rem); text-align: center; padding: 0 2rem; text-shadow: 0 2px 12px rgba(0,0,0,0.5); line-height: 1.3; }
+    .vid-divider { position: relative; height: 320px; overflow: hidden; }
+    .vid-divider video { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
+    .vid-divider__overlay { position: absolute; inset: 0; background: rgba(0,0,0,0.32); display: flex; align-items: center; justify-content: center; }
+    .vid-divider__text { color: #fff; font-family: var(--font-heading); font-size: clamp(1.2rem, 3vw, 1.8rem); text-align: center; padding: 0 2rem; text-shadow: 0 2px 12px rgba(0,0,0,0.5); line-height: 1.3; }
     .hero__inner { position: relative; z-index: 2; max-width: var(--max); margin-inline: auto; padding: 5rem 1.5rem 4rem; text-align: center; }
     .hero__eyebrow { display: inline-block; font-size: 0.72rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.12em; color: #a8d5a8; background: rgba(255,255,255,0.1); border: 1px solid rgba(255,255,255,0.25); padding: 0.3rem 1rem; border-radius: 999px; margin-bottom: 1.2rem; backdrop-filter: blur(4px); }
     .hero h1 { font-family: var(--font-heading); font-size: clamp(2.1rem, 5vw, 3.2rem); color: #fff; line-height: 1.12; margin-bottom: 1.1rem; text-shadow: 0 2px 12px rgba(0,0,0,0.35); }
@@ -380,7 +384,9 @@
   </header>
 
   <section class="hero">
-    <img class="hero__bg" src="https://images.unsplash.com/photo-1683229057797-ccee6038b673?w=1600&q=80&auto=format&fit=crop" alt="Frisch verlegter Rollrasen im Garten" loading="eager">
+    <video class="hero__bg" autoplay muted loop playsinline poster="/public/img/handwerker-rollrasen.webp">
+      <source src="/public/video/kinderfuesse-rasen-web.mp4" type="video/mp4">
+    </video>
     <div class="hero__overlay"></div>
     <div class="hero__inner">
       <span class="hero__eyebrow">Rollrasen in Bayern</span>
@@ -562,8 +568,8 @@
 
   <!-- ── BILD-TRENNSTREIFEN ── -->
   <div class="img-divider">
-    <img src="https://images.unsplash.com/photo-1683229057797-ccee6038b673?w=1400&q=75&auto=format&fit=crop"
-         alt="Frisch verlegter Rollrasen in einem gepflegten Garten" loading="lazy">
+    <img src="/public/img/handwerker-rollrasen.webp"
+         alt="Rollrasen verlegen – Handwerker rollt frische Rasenbahnen im Garten aus" loading="lazy">
     <div class="img-divider__overlay">
       <p class="img-divider__text">Vom Rechner zur fertigen Rasenfläche – in nur wenigen Tagen</p>
     </div>
@@ -606,6 +612,16 @@
       </div>
     </div>
   </section>
+
+  <!-- ── VIDEO-TRENNSTREIFEN TAUTROPFEN ── -->
+  <div class="vid-divider">
+    <video autoplay muted loop playsinline poster="/public/img/tautropfen-rasen.webp">
+      <source src="/public/video/tautropfen-rasen-web.mp4" type="video/mp4">
+    </video>
+    <div class="vid-divider__overlay">
+      <p class="vid-divider__text">Frischer Rollrasen – Qualität die man sieht und spürt</p>
+    </div>
+  </div>
 
   <!-- ── REGIONALE QUALITÄT ── -->
   <section class="section" id="regional">
@@ -654,12 +670,13 @@
     </div>
   </section>
 
-  <!-- ── BILD-TRENNSTREIFEN REGIONAL ── -->
-  <div class="img-divider">
-    <img src="https://images.unsplash.com/photo-1635860232428-9a7a57ccfe76?w=1400&q=75&auto=format&fit=crop"
-         alt="Bayerische Landschaft – regionaler Rollrasen aus Bayern" loading="lazy">
-    <div class="img-divider__overlay">
-      <p class="img-divider__text">Regionaler Rollrasen aus Bayern – klimaangepasst & frisch geerntet</p>
+  <!-- ── VIDEO-TRENNSTREIFEN GARTENPANORAMA ── -->
+  <div class="vid-divider">
+    <video autoplay muted loop playsinline poster="/public/img/garten-panorama.webp">
+      <source src="/public/video/garten-panorama-web.mp4" type="video/mp4">
+    </video>
+    <div class="vid-divider__overlay">
+      <p class="vid-divider__text">Regionaler Rollrasen aus Bayern – klimaangepasst & frisch geerntet</p>
     </div>
   </div>
 
@@ -821,6 +838,15 @@
       </div>
     </div>
   </section>
+
+  <!-- ── BILD-TRENNSTREIFEN STADTGARTEN ── -->
+  <div class="img-divider">
+    <img src="/public/img/stadtgarten.webp"
+         alt="Gepflegter Stadtgarten mit frisch verlegtem Rollrasen und Terrasse" loading="lazy">
+    <div class="img-divider__overlay">
+      <p class="img-divider__text">Rollrasen – sofort nutzbar, dauerhaft schön</p>
+    </div>
+  </div>
 
   <!-- ── FAQ ── -->
   <section class="section section--alt" id="faq">
