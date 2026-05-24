@@ -760,8 +760,50 @@ app.post('/partner-anfrage', async (req, res) => {
       <p style="color:#666;font-size:0.9rem">Eingegangen über rollrasen.gartenbau-kosten.de</p>
     </div>`;
 
+  const bestaetigung = `<!DOCTYPE html>
+<html lang="de"><head><meta charset="UTF-8"></head>
+<body style="font-family:sans-serif;background:#f7f9f7;margin:0;padding:0">
+<div style="max-width:600px;margin:0 auto;background:#fff;border-radius:10px;overflow:hidden;box-shadow:0 2px 12px rgba(0,0,0,.08)">
+  <div style="background:#2d6a2d;padding:28px 28px 24px">
+    <div style="color:#a8d5a8;font-size:.75rem;letter-spacing:.1em;text-transform:uppercase;margin-bottom:6px">rasenrechner.de · Partnerschaft</div>
+    <h1 style="color:#fff;font-size:1.3rem;margin:0;line-height:1.3">Ihre Anfrage ist eingegangen</h1>
+  </div>
+  <div style="padding:28px">
+    <p style="margin-top:0">Sehr geehrte/r ${name},</p>
+    <p>vielen Dank für Ihr Interesse an einer Partnerschaft auf <a href="https://www.rasenrechner.de" style="color:#2d6a2d">rasenrechner.de</a>.</p>
+    <p>Wir haben Ihre Anfrage erhalten und melden uns in der Regel <strong>innerhalb von 1–2 Werktagen</strong> persönlich bei Ihnen.</p>
+
+    <div style="background:#f4f8f4;border-left:4px solid #2d6a2d;border-radius:4px;padding:16px 20px;margin:20px 0">
+      <p style="margin:0 0 8px;font-weight:700;color:#1a3d1a">Ihre Angaben</p>
+      <table style="border-collapse:collapse;width:100%;font-size:.9rem">
+        <tr><td style="padding:5px 0;color:#666;width:130px">Name / Firma</td><td style="padding:5px 0;font-weight:600">${name}</td></tr>
+        <tr><td style="padding:5px 0;color:#666">E-Mail</td><td style="padding:5px 0">${email}</td></tr>
+        ${tel ? `<tr><td style="padding:5px 0;color:#666">Telefon</td><td style="padding:5px 0">${tel}</td></tr>` : ''}
+        ${type ? `<tr><td style="padding:5px 0;color:#666">Paket-Interesse</td><td style="padding:5px 0">${type}</td></tr>` : ''}
+        ${msg ? `<tr><td style="padding:5px 0;color:#666;vertical-align:top">Nachricht</td><td style="padding:5px 0">${msg}</td></tr>` : ''}
+      </table>
+    </div>
+
+    <p style="font-size:.9rem;color:#555">
+      In der Zwischenzeit können Sie gerne unsere <a href="https://www.rasenrechner.de" style="color:#2d6a2d">Portal-Startseite</a> besuchen
+      und sich einen Eindruck verschaffen, wie Ihr Betrieb dort erscheinen würde.
+    </p>
+
+    <p>Mit freundlichen Grüßen<br>
+    <strong>Bastian Rohrhuber</strong><br>
+    rasenrechner.de · <a href="mailto:info@gartenbau-kosten.de" style="color:#2d6a2d">info@gartenbau-kosten.de</a></p>
+
+    <hr style="border:none;border-top:1px solid #e0eee0;margin:1.5rem 0">
+    <p style="color:#999;font-size:.75rem;margin:0">
+      Diese Bestätigung wurde automatisch versandt. Bei Rückfragen antworten Sie einfach auf diese E-Mail.
+    </p>
+  </div>
+</div>
+</body></html>`;
+
   try {
     await sendMail(ADMIN_EMAIL || 'info@gartenbau-kosten.de', `Partner-Anfrage: ${name} (${type || 'unbekannt'})`, adminMail);
+    await sendMail(email, 'Ihre Partner-Anfrage bei rasenrechner.de – Bestätigung', bestaetigung);
     res.json({ ok: true });
   } catch (err) {
     console.error('Mail-Fehler:', err.message);
