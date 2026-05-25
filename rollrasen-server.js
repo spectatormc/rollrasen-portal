@@ -326,12 +326,25 @@ app.get('/haendler/:slug', (req, res) => {
   const metaDesc   = h.profil_text
     ? `${h.name} aus ${ortLabel} – ${typLabel}. ${h.profil_text.slice(0, 130)}…`
     : `${h.name} aus ${ortLabel} – ${typLabel}. Kostenlose Angebote anfragen auf rasenrechner.de.`;
+  const canonicalUrl = `https://www.rasenrechner.de/haendler/${h.profil_slug}`;
+  const ogImage = h.logo_url || 'https://www.rasenrechner.de/img/og-default.jpg';
 
-  const schemaRating = h.google_bewertung ? `,"aggregateRating":{"@type":"AggregateRating","ratingValue":"${h.google_bewertung}","reviewCount":"${h.google_bewertungen_anzahl || 1}"}` : '';
+  const schemaRating  = h.google_bewertung ? `,"aggregateRating":{"@type":"AggregateRating","ratingValue":"${h.google_bewertung}","reviewCount":"${h.google_bewertungen_anzahl || 1}"}` : '';
   const schemaAdresse = adresse ? `,"address":{"@type":"PostalAddress","streetAddress":"${h.strasse || ''}","postalCode":"${h.plz || ''}","addressLocality":"${h.ort || ''}","addressCountry":"DE"}` : '';
-  const schemaTel = h.telefon ? `,"telephone":"${h.telefon}"` : '';
-  const schemaUrl = h.website ? `,"url":"${h.website}"` : '';
-  const schema = `<script type="application/ld+json">{"@context":"https://schema.org","@type":"LocalBusiness","name":"${h.name}"${schemaAdresse}${schemaTel}${schemaUrl}${schemaRating}}<\/script>`;
+  const schemaTel     = h.telefon ? `,"telephone":"${h.telefon}"` : '';
+  const schemaUrl     = h.website ? `,"url":"${h.website}"` : '';
+  const schema        = `<script type="application/ld+json">{"@context":"https://schema.org","@type":"LocalBusiness","name":"${h.name}"${schemaAdresse}${schemaTel}${schemaUrl}${schemaRating}}<\/script>`;
+
+  // Nächste Stadtseite für Rücklink
+  const PLZ_STADT = {'80':'muenchen','81':'muenchen','82':'muenchen','83':'rosenheim',
+    '84':'landshut','85':'muenchen','86':'augsburg','87':'augsburg',
+    '90':'nuernberg','91':'nuernberg','92':'regensburg','93':'regensburg'};
+  const STADT_NAME = {muenchen:'München',rosenheim:'Rosenheim',landshut:'Landshut',
+    augsburg:'Augsburg',nuernberg:'Nürnberg',regensburg:'Regensburg'};
+  const stadtSlug  = h.plz ? PLZ_STADT[h.plz.slice(0,2)] || null : null;
+  const stadtLink  = stadtSlug
+    ? `<p style="margin-top:1.5rem;font-size:.88rem"><a href="/bayern/${stadtSlug}" style="color:#2d6a2d">← Weitere Rollrasen-Händler in ${STADT_NAME[stadtSlug]} &amp; Umgebung</a></p>`
+    : `<p style="margin-top:1.5rem;font-size:.88rem"><a href="/bayern/" style="color:#2d6a2d">← Alle Rollrasen-Händler in Bayern</a></p>`;
 
   res.send(`<!DOCTYPE html>
 <html lang="de">
@@ -339,6 +352,12 @@ app.get('/haendler/:slug', (req, res) => {
   <meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1">
   <title>${h.name} – Rollrasen in ${ortLabel} | rasenrechner.de</title>
   <meta name="description" content="${metaDesc}">
+  <link rel="canonical" href="${canonicalUrl}">
+  <meta property="og:type" content="website">
+  <meta property="og:title" content="${h.name} – Rollrasen in ${ortLabel}">
+  <meta property="og:description" content="${metaDesc}">
+  <meta property="og:url" content="${canonicalUrl}">
+  <meta property="og:image" content="${ogImage}">
   ${schema}
   ${pageCss}
   <style>
@@ -380,6 +399,8 @@ app.get('/haendler/:slug', (req, res) => {
     ${kontaktBlock}
 
     ${ctaBlock}
+
+    ${stadtLink}
 
     <footer>rasenrechner.de · Ein Service der Gartenschmiede GmbH ·
       <a href="/impressum">Impressum</a> · <a href="/datenschutz">Datenschutz</a>
