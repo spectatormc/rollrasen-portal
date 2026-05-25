@@ -256,7 +256,7 @@ app.get('/haendler/:slug', (req, res) => {
 
   const unverifiziertBanner = !verifiziert ? `
     <div style="background:#fefce8;border:1px solid #fde047;border-radius:8px;padding:.75rem 1rem;margin-bottom:1.5rem;font-size:.85rem;color:#854d0e;display:flex;align-items:center;gap:.5rem">
-      ℹ️ Dieser Eintrag basiert auf öffentlich verfügbaren Informationen und wurde vom Betrieb noch nicht bestätigt.
+      ℹ️ Dieser Betrieb ist noch kein aktiver Partner auf rasenrechner.de. Die Angaben stammen aus öffentlichen Quellen.
     </div>` : '';
 
   const kontaktBlock = verifiziert
