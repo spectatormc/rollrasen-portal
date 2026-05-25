@@ -243,6 +243,7 @@ app.get('/haendler/:slug', (req, res) => {
   const h = db.prepare('SELECT * FROM hersteller WHERE profil_slug = ? AND aktiv = 1').get(req.params.slug);
   if (!h) return res.status(404).send(`<!DOCTYPE html><html lang="de"><head><meta charset="UTF-8"><title>Nicht gefunden</title>${pageCss}</head><body><div class="wrap"><a class="back" href="/">← Startseite</a><h1>Händler nicht gefunden</h1><p>Dieses Profil existiert nicht oder ist nicht mehr aktiv.</p></div></body></html>`);
 
+  const verifiziert = h.kontakt_status === 'abonniert';
   const badge   = BADGE_HTML[h.paket] || '';
   const adresse = [h.strasse, h.plz && h.ort ? `${h.plz} ${h.ort}` : h.ort].filter(Boolean).join(', ');
   const mapsUrl = adresse ? `https://www.google.com/maps/search/${encodeURIComponent(h.name + ' ' + adresse)}` : null;
@@ -252,6 +253,40 @@ app.get('/haendler/:slug', (req, res) => {
     <div style="margin:2rem 0;border-radius:10px;overflow:hidden;aspect-ratio:16/9;background:#000">
       <iframe src="${h.video_url}" style="width:100%;height:100%;border:none" allowfullscreen loading="lazy"></iframe>
     </div>` : '';
+
+  const unverifiziertBanner = !verifiziert ? `
+    <div style="background:#fefce8;border:1px solid #fde047;border-radius:8px;padding:.75rem 1rem;margin-bottom:1.5rem;font-size:.85rem;color:#854d0e;display:flex;align-items:center;gap:.5rem">
+      ℹ️ Dieser Eintrag basiert auf öffentlich verfügbaren Informationen und wurde vom Betrieb noch nicht bestätigt.
+    </div>` : '';
+
+  const kontaktBlock = verifiziert
+    ? `<div class="contact-card">
+      <strong style="color:#1a3d12;font-size:.85rem;text-transform:uppercase;letter-spacing:.05em">Kontakt</strong>
+      ${h.telefon ? `<div class="contact-row">📞 <a href="tel:${h.telefon.replace(/\s/g,'')}">${h.telefon}</a></div>` : ''}
+      ${h.email   ? `<div class="contact-row">✉️ <a href="mailto:${h.email}">${h.email}</a></div>` : ''}
+      ${h.website ? `<div class="contact-row">🌐 <a href="${h.website}" target="_blank" rel="noopener">${h.website.replace(/^https?:\/\//,'')}</a></div>` : ''}
+      ${adresse   ? `<div class="contact-row">📍 ${adresse}</div>` : ''}
+      ${mapsUrl   ? `<a class="maps-link" href="${mapsUrl}" target="_blank" rel="noopener">🗺️ Auf Google Maps anzeigen →</a>` : ''}
+    </div>`
+    : `<div class="contact-card">
+      <strong style="color:#1a3d12;font-size:.85rem;text-transform:uppercase;letter-spacing:.05em">Kontakt</strong>
+      ${h.telefon ? `<div class="contact-row">📞 <a href="tel:${h.telefon.replace(/\s/g,'')}">${h.telefon}</a></div>` : ''}
+      ${h.website ? `<div class="contact-row">🌐 <a href="${h.website}" target="_blank" rel="noopener">${h.website.replace(/^https?:\/\//,'')}</a></div>` : ''}
+      ${adresse   ? `<div class="contact-row">📍 ${adresse}</div>` : ''}
+      ${mapsUrl   ? `<a class="maps-link" href="${mapsUrl}" target="_blank" rel="noopener">🗺️ Auf Google Maps anzeigen →</a>` : ''}
+    </div>`;
+
+  const ctaBlock = verifiziert
+    ? `<div class="cta-block">
+      <h2>Kostenloses Angebot anfragen</h2>
+      <p style="opacity:.85;font-size:.9rem;margin:0 0 .25rem">Unverbindlich, direkt vom Fachbetrieb, Antwort in 24h</p>
+      <a class="cta-btn" href="/bayern/${h.plz ? '?plz=' + h.plz + '#rechner' : '#rechner'}">Jetzt Bedarf berechnen &amp; anfragen</a>
+    </div>`
+    : `<div class="cta-block">
+      <h2>Rollrasen in deiner Region anfragen</h2>
+      <p style="opacity:.85;font-size:.9rem;margin:0 0 .25rem">Vergleiche Angebote von geprüften Betrieben in Bayern</p>
+      <a class="cta-btn" href="/bayern/#rechner">Jetzt Bedarf berechnen</a>
+    </div>`;
 
   res.send(`<!DOCTYPE html>
 <html lang="de">
@@ -289,26 +324,16 @@ app.get('/haendler/:slug', (req, res) => {
   </div>
 
   <div class="wrap" style="padding-top:0">
+    ${unverifiziertBanner}
     ${videoBlock}
 
     ${h.profil_text ? `<p class="profil-text">${h.profil_text}</p>` : ''}
 
     ${sterne ? `<p style="margin:1rem 0">${sterne}</p>` : ''}
 
-    <div class="contact-card">
-      <strong style="color:#1a3d12;font-size:.85rem;text-transform:uppercase;letter-spacing:.05em">Kontakt</strong>
-      ${h.telefon ? `<div class="contact-row">📞 <a href="tel:${h.telefon.replace(/\s/g,'')}">${h.telefon}</a></div>` : ''}
-      ${h.email   ? `<div class="contact-row">✉️ <a href="mailto:${h.email}">${h.email}</a></div>` : ''}
-      ${h.website ? `<div class="contact-row">🌐 <a href="${h.website}" target="_blank" rel="noopener">${h.website.replace(/^https?:\/\//,'')}</a></div>` : ''}
-      ${adresse   ? `<div class="contact-row">📍 ${adresse}</div>` : ''}
-      ${mapsUrl   ? `<a class="maps-link" href="${mapsUrl}" target="_blank" rel="noopener">🗺️ Auf Google Maps anzeigen →</a>` : ''}
-    </div>
+    ${kontaktBlock}
 
-    <div class="cta-block">
-      <h2>Kostenloses Angebot anfragen</h2>
-      <p style="opacity:.85;font-size:.9rem;margin:0 0 .25rem">Unverbindlich, direkt vom Fachbetrieb, Antwort in 24h</p>
-      <a class="cta-btn" href="/bayern/${h.plz ? '?plz=' + h.plz + '#rechner' : '#rechner'}">Jetzt Bedarf berechnen &amp; anfragen</a>
-    </div>
+    ${ctaBlock}
 
     <footer>rasenrechner.de · Ein Service der Gartenschmiede GmbH ·
       <a href="/impressum">Impressum</a> · <a href="/datenschutz">Datenschutz</a>
