@@ -1152,7 +1152,7 @@ const stadtCss = `<style>
   .st-header .nav-links a:hover{opacity:1}
   .st-hero{background:linear-gradient(rgba(26,61,18,0.80),rgba(45,106,45,0.75)),url('/public/img/tautropfen-rasen.webp') center/cover no-repeat;color:#fff;padding:3rem 1.5rem 2.5rem;text-align:center}
   .st-hero h1{font-size:2rem;font-weight:800;margin:.5rem 0;color:#fff}
-  .st-hero p{opacity:.85;max-width:560px;margin:.75rem auto 0;font-size:.95rem}
+  .st-hero p{opacity:1;max-width:560px;margin:.75rem auto 0;font-size:.95rem;color:#fff;text-shadow:0 1px 4px rgba(0,0,0,0.55)}
   .st-hero .breadcrumb{font-size:.78rem;opacity:.6;margin-bottom:.5rem}
   .wrap{max-width:800px;margin:0 auto;padding:2.5rem 1.5rem 5rem}
   h2{font-size:1.25rem;color:#1a3d12;font-weight:700;margin:2.5rem 0 .75rem;padding-bottom:.5rem;border-bottom:2px solid #d4e8c8}
