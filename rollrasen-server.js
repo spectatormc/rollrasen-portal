@@ -337,10 +337,13 @@ app.get('/haendler/:slug', (req, res) => {
 
   // Nächste Stadtseite für Rücklink
   const PLZ_STADT = {'80':'muenchen','81':'muenchen','82':'muenchen','83':'rosenheim',
-    '84':'landshut','85':'muenchen','86':'augsburg','87':'augsburg',
-    '90':'nuernberg','91':'nuernberg','92':'regensburg','93':'regensburg'};
+    '84':'landshut','85':'muenchen','86':'augsburg','87':'kempten',
+    '90':'nuernberg','91':'erlangen','92':'regensburg','93':'regensburg',
+    '94':'passau','95':'bayreuth','97':'wuerzburg'};
   const STADT_NAME = {muenchen:'München',rosenheim:'Rosenheim',landshut:'Landshut',
-    augsburg:'Augsburg',nuernberg:'Nürnberg',regensburg:'Regensburg'};
+    augsburg:'Augsburg',nuernberg:'Nürnberg',regensburg:'Regensburg',
+    wuerzburg:'Würzburg',erlangen:'Erlangen',bayreuth:'Bayreuth',
+    passau:'Passau',kempten:'Kempten'};
   const stadtSlug  = h.plz ? PLZ_STADT[h.plz.slice(0,2)] || null : null;
   const stadtLink  = stadtSlug
     ? `<p style="margin-top:1.5rem;font-size:.88rem"><a href="/bayern/${stadtSlug}" style="color:#2d6a2d">← Weitere Rollrasen-Händler in ${STADT_NAME[stadtSlug]} &amp; Umgebung</a></p>`
@@ -934,7 +937,8 @@ app.get('/sitemap.xml', (req, res) => {
   const today = new Date().toISOString().slice(0, 10);
 
   const staticUrls = ['/bayern/', '/bayern/muenchen', '/bayern/nuernberg', '/bayern/augsburg', '/bayern/regensburg',
-    '/bayern/landshut', '/bayern/rosenheim', '/bayern/ingolstadt', '/bayern/freising', '/bayern/fuerth'];
+    '/bayern/landshut', '/bayern/rosenheim', '/bayern/ingolstadt', '/bayern/freising', '/bayern/fuerth',
+    '/bayern/wuerzburg', '/bayern/erlangen', '/bayern/bayreuth', '/bayern/passau', '/bayern/kempten'];
 
   const profileSlugs = db.prepare("SELECT profil_slug FROM hersteller WHERE profil_slug IS NOT NULL AND profil_slug != '' AND aktiv = 1").all();
 
@@ -1074,6 +1078,66 @@ const STAEDTE = {
       { q: 'Welche Händler liefern in Fürth?', a: 'Greenkeepers Gartenbau GbR ist direkt in Fürth ansässig. Noris Rollrasen (Nürnberg) und überregionale Hersteller wie BayernRasen liefern ebenfalls in den Großraum Fürth.' },
       { q: 'Wann ist der beste Zeitpunkt für Rollrasen in Fürth?', a: 'April bis Juni und September. Fürth und Nürnberg haben relativ trockene Sommer – intensive Bewässerung nach der Verlegung ist besonders wichtig.' },
       { q: 'Kann ich Rollrasen in Fürth auch in Eigenleistung verlegen?', a: 'Ja, bei kleineren Flächen gut machbar. Wichtig ist eine ebene, ausreichend lockere Unterlage. Lokale Händler helfen mit Beratung zur richtigen Sorte und Bodenvorbereitung.' },
+    ],
+  },
+  wuerzburg: {
+    name: 'Würzburg', region: 'Unterfranken', plz: '97070',
+    title: 'Rollrasen Würzburg – Kosten, Händler & kostenlose Angebote 2026',
+    desc:  'Rollrasen in Würzburg kaufen & verlegen lassen: Preisrechner, regionale Händler & kostenlose Angebote. Geprüfte Fachbetriebe aus Unterfranken.',
+    intro: 'Würzburg ist eine der wärmsten Städte Deutschlands – mit mildem Weinbauklima und langen Vegetationsperioden. Das ist ideal für Rollrasen: schnelles Anwachsen, lange Nutzungszeit und wenig Frostrisiko. Überregionale Hersteller aus Bayern liefern zuverlässig in den Würzburger Raum, Walter Schwab GmbH aus dem schwäbischen Waidhofen ist einer der nächsten Produzenten.',
+    faq: [
+      { q: 'Was kostet Rollrasen in Würzburg?', a: 'Material: 5–12 €/m². Inkl. Lieferung und Verlegung: 15–25 €/m². Mit Bodenvorbereitung: 25–55 €/m². Die etwas weiteren Transportwege von bayerischen Herstellern können die Lieferkosten leicht erhöhen.' },
+      { q: 'Welche Händler liefern nach Würzburg?', a: 'Überregionale Hersteller wie BayernRasen, Isar Rollrasen und Sued-Rasen liefern bayernweit – auch nach Würzburg. PLZ eingeben und die drei nächsten Betriebe finden.' },
+      { q: 'Wann ist der beste Zeitpunkt für Rollrasen in Würzburg?', a: 'März bis Juni und September/Oktober. Das milde Würzburger Klima ermöglicht frühere Frühjahrspflanzungen als im restlichen Bayern – oft schon ab Ende März.' },
+      { q: 'Welche Rasensorte eignet sich für Würzburgs Klima?', a: 'Zierrasen und Gebrauchsrasen gedeihen beide gut. Bei heißen Sommern empfiehlt sich eine trockenheitstolerante Sorte – lokale Händler beraten individuell.' },
+    ],
+  },
+  erlangen: {
+    name: 'Erlangen', region: 'Mittelfranken', plz: '91052',
+    title: 'Rollrasen Erlangen – Kosten, Händler & kostenlose Angebote 2026',
+    desc:  'Rollrasen in Erlangen kaufen & verlegen lassen: Preisrechner, regionale Händler & kostenlose Angebote. Geprüfte Fachbetriebe aus Mittelfranken.',
+    intro: 'Erlangen liegt direkt nördlich von Nürnberg und profitiert von denselben spezialisierten Betrieben: Noris Rollrasen aus Nürnberg und Greenkeepers Gartenbau aus Fürth sind beide in wenigen Minuten erreichbar. Die Universitätsstadt mit ihren vielen Neubaugebieten und Reihenhaussiedlungen ist ein starker Rollrasen-Markt – Neubauprojekte brauchen schnell eine grüne Fläche.',
+    faq: [
+      { q: 'Was kostet Rollrasen in Erlangen?', a: 'Material: 5–12 €/m². Inkl. Lieferung und Verlegung: 15–25 €/m². Mit Bodenvorbereitung: 25–55 €/m². Erlangen liegt nah an Nürnberger Betrieben, was kurze Lieferwege und günstige Preise bedeutet.' },
+      { q: 'Welche Händler liefern nach Erlangen?', a: 'Noris Rollrasen (Nürnberg) und Greenkeepers Gartenbau (Fürth) sind direkt vor Ort. Überregionale Hersteller wie BayernRasen liefern ebenfalls nach Mittelfranken.' },
+      { q: 'Wann ist der beste Zeitpunkt für Rollrasen in Erlangen?', a: 'April bis Juni und September. Das kontinentale Klima Mittelfrankens macht Frühjahrspflanzungen nach den Eisheiligen besonders zuverlässig.' },
+      { q: 'Lohnt sich Rollrasen für Neubauten in Erlangen?', a: 'Ja – Rollrasen ist bei Neubauprojekten die bevorzugte Wahl: sofort nutzbar, kein langes Warten auf Keimung und professionelles Erscheinungsbild von Tag eins.' },
+    ],
+  },
+  bayreuth: {
+    name: 'Bayreuth', region: 'Oberfranken', plz: '95444',
+    title: 'Rollrasen Bayreuth – Kosten, Händler & kostenlose Angebote 2026',
+    desc:  'Rollrasen in Bayreuth kaufen & verlegen lassen: Preisrechner, regionale Händler & kostenlose Angebote. Geprüfte Fachbetriebe aus Oberfranken.',
+    intro: 'Bayreuth und Oberfranken sind die nördlichste Region Bayerns – mit einem raueren Klima als Oberbayern, aber bestens geeignet für robuste Rollrasen-Sorten. Überregionale Hersteller aus dem Großraum Nürnberg liefern zuverlässig in die Region. Für Garten- und Landschaftsprojekte in Bayreuth empfehlen sich frostresistente Sorten, die auch strengen Oberfränkischen Wintern standhalten.',
+    faq: [
+      { q: 'Was kostet Rollrasen in Bayreuth?', a: 'Material: 5–12 €/m². Inkl. Lieferung und Verlegung: 15–25 €/m². Mit Bodenvorbereitung: 25–55 €/m². Transportkosten von Nürnberger Betrieben sind bei der Kalkulation einzuplanen.' },
+      { q: 'Welche Händler liefern nach Bayreuth?', a: 'Noris Rollrasen (Nürnberg) und die Greenkeepers Gartenbau (Fürth) liefern in den Raum Oberfranken. Überregionale Hersteller wie Isar Rollrasen und BayernRasen sind ebenfalls verfügbar.' },
+      { q: 'Wann ist der beste Zeitpunkt für Rollrasen in Bayreuth?', a: 'Mai bis Juni und September. Oberfranken hat längere Winterperioden als Südbayern – Pflanzungen erst nach den Eisheiligen (Mitte Mai) sind sicherer.' },
+      { q: 'Welche Sorte eignet sich für Oberfranken?', a: 'Robuste Strapazierrasen-Sorten mit guter Frosttoleranz sind ideal. Lokale Händler beraten zu den besten Sorten für Bayreuths Bodenverhältnisse.' },
+    ],
+  },
+  passau: {
+    name: 'Passau', region: 'Niederbayern', plz: '94032',
+    title: 'Rollrasen Passau – Kosten, Händler & kostenlose Angebote 2026',
+    desc:  'Rollrasen in Passau kaufen & verlegen lassen: Preisrechner, regionale Händler & kostenlose Angebote. Geprüfte Fachbetriebe aus Niederbayern.',
+    intro: 'Passau liegt an der Grenze zu Österreich – und hat mit Isar Rollrasen und Nodes Gartenbau aus dem Landshuter Raum zwei niederbayerische Spezialisten in erreichbarer Nähe. Das Drei-Flüsse-Klima mit ausreichend Niederschlägen ist hervorragend für Rollrasen: schnelles Anwachsen und satte grüne Flächen sind die Regel, nicht die Ausnahme.',
+    faq: [
+      { q: 'Was kostet Rollrasen in Passau?', a: 'Material: 5–12 €/m². Inkl. Lieferung und Verlegung: 15–25 €/m². Mit Bodenvorbereitung: 25–55 €/m². Transportwege von Landshuter Betrieben sind einzuplanen.' },
+      { q: 'Welche Händler liefern nach Passau?', a: 'Isar Rollrasen (Altheim) und Nodes Gartenbau (Essenbach) decken Niederbayern ab. Für größere Projekte stehen bayernweite Hersteller wie BayernRasen und Sued-Rasen zur Verfügung.' },
+      { q: 'Wann ist der beste Zeitpunkt für Rollrasen in Passau?', a: 'April bis Juni und September/Oktober. Das feuchte Klima im Passauer Raum begünstigt schnelles Anwachsen – Frühjahrsverlegungen sind besonders zuverlässig.' },
+      { q: 'Kann ich Rollrasen auch in Hanglagen in Passau verlegen?', a: 'Ja, aber Hanglagen erfordern spezielle Verlegetechnik und gegebenenfalls Erosionsschutz. Ein Fachbetrieb berät zur optimalen Vorgehensweise.' },
+    ],
+  },
+  kempten: {
+    name: 'Kempten', region: 'Allgäu', plz: '87435',
+    title: 'Rollrasen Kempten – Kosten, Händler & kostenlose Angebote 2026',
+    desc:  'Rollrasen in Kempten kaufen & verlegen lassen: Preisrechner, regionale Händler & kostenlose Angebote. Geprüfte Fachbetriebe aus dem Allgäu.',
+    intro: 'Kempten im Allgäu liegt am Rand der Alpen – mit einem Klima das hohe Niederschläge und kurze Sommer mit sich bringt. Das ist ideal für üppigen, satten Rollrasen, der hier besonders schnell anwächst. Walter Schwab GmbH aus Waidhofen in Schwaben ist einer der nächsten Hersteller, überregionale Betriebe liefern ins gesamte Allgäu.',
+    faq: [
+      { q: 'Was kostet Rollrasen in Kempten?', a: 'Material: 5–12 €/m². Inkl. Lieferung und Verlegung: 15–25 €/m². Mit Bodenvorbereitung: 25–55 €/m². Im Allgäu können Hanglagen und weite Transportwege den Gesamtpreis leicht erhöhen.' },
+      { q: 'Welche Händler liefern nach Kempten?', a: 'Walter Schwab GmbH (Waidhofen, Schwaben) ist einer der nächsten Hersteller. Ergänzend liefern BayernRasen und Sued-Rasen bayernweit – auch ins Allgäu.' },
+      { q: 'Wann ist der beste Zeitpunkt für Rollrasen in Kempten?', a: 'Mai bis Juni und August/September. Das Allgäuer Klima ist kühl und feucht – Pflanzungen nach den Eisheiligen sind sicherer. Die hohen Niederschläge erleichtern das Anwachsen.' },
+      { q: 'Eignet sich Rollrasen für das feuchte Allgäuer Klima?', a: 'Besonders gut – hohe Niederschläge bedeuten weniger Bewässerungsaufwand und schnelleres Anwachsen. Strapazierrasen ist für die kurzen Sommer und intensiven Nutzung im Allgäu empfehlenswert.' },
     ],
   },
 };
