@@ -277,10 +277,43 @@ app.get('/haendler/:slug', (req, res) => {
     </div>`;
 
   const ctaBlock = verifiziert
-    ? `<div class="cta-block">
-      <h2>Kostenloses Angebot anfragen</h2>
-      <p style="opacity:.85;font-size:.9rem;margin:0 0 .25rem">Unverbindlich, direkt vom Fachbetrieb, Antwort in 24h</p>
-      <a class="cta-btn" href="/bayern/${h.plz ? '?plz=' + h.plz + '#rechner' : '#rechner'}">Jetzt Bedarf berechnen &amp; anfragen</a>
+    ? `<div class="cta-block" id="direktanfrage">
+      <h2>Direkt anfragen bei ${h.name}</h2>
+      <p style="opacity:.85;font-size:.9rem;margin:0 0 1.25rem">Nur dieser Betrieb erhält Ihre Anfrage – unverbindlich, Antwort in 24h</p>
+      <form id="direktForm" style="text-align:left;display:flex;flex-direction:column;gap:.75rem">
+        <input type="hidden" name="haendler_id" value="${h.id}">
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:.75rem">
+          <input name="name" placeholder="Ihr Name *" required style="padding:.65rem .85rem;border:none;border-radius:6px;font-size:.93rem;width:100%;box-sizing:border-box">
+          <input name="email" type="email" placeholder="E-Mail *" required style="padding:.65rem .85rem;border:none;border-radius:6px;font-size:.93rem;width:100%;box-sizing:border-box">
+        </div>
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:.75rem">
+          <input name="phone" type="tel" placeholder="Telefon (optional)" style="padding:.65rem .85rem;border:none;border-radius:6px;font-size:.93rem;width:100%;box-sizing:border-box">
+          <input name="m2" type="number" placeholder="Fläche in m² (optional)" style="padding:.65rem .85rem;border:none;border-radius:6px;font-size:.93rem;width:100%;box-sizing:border-box">
+        </div>
+        <textarea name="message" placeholder="Ihre Nachricht (optional)" rows="3" style="padding:.65rem .85rem;border:none;border-radius:6px;font-size:.93rem;resize:vertical;box-sizing:border-box"></textarea>
+        <button type="submit" class="cta-btn" style="cursor:pointer;border:none;width:100%;font-size:1rem">Anfrage senden →</button>
+        <p id="direktStatus" style="text-align:center;font-size:.85rem;margin:0;min-height:1.2em"></p>
+      </form>
+      <script>
+        document.getElementById('direktForm').addEventListener('submit', async function(e) {
+          e.preventDefault();
+          const btn = this.querySelector('button');
+          const status = document.getElementById('direktStatus');
+          btn.disabled = true;
+          btn.textContent = 'Wird gesendet…';
+          const data = Object.fromEntries(new FormData(this));
+          try {
+            const r = await fetch('/anfrage', { method: 'POST', headers: {'Content-Type':'application/json'}, body: JSON.stringify(data) });
+            const j = await r.json();
+            if (j.ok) {
+              this.innerHTML = '<p style="text-align:center;font-size:1rem;margin:1rem 0">✅ Ihre Anfrage wurde direkt an <strong>${h.name}</strong> weitergeleitet. Sie erhalten in Kürze eine Bestätigung per E-Mail.</p>';
+            } else {
+              status.textContent = j.error || 'Fehler beim Senden. Bitte versuchen Sie es erneut.';
+              btn.disabled = false; btn.textContent = 'Anfrage senden →';
+            }
+          } catch { status.textContent = 'Fehler beim Senden. Bitte versuchen Sie es erneut.'; btn.disabled = false; btn.textContent = 'Anfrage senden →'; }
+        });
+      </script>
     </div>`
     : `<div class="cta-block">
       <h2>Rollrasen in deiner Region anfragen</h2>
@@ -650,15 +683,25 @@ app.get('/haendler', (req, res) => {
 // ─── ANFRAGE ENDPOINT ─────────────────────────────────────────────────────────
 
 app.post('/anfrage', anfrageLimit, async (req, res) => {
-  const { name, email, phone, plz, m2, product, message } = req.body;
+  const { name, email, phone, plz, m2, product, message, haendler_id } = req.body;
 
   if (!name?.trim() || !email?.trim())
     return res.status(400).json({ error: 'Name und E-Mail sind Pflichtfelder' });
 
   const plzClean     = (plz || '').replace(/\D/g, '').slice(0, 5);
-  const top3         = findNearestHaendler(plzClean);
   const produktLabel = PRODUKT_LABELS[product] || product || 'nicht angegeben';
   const m2Display    = m2 ? Math.round(m2) + ' m²' : 'nicht angegeben';
+
+  // Direktanfrage an einen spezifischen abonnierten Händler, oder PLZ-basierte Top-3
+  let empfaenger;
+  const direktId = haendler_id ? parseInt(haendler_id, 10) : null;
+  if (direktId) {
+    const direkt = db.prepare('SELECT * FROM hersteller WHERE id = ? AND aktiv = 1 AND kontakt_status = ?').get(direktId, 'abonniert');
+    if (!direkt) return res.status(400).json({ error: 'Direktanfrage nicht möglich' });
+    empfaenger = [direkt];
+  } else {
+    empfaenger = findNearestHaendler(plzClean);
+  }
 
   // In DB speichern
   db.prepare(`
@@ -667,14 +710,15 @@ app.post('/anfrage', anfrageLimit, async (req, res) => {
   `).run(
     name.trim(), email.trim(), phone?.trim() || null,
     plzClean || null, m2 || null, product?.trim() || null,
-    message?.trim() || null, top3.length,
-    top3.map(h => h.name).join(', ')
+    message?.trim() || null, empfaenger.length,
+    empfaenger.map(h => h.name).join(', ')
   );
 
-  console.log(`📋 Neue Anfrage: ${name} (${email}) – ${m2Display} ${produktLabel}, PLZ ${plzClean} → ${top3.length} Händler: ${top3.map(h=>h.name).join(', ')}`);
+  console.log(`📋 Neue Anfrage${direktId ? ' (direkt)' : ''}: ${name} (${email}) – ${m2Display} ${produktLabel} → ${empfaenger.map(h=>h.name).join(', ')}`);
 
   // ── Kunden-Bestätigungsmail ────────────────────────────────────────────────
-  const haendlerRows = top3.map((h, i) => haendlerKontaktHtml(h, i % 2 === 1)).join('');
+  const haendlerRows = empfaenger.map((h, i) => haendlerKontaktHtml(h, i % 2 === 1)).join('');
+  const isDirekt = !!direktId;
 
   const kundenMail = `
     <div style="font-family:sans-serif;max-width:600px;color:#222;margin:0 auto">
@@ -683,8 +727,10 @@ app.post('/anfrage', anfrageLimit, async (req, res) => {
       </div>
       <div style="background:#fff;padding:24px;border:1px solid #dde8dd;border-top:none;border-radius:0 0 8px 8px">
         <p>Hallo ${escHtml(name)},</p>
-        <p>wir haben Ihre Anfrage erhalten und <strong>${top3.length} Fachbetrieb${top3.length !== 1 ? 'e' : ''}</strong> in Ihrer Region kontaktiert.
-           Diese melden sich in der Regel <strong>innerhalb von 24 Stunden</strong> direkt bei Ihnen.</p>
+        ${isDirekt
+          ? `<p>Ihre Anfrage wurde direkt an <strong>${escHtml(empfaenger[0].name)}</strong> weitergeleitet. Der Betrieb meldet sich in der Regel <strong>innerhalb von 24 Stunden</strong> bei Ihnen.</p>`
+          : `<p>wir haben Ihre Anfrage erhalten und <strong>${empfaenger.length} Fachbetrieb${empfaenger.length !== 1 ? 'e' : ''}</strong> in Ihrer Region kontaktiert. Diese melden sich in der Regel <strong>innerhalb von 24 Stunden</strong> direkt bei Ihnen.</p>`
+        }
 
         <table style="border-collapse:collapse;width:100%;margin:1.2rem 0;font-size:0.9rem">
           <tr style="background:#f0f4f0">
@@ -700,14 +746,14 @@ app.post('/anfrage', anfrageLimit, async (req, res) => {
         </table>
 
         <h3 style="color:#2d6a2d;margin:1.5rem 0 0.5rem;font-size:1rem;text-transform:uppercase;letter-spacing:.05em">
-          Kontaktierte Betriebe in Ihrer Nähe
+          ${isDirekt ? 'Kontaktierter Betrieb' : 'Kontaktierte Betriebe in Ihrer Nähe'}
         </h3>
         <table style="border-collapse:collapse;width:100%">
           ${haendlerRows}
         </table>
 
         <p style="margin-top:1.5rem;color:#555;font-size:0.9rem">
-          Sollten Sie keine Rückmeldung erhalten, können Sie die Betriebe auch direkt über die oben angegebenen Kontaktdaten erreichen.
+          Sollten Sie keine Rückmeldung erhalten, können Sie den Betrieb auch direkt über die oben angegebenen Kontaktdaten erreichen.
         </p>
         <hr style="border:none;border-top:1px solid #e0e8e0;margin:1.5rem 0">
         <p style="color:#999;font-size:0.8rem;margin:0">
@@ -722,11 +768,11 @@ app.post('/anfrage', anfrageLimit, async (req, res) => {
     <div style="font-family:sans-serif;max-width:600px;color:#222;margin:0 auto">
       <div style="background:#2d6a2d;padding:24px 28px;border-radius:8px 8px 0 0">
         <div style="color:#a8d5a8;font-size:0.8rem;letter-spacing:.08em;text-transform:uppercase;margin-bottom:4px">Neue Kundenanfrage</div>
-        <h2 style="color:#fff;margin:0;font-size:1.25rem">Rollrasen-Anfrage in Ihrer Region</h2>
+        <h2 style="color:#fff;margin:0;font-size:1.25rem">${isDirekt ? 'Direkte Rollrasen-Anfrage an Sie' : 'Rollrasen-Anfrage in Ihrer Region'}</h2>
       </div>
       <div style="background:#fff;padding:28px;border:1px solid #dde8dd;border-top:none;border-radius:0 0 8px 8px">
         <p style="margin-top:0">Guten Tag,</p>
-        <p>über <a href="https://www.rasenrechner.de" style="color:#2d6a2d">rasenrechner.de</a> ist eine neue Anfrage eingegangen, die wir Ihnen als nächstgelegenem Fachbetrieb weiterleiten.</p>
+        <p>über <a href="https://www.rasenrechner.de" style="color:#2d6a2d">rasenrechner.de</a> ist eine neue Anfrage eingegangen${isDirekt ? ', die <strong>direkt an Ihren Betrieb</strong> gerichtet wurde' : ', die wir Ihnen als nächstgelegenem Fachbetrieb weiterleiten'}.</p>
         <div style="background:#f4f8f4;border-left:4px solid #2d6a2d;border-radius:4px;padding:16px 20px;margin:20px 0">
           <div style="font-size:0.75rem;color:#2d6a2d;text-transform:uppercase;letter-spacing:.08em;font-weight:700;margin-bottom:12px">Anfrage-Details</div>
           <table style="border-collapse:collapse;width:100%;font-size:0.92rem">
@@ -758,18 +804,18 @@ app.post('/anfrage', anfrageLimit, async (req, res) => {
   try {
     await sendMail(email, 'Ihre Rollrasen-Anfrage ist eingegangen – Kontaktierte Betriebe', kundenMail);
 
-    const empfaenger = ADMIN_EMAIL
+    const mailEmpfaenger = ADMIN_EMAIL
       ? [ADMIN_EMAIL]
-      : top3.filter(h => h.email).map(h => h.email);
+      : empfaenger.filter(h => h.email).map(h => h.email);
 
-    for (const empf of empfaenger) {
+    for (const empf of mailEmpfaenger) {
       await sendMail(empf, `Neue Rollrasen-Anfrage – ${m2Display}, PLZ ${plzClean}`, haendlerMail);
     }
 
-    res.json({ ok: true, haendler_count: top3.length, region: top3[0]?.region || 'Bayern' });
+    res.json({ ok: true, haendler_count: empfaenger.length, region: empfaenger[0]?.region || 'Bayern' });
   } catch (err) {
     console.error(`Mail-Fehler: ${err.message}`);
-    res.json({ ok: true, haendler_count: top3.length, region: top3[0]?.region || 'Bayern' });
+    res.json({ ok: true, haendler_count: empfaenger.length, region: empfaenger[0]?.region || 'Bayern' });
   }
 });
 
