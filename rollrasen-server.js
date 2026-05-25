@@ -321,12 +321,25 @@ app.get('/haendler/:slug', (req, res) => {
       <a class="cta-btn" href="/bayern/#rechner">Jetzt Bedarf berechnen</a>
     </div>`;
 
+  const ortLabel   = h.ort || 'Bayern';
+  const typLabel   = h.typ === 'Hersteller' ? 'Rollrasen-Hersteller' : 'Rollrasen-Fachbetrieb';
+  const metaDesc   = h.profil_text
+    ? `${h.name} aus ${ortLabel} – ${typLabel}. ${h.profil_text.slice(0, 130)}…`
+    : `${h.name} aus ${ortLabel} – ${typLabel}. Kostenlose Angebote anfragen auf rasenrechner.de.`;
+
+  const schemaRating = h.google_bewertung ? `,"aggregateRating":{"@type":"AggregateRating","ratingValue":"${h.google_bewertung}","reviewCount":"${h.google_bewertungen_anzahl || 1}"}` : '';
+  const schemaAdresse = adresse ? `,"address":{"@type":"PostalAddress","streetAddress":"${h.strasse || ''}","postalCode":"${h.plz || ''}","addressLocality":"${h.ort || ''}","addressCountry":"DE"}` : '';
+  const schemaTel = h.telefon ? `,"telephone":"${h.telefon}"` : '';
+  const schemaUrl = h.website ? `,"url":"${h.website}"` : '';
+  const schema = `<script type="application/ld+json">{"@context":"https://schema.org","@type":"LocalBusiness","name":"${h.name}"${schemaAdresse}${schemaTel}${schemaUrl}${schemaRating}}<\/script>`;
+
   res.send(`<!DOCTYPE html>
 <html lang="de">
 <head>
   <meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1">
-  <title>${h.name} – Rollrasen-Händler | rasenrechner.de</title>
-  <meta name="description" content="${h.name} aus ${h.ort || 'Bayern'} – regionaler Rollrasen-Fachbetrieb. ${h.profil_text ? h.profil_text.slice(0,120) + '...' : 'Kostenlose Angebote anfragen auf rasenrechner.de.'}">
+  <title>${h.name} – Rollrasen in ${ortLabel} | rasenrechner.de</title>
+  <meta name="description" content="${metaDesc}">
+  ${schema}
   ${pageCss}
   <style>
     .profile-hero{background:linear-gradient(135deg,#1a3d12 0%,#2d6a2d 100%);color:#fff;padding:2.5rem 1.5rem;border-radius:0 0 16px 16px;text-align:center;margin-bottom:2rem}
@@ -351,9 +364,9 @@ app.get('/haendler/:slug', (req, res) => {
   <div class="profile-hero">
     <a class="profile-back" href="/">← rasenrechner.de</a>
     ${h.logo_url ? `<div style="margin:.5rem auto;width:80px;height:80px;border-radius:50%;background:#fff;display:flex;align-items:center;justify-content:center;overflow:hidden"><img src="${h.logo_url}" alt="${h.name} Logo" style="width:100%;height:100%;object-fit:contain"></div>` : ''}
-    <h1>${h.name}</h1>
+    <h1>${h.name}${h.ort ? ' – Rollrasen in ' + h.ort : ''}</h1>
     <div style="margin:.5rem 0">${badge}</div>
-    <p>${h.typ === 'Hersteller' ? 'Rollrasen-Hersteller' : 'Rollrasen-Fachbetrieb'}${h.ort ? ' · ' + h.ort : ''}${h.region ? ' · ' + h.region : ''}</p>
+    <p>${typLabel}${h.region ? ' · ' + h.region : ''}</p>
   </div>
 
   <div class="wrap" style="padding-top:0">
@@ -1101,7 +1114,7 @@ app.get('/bayern/:city', (req, res, next) => {
       ${h.google_bewertung ? `<div class="rating">★ ${h.google_bewertung.toFixed(1)} <span style="color:#999">(${h.google_bewertungen_anzahl} Bewertungen)</span></div>` : ''}
       ${h.ort ? `<div style="font-size:.82rem;color:#666;margin:.2rem 0">📍 ${h.ort}</div>` : ''}
       ${BADGE[h.paket] ? `<span class="dealer-badge-pill">${BADGE[h.paket]}</span>` : ''}
-      ${h.profil_slug ? `<div style="margin-top:.5rem"><a href="/haendler/${h.profil_slug}" style="color:#2d6a2d;font-size:.82rem;text-decoration:none">→ Profil ansehen</a></div>` : ''}
+      ${h.profil_slug ? `<div style="margin-top:.5rem"><a href="/haendler/${h.profil_slug}" style="color:#2d6a2d;font-size:.82rem;text-decoration:none">→ ${h.name} in ${h.ort || 'Bayern'}</a></div>` : ''}
     </div>`).join('');
 
   const faqHtml = stadt.faq.map(f => `
