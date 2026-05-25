@@ -279,7 +279,7 @@ app.get('/haendler/:slug', (req, res) => {
   const ctaBlock = verifiziert
     ? `<div class="cta-block" id="direktanfrage">
       <h2>Direkt anfragen bei ${h.name}</h2>
-      <p style="opacity:.85;font-size:.9rem;margin:0 0 1.25rem">Nur dieser Betrieb erhält Ihre Anfrage – unverbindlich, Antwort in 24h</p>
+      <p style="opacity:.85;font-size:.9rem;margin:0 0 1.25rem">Nur dieser Betrieb erhält Ihre Anfrage – unverbindlich</p>
       <form id="direktForm" style="text-align:left;display:flex;flex-direction:column;gap:.75rem">
         <input type="hidden" name="haendler_id" value="${h.id}">
         <div style="display:grid;grid-template-columns:1fr 1fr;gap:.75rem">
@@ -728,8 +728,8 @@ app.post('/anfrage', anfrageLimit, async (req, res) => {
       <div style="background:#fff;padding:24px;border:1px solid #dde8dd;border-top:none;border-radius:0 0 8px 8px">
         <p>Hallo ${escHtml(name)},</p>
         ${isDirekt
-          ? `<p>Ihre Anfrage wurde direkt an <strong>${escHtml(empfaenger[0].name)}</strong> weitergeleitet. Der Betrieb meldet sich in der Regel <strong>innerhalb von 24 Stunden</strong> bei Ihnen.</p>`
-          : `<p>wir haben Ihre Anfrage erhalten und <strong>${empfaenger.length} Fachbetrieb${empfaenger.length !== 1 ? 'e' : ''}</strong> in Ihrer Region kontaktiert. Diese melden sich in der Regel <strong>innerhalb von 24 Stunden</strong> direkt bei Ihnen.</p>`
+          ? `<p>Ihre Anfrage wurde direkt an <strong>${escHtml(empfaenger[0].name)}</strong> weitergeleitet. Der Betrieb meldet sich direkt bei Ihnen.</p>`
+          : `<p>wir haben Ihre Anfrage erhalten und <strong>${empfaenger.length} Fachbetrieb${empfaenger.length !== 1 ? 'e' : ''}</strong> in Ihrer Region kontaktiert. Diese melden sich direkt per E-Mail oder Telefon bei Ihnen.</p>`
         }
 
         <table style="border-collapse:collapse;width:100%;margin:1.2rem 0;font-size:0.9rem">
@@ -785,7 +785,7 @@ app.post('/anfrage', anfrageLimit, async (req, res) => {
             ${message ? `<tr><td style="padding:5px 0;color:#555;vertical-align:top">Nachricht</td><td style="padding:5px 0;font-style:italic;color:#444">${escHtml(message)}</td></tr>` : ''}
           </table>
         </div>
-        <p>Der Kunde erwartet eine Rückmeldung <strong>innerhalb von 24 Stunden</strong>. Bitte nehmen Sie direkt per E-Mail oder Telefon Kontakt auf.</p>
+        <p>Bitte nehmen Sie direkt per E-Mail oder Telefon Kontakt auf.</p>
         <div style="text-align:center;margin:28px 0 8px">
           <a href="mailto:${email}?subject=Ihr%20Rollrasen-Angebot"
              style="background:#2d6a2d;color:#fff;text-decoration:none;padding:12px 28px;border-radius:5px;font-weight:600;font-size:0.95rem;display:inline-block">
