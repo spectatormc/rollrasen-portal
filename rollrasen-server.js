@@ -976,168 +976,324 @@ const STAEDTE = {
     name: 'München', region: 'Oberbayern', plz: '80331',
     title: 'Rollrasen München – Kosten, Händler & kostenlose Angebote 2026',
     desc:  'Rollrasen in München kaufen & verlegen lassen: Preisrechner, regionale Händler & kostenlose Angebote. Geprüfte Fachbetriebe aus dem Großraum München.',
-    intro: 'München und das Umland zählen zu den besten Gebieten für Rollrasen in Bayern: mild-kontinentales Klima, hoher Gartenanteil in den Vororten und eine dichte Dichte an erfahrenen Fachbetrieben. Ob Reihenhaus in Pasing, Garten in Grünwald oder Neubau in Unterschleißheim – regionale Händler aus dem Großraum liefern und verlegen meist noch im gleichen Wochenrhythmus.',
+    preisHinweis: 'In München können Anfahrt und Parkraummangel in innerstädtischen Lagen die Verlegekosten leicht erhöhen – bei Projekten in der Innenstadt oder dichtem Stadtgebiet realistisch 2–4 €/m² Aufschlag einkalkulieren. Im Münchner Umland (Unterschleißheim, Germering, Kirchheim) entsprechen die Preise dem bayerischen Durchschnitt.',
+    nachbarStaedte: ['landshut', 'rosenheim', 'ingolstadt', 'freising', 'augsburg'],
+    intro: `München und das Großraum-Umland zählen zu den aktivsten Rollrasen-Märkten in Bayern. Das mild-kontinentale Klima mit rund 930 mm Jahresniederschlag bietet grundsätzlich gute Bedingungen – kritisch ist jedoch der oft trockene Frühsommer zwischen Mitte Juni und Ende Juli, wenn intensive Bewässerung über Erfolg oder Misserfolg entscheidet.
+
+Die Böden im Münchner Raum sind heterogen. In Stadtrandlagen wie Unterschleißheim, Grünwald oder Germering dominiert lehmig-sandiger Boden mit guter Drainage und guten Anwachsbedingungen. Innerstädtische Gärten stehen dagegen oft auf verdichtetem Untergrund oder aufgefülltem Bauland – hier ist gründliche Bodenvorbereitung keine Option, sondern Voraussetzung für dauerhaft schönen Rasen.
+
+Die Stärken einer regionalen Versorgung zeigen sich in München besonders deutlich: Betriebe aus Unterschleißheim, Kirchheim, Schwabhausen und Strasslach liefern frisch geernteten Rasen, der meist noch am selben oder folgenden Tag verlegt wird. Kurze Transportwege sichern höchste Anwachsraten – ein spürbarer Unterschied zu überregionalen Versandhändlern, bei denen Rollrasen manchmal 24–48 Stunden unterwegs ist.
+
+Typische Projekte im Münchner Raum: Reihenhaus-Gärten in Pasing oder Neuaubing (60–120 m²), Neubaugebiete in Unterschleißheim, Kirchheim oder Eching (100–400 m²) und repräsentative Villengärten in Grünwald oder Pullach (ab 500 m²). Für alle Größen gibt es geeignete Fachbetriebe – PLZ eingeben und drei Angebote direkt vergleichen.`,
     faq: [
-      { q: 'Was kostet Rollrasen in München?', a: 'Das Material liegt je nach Sorte bei 5–12 €/m². Mit Lieferung und Verlegung durch einen Fachbetrieb sind 15–25 €/m² realistisch. Bodenvorbereitung kommt bei Bedarf obendrauf – insgesamt sind 25–55 €/m² ein realistischer Gesamtrahmen.' },
-      { q: 'Welche Händler liefern im Großraum München?', a: 'Mehrere geprüfte Fachbetriebe aus Unterschleißheim, Kirchheim, Schwabhausen und Strasslach beliefern den gesamten Großraum München. Einfach PLZ eingeben – wir verbinden Sie mit den nächsten drei Betrieben.' },
-      { q: 'Wann ist die beste Zeit für Rollrasen in München?', a: 'April bis Juni und August bis Oktober sind ideal. Der Münchner Sommer kann trocken sein – wer im Juli verlegt, muss intensiv wässern. Im Herbst ist das Anwachsen oft sicherer.' },
-      { q: 'Kann ich Rollrasen in München selbst verlegen?', a: 'Ja, bei kleineren Flächen gut machbar. Die Bodenvorbereitung (Fräsen, Planieren) ist der anspruchsvollere Teil. Für Flächen ab 100 m² lohnt sich ein Fachbetrieb zeitlich und qualitativ.' },
+      { q: 'Was kostet Rollrasen in München?', a: 'Das Material liegt je nach Sorte bei 5–12 €/m². Mit Lieferung und Verlegung durch einen Fachbetrieb sind 15–25 €/m² realistisch. Bodenvorbereitung kommt bei Bedarf obendrauf – insgesamt sind 25–55 €/m² ein realistischer Gesamtrahmen für eine Komplettlösung.' },
+      { q: 'Welche Händler liefern im Großraum München?', a: 'Mehrere geprüfte Fachbetriebe aus Unterschleißheim, Kirchheim, Schwabhausen und Strasslach beliefern den gesamten Großraum München. PLZ eingeben – wir verbinden Sie mit den nächsten drei Betrieben.' },
+      { q: 'Wann ist die beste Zeit für Rollrasen in München?', a: 'April bis Juni und August bis Oktober sind ideal. Der Münchner Sommer kann trocken sein – wer im Juli verlegt, muss täglich intensiv wässern. Im Herbst ist das Anwachsen oft zuverlässiger.' },
+      { q: 'Kann ich Rollrasen in München selbst verlegen?', a: 'Ja, bei kleineren Flächen gut machbar. Die Bodenvorbereitung (Fräsen, Planieren) ist der anspruchsvollere Teil. Für Flächen ab 100 m² lohnt sich ein Fachbetrieb zeitlich und qualitätsmäßig.' },
+      { q: 'Welche Bodenvorbereitung brauche ich in München?', a: 'Das hängt vom Standort ab: Sandige Böden am Stadtrand brauchen Humus-Einarbeitung (ca. 5 cm), verdichtete Böden aus Neubaugebieten müssen gefräst und planiert werden. Ein Fachbetrieb beurteilt den Boden vor Ort und gibt eine ehrliche Einschätzung.' },
+      { q: 'Wie lange bis der Rollrasen in München begehbar ist?', a: 'Nach 10–14 Tagen ist Rollrasen leicht begehbar, nach 3–4 Wochen voll belastbar. Ausreichende Bewässerung in den ersten 3 Wochen ist entscheidend – mindestens einmal täglich, bei Hitze zweimal.' },
+      { q: 'Lohnt sich Rollrasen für kleine Flächen unter 30 m² in München?', a: 'Ja, aber das Preis-Leistungs-Verhältnis ist ungünstiger: Anfahrt, Mindestmengen und Bodenvorbereitung fallen als Fixkosten an. Unter 20 m² ist Eigenverlegung mit gekauften Soden oft günstiger.' },
     ],
   },
   nuernberg: {
     name: 'Nürnberg', region: 'Mittelfranken', plz: '90402',
     title: 'Rollrasen Nürnberg – Kosten, Händler & kostenlose Angebote 2026',
     desc:  'Rollrasen in Nürnberg kaufen & verlegen lassen: Preisrechner, regionale Händler & kostenlose Angebote. Geprüfte Fachbetriebe aus Mittelfranken.',
-    intro: 'Nürnberg und der Großraum Mittelfranken haben eine aktive Gartenkultur – und mit Noris Rollrasen sowie den Greenkeepers aus Fürth gleich zwei spezialisierte Betriebe vor Ort. Die kontinentale Lage bedeutet heiße Sommer und kalte Winter: lokale Sorten sind auf diese Bedingungen abgestimmt, was das Anwachsrisiko deutlich senkt.',
+    preisHinweis: 'Nürnberg hat mit Noris Rollrasen einen lokalen Produzenten direkt vor Ort – das hält die Materialpreise wettbewerbsfähig und die Transportkosten niedrig. Für eine typische Gartenfläche von 80 m² sind 1.200–4.400 € Gesamtkosten ein realistischer Rahmen.',
+    nachbarStaedte: ['erlangen', 'fuerth', 'ingolstadt', 'bayreuth', 'wuerzburg'],
+    intro: `Nürnberg und der Großraum Mittelfranken haben eine ausgeprägte Gartenkultur – und mit Noris Rollrasen sowie den Greenkeepers Gartenbau aus Fürth gleich zwei spezialisierte Betriebe vor Ort. Das ist ein klarer Vorteil: frischer Rasen, kurze Lieferwege, und Betriebe die die lokalen Bodenbedingungen aus dem Alltag kennen.
+
+Das Klima Mittelfrankens ist klar kontinental: heiße, oft trockene Sommer mit Temperaturen über 30°C sind keine Seltenheit, die Winter können streng sein. Für Rollrasen bedeutet das: Verlegung im Frühjahr (April/Mai) oder Frühherbst (September/Oktober) ist deutlich zuverlässiger als im Hochsommer. Wer im Juli verlegt, muss täglich bewässern – sonst leidet die Anwachsrate.
+
+Die Böden in der Region sind größtenteils sandsteinhaltig und leicht sauer – das ist für Rollrasen beherrschbar, erfordert aber manchmal eine Kalkung vor der Verlegung. Lokale Betriebe kennen die Bodenverhältnisse in einzelnen Stadtteilen und Umlandgemeinden und können gezielt beraten.
+
+Häufige Projekte in Nürnberg: Reihenhaus-Gärten in Langwasser oder Stein (50–100 m²), Neubaugebiete in Wendelstein oder Schwaig (150–400 m²), und Gewerbe-Außenanlagen rund um die Messe (ab 500 m²). Für alle Projekte gilt: Mehrere Angebote vergleichen lohnt sich – die Preisunterschiede zwischen Betrieben können 20–30 % ausmachen.`,
     faq: [
       { q: 'Was kostet Rollrasen in Nürnberg?', a: 'Material: 5–12 €/m². Inkl. Lieferung und Verlegung: 15–25 €/m². Komplett mit Bodenvorbereitung: 25–55 €/m². Für eine typische Gartenfläche von 80 m² sind 1.200–4.400 € ein realistischer Gesamtrahmen.' },
       { q: 'Welche Händler liefern in Nürnberg und Umgebung?', a: 'Noris Rollrasen (Nürnberg) und die Greenkeepers Gartenbau (Fürth) sind direkt vor Ort. Überregionale Hersteller wie Isar Rollrasen und BayernRasen liefern ebenfalls nach Mittelfranken.' },
-      { q: 'Wann ist die beste Zeit für Rollrasen in Nürnberg?', a: 'Frühjahr (April/Mai) und Frühherbst (September/Oktober) sind ideal. Der Nürnberger Sommer ist trocken und heiß – Verlegung im Juli/August erfordert intensive Bewässerung.' },
-      { q: 'Gibt es Rollrasen auch für schattige Gärten in Nürnberg?', a: 'Ja. Halbschattenrasen ist für Gärten mit altem Baumbestand geeignet. Lokale Händler beraten zu den richtigen Sorten für Ihren Standort.' },
+      { q: 'Wann ist die beste Zeit für Rollrasen in Nürnberg?', a: 'Frühjahr (April/Mai) und Frühherbst (September/Oktober) sind ideal. Der Nürnberger Sommer ist trocken und heiß – Verlegung im Juli/August erfordert intensive tägliche Bewässerung.' },
+      { q: 'Gibt es Rollrasen auch für schattige Gärten in Nürnberg?', a: 'Ja. Halbschattenrasen ist für Gärten mit altem Baumbestand geeignet. Lokale Händler beraten zu den richtigen Sorten für Ihren spezifischen Standort.' },
+      { q: 'Welche Rasensorte eignet sich für das Nürnberger Klima?', a: 'Gebrauchsrasen und Strapazierrasen sind in Mittelfranken am verbreitetsten. Für trockene Lagen empfiehlt sich eine trockenheitstolerante Sorte – lokale Händler kennen die bewährten Sorten für die Region.' },
+      { q: 'Wie lange dauert die Verlegung von Rollrasen in Nürnberg?', a: 'Ein typischer Garten von 80–100 m² ist inklusive Bodenvorbereitung an einem Arbeitstag fertig verlegt. Reine Verlegung ohne Bodenvorbereitung geht bei erfahrenen Betrieben in 2–4 Stunden.' },
+      { q: 'Was kostet die Bodenvorbereitung in Nürnberg?', a: 'Fräsen und Planieren kosten je nach Aufwand 5–15 €/m². Humus-Einarbeitung kommt obendrauf. Auf Nürnberger Sandsteinböden ist eine Kalkung empfehlenswert – ca. 1–2 €/m² zusätzlich.' },
     ],
   },
   augsburg: {
     name: 'Augsburg', region: 'Schwaben', plz: '86150',
     title: 'Rollrasen Augsburg – Kosten, Händler & kostenlose Angebote 2026',
     desc:  'Rollrasen in Augsburg kaufen & verlegen lassen: Preisrechner, regionale Händler & kostenlose Angebote. Geprüfte Fachbetriebe aus Schwaben.',
-    intro: 'Augsburg und der Raum Schwaben sind gut versorgt: Mit Walter Schwab GmbH aus Waidhofen gibt es einen der ältesten Rollrasen-Hersteller Deutschlands in direkter Nähe – gegründet in den 1970er Jahren, heute mit rund 250 Hektar Eigenproduktion. Dazu liefern überregionale Hersteller aus Oberbayern zuverlässig in den Augsburger Raum.',
+    preisHinweis: 'Augsburg liegt nah am Hersteller Walter Schwab GmbH in Waidhofen – das hält Transportkosten vergleichsweise niedrig. Augsburg zählt zu den günstigsten Standorten in Bayern für Rollrasen-Lieferung.',
+    nachbarStaedte: ['muenchen', 'ingolstadt', 'kempten'],
+    intro: `Augsburg und der Raum Schwaben sind rollrasenmäßig hervorragend versorgt: Mit der Walter Schwab GmbH aus Waidhofen gibt es einen der ältesten und größten Rollrasen-Hersteller Deutschlands in direkter Nachbarschaft – gegründet in den 1970er Jahren, heute mit rund 250 Hektar Eigenproduktion. Diese Nähe bedeutet: frisch geernteter Rasen, kurze Transportwege und konkurrenzfähige Preise.
+
+Das Klima in Augsburg ist gemäßigt-kontinental mit rund 800 mm Jahresniederschlag. Die Sommer sind warm aber nicht extrem trocken, die Winter moderat. Für Rollrasen sind das gute Bedingungen: Das Frühjahr (April–Juni) und der Frühherbst (September/Oktober) bieten die besten Anwachsbedingungen. Auch Sommerverlegungen sind möglich, erfordern aber konsequente Bewässerung in den ersten drei Wochen.
+
+Augsburgs Böden sind im Stadtgebiet oft lehmig, im Umland sandiger und kiesiger. Besonders in Neubaugebieten wie Haunstetten oder Lechhausen ist eine gründliche Bodenvorbereitung wichtig: Der Untergrund aus dem Bau muss aufgelockert und mit Humus angereichert werden, bevor Rollrasen dauerhaft gut gedeiht.
+
+Typische Projekte: Reihenhausgärten in Haunstetten (50–120 m²), Neubaugebiete in Gersthofen oder Königsbrunn (150–350 m²), und Gewerbeflächen entlang der Industriegebiete südlich der Stadt.`,
     faq: [
-      { q: 'Was kostet Rollrasen in Augsburg?', a: 'Material: 5–12 €/m². Mit Lieferung und Verlegung: 15–25 €/m². Komplett mit Bodenvorbereitung: 25–55 €/m². Augsburg hat kurze Wege zu mehreren Herstellern, was die Lieferkosten niedrig hält.' },
-      { q: 'Welche Händler liefern in Augsburg?', a: 'Walter Schwab GmbH aus Waidhofen bei Augsburg ist einer der bekanntesten Produzenten in Schwaben. Ergänzend liefern BayernRasen und Isar Rollrasen bayernweit – auch nach Augsburg.' },
-      { q: 'Wann ist der beste Zeitpunkt für Rollrasen in Augsburg?', a: 'April bis Juni und September/Oktober sind ideal. Der Augsburger Sommer kann trocken ausfallen – intensive Bewässerung in den ersten zwei Wochen ist entscheidend.' },
-      { q: 'Lohnt sich Rollrasen gegenüber Rasensaat in Augsburg?', a: 'Bei schnell genutzten Flächen (Garten fertigstellen, Neubau, Event) ist Rollrasen klar besser. Bei großen Flächen und Zeit ist Rasensaat günstiger – die Bodenvorbereitung ist bei beiden ähnlich aufwendig.' },
+      { q: 'Was kostet Rollrasen in Augsburg?', a: 'Material: 5–12 €/m². Mit Lieferung und Verlegung: 15–25 €/m². Komplett mit Bodenvorbereitung: 25–55 €/m². Augsburg hat kurze Wege zu Walter Schwab GmbH, was die Lieferkosten niedrig hält.' },
+      { q: 'Welche Händler liefern in Augsburg?', a: 'Walter Schwab GmbH aus Waidhofen bei Augsburg ist einer der bekanntesten Produzenten Bayerns. Ergänzend liefern BayernRasen und Isar Rollrasen bayernweit – auch nach Augsburg.' },
+      { q: 'Wann ist der beste Zeitpunkt für Rollrasen in Augsburg?', a: 'April bis Juni und September/Oktober sind ideal. Der Augsburger Sommer kann trocken ausfallen – intensive Bewässerung in den ersten zwei Wochen nach Verlegung ist entscheidend.' },
+      { q: 'Lohnt sich Rollrasen gegenüber Rasensaat in Augsburg?', a: 'Bei schnell genutzten Flächen (Garten fertigstellen, Neubau, Event) ist Rollrasen klar besser. Bei großen Flächen mit ausreichend Zeit ist Rasensaat günstiger – die Bodenvorbereitung ist bei beiden ähnlich aufwendig.' },
+      { q: 'Welche Rasensorte empfiehlt sich für Augsburg?', a: 'Gebrauchsrasen ist für die meisten Augsburger Gärten ideal: robust, pflegeleicht und belastbar. Für Flächen mit Baumschatten (z.B. in Stadtrandlagen mit altem Baumbestand) empfiehlt sich Halbschattenrasen.' },
+      { q: 'Wie schnell wächst Rollrasen in Augsburg an?', a: 'Bei optimaler Bewässerung und milden Temperaturen im Frühjahr oder Herbst wächst Rollrasen innerhalb von 10–14 Tagen fest an. Im Sommer dauert es bei Hitze etwas länger – dafür ist er nach dem Anwachsen robuster.' },
+      { q: 'Gibt es Mindestmengen bei der Lieferung in Augsburg?', a: 'Die meisten Betriebe liefern ab 30–50 m². Darunter lohnt sich Abholung direkt beim Hersteller oder Kauf im Gartencenter. Walter Schwab GmbH bietet auch Selbstabholung in Waidhofen an.' },
     ],
   },
   regensburg: {
     name: 'Regensburg', region: 'Oberpfalz', plz: '93047',
     title: 'Rollrasen Regensburg – Kosten, Händler & kostenlose Angebote 2026',
     desc:  'Rollrasen in Regensburg kaufen & verlegen lassen: Preisrechner, regionale Händler & kostenlose Angebote. Geprüfte Fachbetriebe aus der Oberpfalz.',
-    intro: 'Regensburg und die Oberpfalz haben mit Gartenbau Schaknat aus Seubersdorf einen regionalen Fachbetrieb direkt in der Region. Für größere Projekte stehen überregionale Hersteller wie Isar Rollrasen und Sued-Rasen zur Verfügung, die bayernweit liefern. Das Regensburger Klima – mit deutlichen Jahreszeiten und gelegentlich kalten Wintern – spricht für lokal adaptierte Rasensorten.',
+    preisHinweis: 'Regensburg liegt etwas abseits der größten Produktionsbetriebe – Lieferkosten entsprechen dem bayerischen Durchschnitt. Betriebe aus der Oberpfalz und aus dem Landshuter Raum halten sich preislich die Waage.',
+    nachbarStaedte: ['landshut', 'ingolstadt', 'passau', 'nuernberg'],
+    intro: `Regensburg und die Oberpfalz haben eine eigene regionale Rollrasen-Versorgung: Gartenbau Schaknat aus Seubersdorf ist ein direkt in der Region verwurzelter Fachbetrieb. Für größere Projekte liefern überregionale Hersteller wie Isar Rollrasen aus Altheim und Sued-Rasen zuverlässig in den Regensburger Raum.
+
+Das Klima Regensburgs ist ausgesprochen kontinental mit deutlichen Jahreszeiten. Mit durchschnittlich nur 540 mm Jahresniederschlag gehört Regensburg zu den trockensten Städten Bayerns – ein wichtiger Faktor bei der Rollrasen-Planung. Intensives Wässern in den ersten drei Wochen nach der Verlegung ist hier besonders kritisch, nicht optional.
+
+Die Böden der Oberpfalz sind oft kalkhaltig und lehmig – gute Voraussetzungen für Rollrasen, wenn die Drainage stimmt. In Regensburger Neubaugebieten wie Burgweinting oder Harting ist verdichteter Baustellenboden die häufigste Herausforderung: Fräsen und Planieren sind dann Pflicht.
+
+Das Frühjahr (April bis Juni) ist die beste Verlegezeit: Die Böden erwärmen sich nach dem Winter rasch, und die Frühjahrsregenfälle unterstützen das Anwachsen. Im Herbst (September) bietet sich eine gute zweite Chance – das Stadtklima Regensburgs ist im Frühherbst noch warm genug für sicheres Wurzelwachstum.`,
     faq: [
       { q: 'Was kostet Rollrasen in Regensburg?', a: 'Material: 5–12 €/m². Mit Lieferung und Verlegung: 15–25 €/m². Komplett mit Bodenvorbereitung: 25–55 €/m². Preise sind vergleichbar mit dem bayerischen Durchschnitt.' },
       { q: 'Welche Händler liefern in Regensburg?', a: 'Gartenbau Schaknat aus der Oberpfalz ist regional tätig. Zusätzlich liefern Isar Rollrasen (Niederbayern) und BayernRasen bayernweit – auch nach Regensburg.' },
-      { q: 'Wann ist der beste Zeitpunkt für Rollrasen in Regensburg?', a: 'April bis Juni und September sind ideal. Das kontinentale Klima Regensburgs macht Frühjahrspflanzungen besonders erfolgreich – die Böden erwärmen sich gut und die Niederschläge sind ausreichend.' },
-      { q: 'Gibt es einen Unterschied zwischen Rollrasen und Fertigrasen?', a: 'Nein – beides bezeichnet dasselbe Produkt. „Fertigrasen" ist die häufigere Bezeichnung im Fachhandel für Premiumsorten.' },
+      { q: 'Wann ist der beste Zeitpunkt für Rollrasen in Regensburg?', a: 'April bis Juni und September sind ideal. Das kontinentale Klima Regensburgs macht Frühjahrspflanzungen besonders erfolgreich – die Böden erwärmen sich schnell und die Niederschläge sind ausreichend.' },
+      { q: 'Gibt es einen Unterschied zwischen Rollrasen und Fertigrasen?', a: 'Nein – beides bezeichnet dasselbe Produkt. „Fertigrasen" ist die häufigere Bezeichnung im Fachhandel, „Rollrasen" die geläufigere Umgangssprache.' },
+      { q: 'Warum brauche ich in Regensburg besonders viel Wasser?', a: 'Regensburg gehört zu den niederschlagsärmsten Städten Bayerns (ca. 540 mm/Jahr). In den ersten 14–21 Tagen nach der Verlegung muss täglich gewässert werden – ohne das trocknet der Rasen ein und wächst schlecht an.' },
+      { q: 'Welche Rasensorte eignet sich für die Oberpfalz?', a: 'Trockenheitstolerante Gebrauchsrasen-Sorten sind für Regensburg empfehlenswert. Lokale Händler beraten zu Sorten, die mit dem trockenen Klima der Oberpfalz gut zurechtkommen.' },
+      { q: 'Wie plane ich die Bodenvorbereitung in Regensburg?', a: 'Auf kalkhaltigen Böden der Oberpfalz ist eine pH-Kontrolle sinnvoll. Bei stark verdichtetem Boden (häufig in Neubaugebieten) ist Tiefenlockerung notwendig. Ein Fachbetrieb aus der Region beurteilt dies vor Ort.' },
     ],
   },
   landshut: {
     name: 'Landshut', region: 'Niederbayern', plz: '84028',
     title: 'Rollrasen Landshut – Kosten, Händler & kostenlose Angebote 2026',
     desc:  'Rollrasen in Landshut kaufen & verlegen lassen: Preisrechner, regionale Händler & kostenlose Angebote. Geprüfte Fachbetriebe aus Niederbayern.',
-    intro: 'Landshut liegt mitten in Niederbayern und hat gleich zwei Rollrasen-Spezialisten in direkter Nachbarschaft: Isar Rollrasen aus Altheim und Nodes Gartenbau aus Essenbach. Beide Betriebe liefern frisch geernteten Rasen innerhalb weniger Stunden – ein klarer Vorteil gegenüber überregionalen Versandhändlern.',
+    preisHinweis: 'Landshut profitiert von seiner Nähe zu Isar Rollrasen in Altheim – einer der kürzesten Lieferwege in ganz Niederbayern. Das drückt Transportkosten nach unten und sorgt für besonders frischen Rasen.',
+    nachbarStaedte: ['muenchen', 'freising', 'regensburg', 'passau'],
+    intro: `Landshut liegt im Herzen Niederbayerns und ist rollrasenmäßig exzellent versorgt: Isar Rollrasen aus dem nahe gelegenen Altheim und Nodes Gartenbau aus Essenbach sind beide innerhalb einer halben Autostunde – und liefern frisch geernteten Rasen oft noch am selben Tag nach der Ernte. Diese Frische macht einen messbaren Unterschied: Rollrasen, der schnell vom Feld zum Garten kommt, wurzelt zuverlässiger an als Ware, die 24–48 Stunden auf LKWs verbracht hat.
+
+Das niederbayerische Klima rund um Landshut ist mild-kontinental mit rund 800 mm Jahresniederschlag – mehr als in Regensburg oder Nürnberg. Das kommt Rollrasen zugute: Die Anwachsbedingungen im Frühjahr sind hervorragend, intensive Bewässerung ist weniger kritisch als in trockeneren Regionen.
+
+Die Böden im Isartal sind oft tiefgründig und fruchtbar – Auenlehm mit gutem Wasserhaltvermögen ist typisch für die Flussniederungen rund um Landshut. Höher gelegene Lagen rund um die Stadt haben sandige bis sandig-lehmige Böden, die etwas mehr Humusergänzung vertragen.
+
+Häufige Projekte: Einfamilienhausgärten in Achdorf und Nikola (60–150 m²), Neubaugebiete am Stadtrand (150–400 m²) und landwirtschaftliche Außenanlagen im Umland.`,
     faq: [
-      { q: 'Was kostet Rollrasen in Landshut?', a: 'Material: 5–12 €/m². Inkl. Lieferung und Verlegung: 15–25 €/m². Mit Bodenvorbereitung: 25–55 €/m². Landshut profitiert von kurzen Wegen zu regionalen Herstellern.' },
+      { q: 'Was kostet Rollrasen in Landshut?', a: 'Material: 5–12 €/m². Inkl. Lieferung und Verlegung: 15–25 €/m². Mit Bodenvorbereitung: 25–55 €/m². Landshut profitiert von kurzen Wegen zu regionalen Herstellern – besonders günstige Lieferbedingungen.' },
       { q: 'Welche Händler liefern in Landshut?', a: 'Isar Rollrasen aus Altheim und Nodes Gartenbau aus Essenbach sind direkt vor Ort. Beide decken den Raum Niederbayern zuverlässig ab.' },
-      { q: 'Wann ist der beste Zeitpunkt für Rollrasen in Landshut?', a: 'April bis Juni und September/Oktober. Niederbayern hat ausreichend Niederschläge im Frühjahr – ideal für schnelles Anwachsen.' },
-      { q: 'Was ist der Vorteil von regionalem Rollrasen aus Niederbayern?', a: 'Kurze Transportwege bedeuten frischeren Rasen mit höherer Anwurzelungsrate. Isar Rollrasen liefert oft am selben oder nächsten Tag nach der Ernte.' },
+      { q: 'Wann ist der beste Zeitpunkt für Rollrasen in Landshut?', a: 'April bis Juni und September/Oktober. Niederbayern hat ausreichend Frühjahrs-Niederschläge – ideal für schnelles Anwachsen ohne übermäßigen Bewässerungsaufwand.' },
+      { q: 'Was ist der Vorteil von regionalem Rollrasen aus Niederbayern?', a: 'Kurze Transportwege bedeuten frischeren Rasen mit höherer Anwurzelungsrate. Isar Rollrasen liefert oft am selben oder nächsten Tag nach der Ernte – das ist ein echter Qualitätsvorteil.' },
+      { q: 'Wie lange muss ich nach der Verlegung wässern in Landshut?', a: 'Mindestens 2–3 Wochen täglich, am besten morgens. Im Frühjahr und Herbst reicht meist einmal täglich; im Sommer ist zweimal täglich (morgens und abends) ratsam.' },
+      { q: 'Kann ich Rollrasen in Landshut auch im Oktober noch verlegen?', a: 'Ja, Oktober ist oft noch gut geeignet – solange kein Frost droht und die Bodentemperatur über 8°C liegt. Frühherbstverlegungen haben in Niederbayern eine hohe Erfolgsrate.' },
+      { q: 'Gibt es Rollrasen für Spielflächen und Kindergärten in Landshut?', a: 'Ja – Sportrasen und Strapazierrasen sind dafür ausgelegt. Diese Sorten vertragen intensive Nutzung und erholen sich schneller. Lokale Händler beraten zur optimalen Sorte für Kinderspielbereich oder Sportfläche.' },
     ],
   },
   rosenheim: {
     name: 'Rosenheim', region: 'Oberbayern', plz: '83022',
     title: 'Rollrasen Rosenheim – Kosten, Händler & kostenlose Angebote 2026',
     desc:  'Rollrasen in Rosenheim kaufen & verlegen lassen: Preisrechner, regionale Händler & kostenlose Angebote. Geprüfte Fachbetriebe aus dem Chiemgau.',
-    intro: 'Rosenheim und der Chiemgau haben mit Rasen Schwab einen lokalen Fachbetrieb direkt vor Ort. Die Voralpenregion stellt besondere Anforderungen an Rollrasen: Frostbeständige Sorten, die auch harten Wintern trotzen, sind hier entscheidend. Regionale Händler kennen die lokalen Bodenbedingungen und Hanglagen besser als überregionale Versandhändler.',
+    preisHinweis: 'In Rosenheim und dem Chiemgau können Hanglagen und aufwendigere Verlegetechnik die Kosten um 3–8 €/m² erhöhen. Immer vorab im Angebot klären lassen – seriöse Betriebe besichtigen die Fläche vor der Kalkulation.',
+    nachbarStaedte: ['muenchen', 'kempten', 'freising'],
+    intro: `Rosenheim und der Chiemgau liegen am Fuß der Voralpen – eine Region mit eigenen klimatischen Anforderungen an Rollrasen. Rasen Schwab ist als lokaler Fachbetrieb direkt vor Ort und kennt die Besonderheiten der Region: Hanglagen, schwere Lehmböden in Tallage und das Voralpenklima mit späten Frösten im Frühjahr.
+
+Das Klima im Chiemgau ist feucht und niederschlagsreich – Rosenheim bekommt im Schnitt über 1.000 mm Regen pro Jahr. Das ist ein Segen für Rollrasen: Einmal fest angewachsen, gedeiht er hier üppig und tiefgrün ohne übermäßigen Pflegeaufwand. Die Herausforderung liegt im Frühjahr: Fröste bis in den Mai hinein sind in der Voralpenregion keine Seltenheit, weshalb Pflanzungen erst nach den Eisheiligen (Mitte Mai) sicherer sind.
+
+Die Böden rund um Rosenheim sind vielschichtig: In Tallage dominieren schwere, feuchte Lehmböden – gut für die Wasserversorgung, aber anfällig für Staunässe. Eine gute Drainage ist hier entscheidend. In Hanglagen und höheren Lagen findet sich steiniger, gut drainierter Boden, der sich hervorragend für Rollrasen eignet.
+
+Hanglagen stellen auch bei der Verlegung besondere Anforderungen: Rollrasen muss auf Hängen mit Heringen oder Netzen gesichert werden bis er fest angewachsen ist – ein Detailaspekt, den regionale Fachbetriebe aus dem Chiemgau routinemäßig beherrschen.`,
     faq: [
-      { q: 'Was kostet Rollrasen in Rosenheim?', a: 'Material: 5–12 €/m². Inkl. Lieferung und Verlegung: 15–25 €/m². Mit Bodenvorbereitung: 25–55 €/m². Hanglagen im Chiemgau können die Verlegekosten leicht erhöhen.' },
-      { q: 'Welche Händler liefern in Rosenheim?', a: 'Rasen Schwab GmbH ist der lokale Spezialist direkt in Rosenheim. Für größere Projekte liefern auch überregionale Hersteller wie Isar Rollrasen und BayernRasen in die Region.' },
-      { q: 'Brauche ich in Rosenheim spezielle Rasensorten?', a: 'Für Lagen mit starker Sonneneinstrahlung und Hanglagen empfiehlt sich Strapazierrasen. In schattigen Gärten unter altem Baumbestand ist Halbschattenrasen die bessere Wahl.' },
-      { q: 'Wann ist der beste Zeitpunkt für Rollrasen im Chiemgau?', a: 'Mai bis Juni und September sind optimal. Die Voralpenregion hat längere Winternachkälten – Frühjahrspflanzungen erst nach den Eisheiligen (Mitte Mai) sind sicherer.' },
+      { q: 'Was kostet Rollrasen in Rosenheim?', a: 'Material: 5–12 €/m². Inkl. Lieferung und Verlegung: 15–25 €/m². Mit Bodenvorbereitung: 25–55 €/m². Hanglagen im Chiemgau können die Verlegekosten um 3–8 €/m² erhöhen.' },
+      { q: 'Welche Händler liefern in Rosenheim?', a: 'Rasen Schwab GmbH ist der lokale Spezialist direkt in Rosenheim. Für größere Projekte liefern auch Isar Rollrasen und BayernRasen in die Region.' },
+      { q: 'Brauche ich in Rosenheim spezielle Rasensorten?', a: 'Für Hanglagen empfiehlt sich Strapazierrasen – er wurzelt tiefer und hält besser. In schattigen Gärten unter altem Baumbestand ist Halbschattenrasen die bessere Wahl.' },
+      { q: 'Wann ist der beste Zeitpunkt für Rollrasen im Chiemgau?', a: 'Mai bis Juni und September sind optimal. Die Voralpenregion hat Spätfröste bis Mitte Mai – Pflanzungen erst nach den Eisheiligen sind deutlich sicherer.' },
+      { q: 'Wie verlege ich Rollrasen auf einer Hanglage in Rosenheim?', a: 'Rollrasen auf Hängen muss mit Holzheringen oder Jutenetzen gesichert werden, bis er nach 2–3 Wochen fest angewachsen ist. Auf steilen Hängen (über 30%) sollte immer ein Fachbetrieb ausführen.' },
+      { q: 'Muss ich trotz des feuchten Chiemgauer Klimas bewässern?', a: 'In den ersten 14 Tagen nach der Verlegung ist tägliches Wässern auch im Chiemgau wichtig – die Wurzeln müssen erst Kontakt zum Untergrund aufbauen. Danach genügt bei normalem Niederschlag oft das natürliche Regenwasser.' },
+      { q: 'Was kostet Rollrasen in Hanglagen rund um Rosenheim?', a: 'Hanglagen erhöhen den Aufwand für Bodenvorbereitung, Verlegung und Sicherung. Realistisch sind 3–8 €/m² Aufschlag auf die Verlegekosten – eine Besichtigung vor Ort und ein schriftliches Angebot sind bei Hangprojekten unbedingt empfehlenswert.' },
     ],
   },
   ingolstadt: {
     name: 'Ingolstadt', region: 'Oberbayern', plz: '85049',
     title: 'Rollrasen Ingolstadt – Kosten, Händler & kostenlose Angebote 2026',
     desc:  'Rollrasen in Ingolstadt kaufen & verlegen lassen: Preisrechner, regionale Händler & kostenlose Angebote. Geprüfte Fachbetriebe aus der Region.',
-    intro: 'Ingolstadt liegt zentral zwischen München und Nürnberg – und profitiert damit von Händlern aus beiden Richtungen. BayernRasen aus Schwabhausen und Schwab Rollrasen aus Pörnbach sind besonders nah. Ingolstadts Klima ist kontinental mit heißen Sommern: intensive Bewässerung in den ersten Wochen nach der Verlegung ist entscheidend.',
+    preisHinweis: 'Ingolstadt liegt günstig zwischen mehreren Herstellern aus Oberbayern und Mittelfranken – gute Ausgangslage für wettbewerbsfähige Preise. Mehrere Angebote einholen lohnt sich: Die Konkurrenz zwischen Betrieben aus beiden Richtungen hält die Preise fair.',
+    nachbarStaedte: ['muenchen', 'nuernberg', 'augsburg', 'freising', 'regensburg'],
+    intro: `Ingolstadt liegt zentral im Herzen Bayerns – zwischen München im Süden und Nürnberg im Norden. Diese geografische Lage ist rollrasenmäßig ein echter Vorteil: Betriebe aus beiden Richtungen beliefern die Region, was echten Wettbewerb und damit faire Preise schafft. BayernRasen aus Schwabhausen und Schwab Rollrasen aus Pörnbach zählen zu den nächstgelegenen Herstellern.
+
+Das Klima Ingolstadts ist ausgesprochen kontinental – heiße, trockene Sommer gehören zur Norm. Die Jahresdurchschnittstemperatur ist vergleichsweise hoch, die Niederschläge mit rund 620 mm pro Jahr eher gering. Für Rollrasen bedeutet das: Bewässerung ist das A und O. Wer im Frühsommer verlegt und nicht konsequent wässert, riskiert den Misserfolg. Frühjahrspflanzungen (April/Mai) nutzen die Frühjahrs-Niederschläge und sind in Ingolstadt besonders empfehlenswert.
+
+Die Böden im Ingolstädter Raum sind meist sandig bis lehmig-sandig, oft mit kiesigen Anteilen – günstig für die Drainage, erfordern aber Humusergänzung für dauerhaft gutes Rasenwachstum. In stark versiegelten Gewerbegebieten oder auf alten Audi-Werksgeländen sind aufwendigere Bodenvorbereitungen nötig.
+
+Ingolstadts starke Wirtschaft und Bevölkerungswachstum treiben eine hohe Nachfrage nach Rollrasen in Neubaugebieten an: Oberbürgermeister-Viertel, Südwest-Viertel und die wachsenden Vorortgemeinden brauchen regelmäßig schnell fertige Grünflächen.`,
     faq: [
-      { q: 'Was kostet Rollrasen in Ingolstadt?', a: 'Material: 5–12 €/m². Inkl. Lieferung und Verlegung: 15–25 €/m². Mit Bodenvorbereitung: 25–55 €/m². Ingolstadt liegt günstig zwischen mehreren Herstellern.' },
-      { q: 'Welche Händler liefern nach Ingolstadt?', a: 'BayernRasen (Schwabhausen), Schwab Rollrasen (Pörnbach) und Isar Rollrasen (Altheim) liefern alle in den Raum Ingolstadt. PLZ eingeben – wir finden die drei nächsten.' },
-      { q: 'Wann ist der beste Zeitpunkt für Rollrasen in Ingolstadt?', a: 'April bis Juni. Der Ingolstädter Sommer ist oft trocken und heiß – wer im Juli verlegt, muss täglich intensiv wässern. Herbst (September/Oktober) ist eine gute Alternative.' },
-      { q: 'Kann ich Rollrasen auch für größere Gewerbeflächen bestellen?', a: 'Ja – regionale Hersteller wie BayernRasen produzieren auf über 100 Hektar Eigenanbau und können auch größere Mengen kurzfristig liefern.' },
+      { q: 'Was kostet Rollrasen in Ingolstadt?', a: 'Material: 5–12 €/m². Inkl. Lieferung und Verlegung: 15–25 €/m². Mit Bodenvorbereitung: 25–55 €/m². Ingolstadt liegt günstig zwischen mehreren Herstellern – faire Preise durch echten Wettbewerb.' },
+      { q: 'Welche Händler liefern nach Ingolstadt?', a: 'BayernRasen (Schwabhausen), Schwab Rollrasen (Pörnbach) und Isar Rollrasen (Altheim) liefern alle in den Raum Ingolstadt. PLZ eingeben – wir finden die drei nächsten Betriebe.' },
+      { q: 'Wann ist der beste Zeitpunkt für Rollrasen in Ingolstadt?', a: 'April bis Juni ist ideal. Der Ingolstädter Sommer ist oft trocken und heiß – wer im Juli verlegt, muss täglich intensiv wässern. Herbst (September/Oktober) ist eine gute Alternative.' },
+      { q: 'Kann ich Rollrasen auch für größere Gewerbeflächen bestellen?', a: 'Ja – regionale Hersteller wie BayernRasen produzieren auf über 100 Hektar Eigenanbau und können große Mengen kurzfristig liefern. Für Projekte über 500 m² lohnt sich ein direkter Kontakt zum Hersteller.' },
+      { q: 'Wie wichtig ist die Bewässerung nach der Verlegung in Ingolstadt?', a: 'Sehr wichtig – Ingolstadt gehört zu den trockeneren Standorten in Bayern. In den ersten 3 Wochen täglich wässern, im Sommer zweimal täglich (morgens und abends). Wer das nicht gewährleisten kann, sollte im Frühjahr oder Herbst verlegen.' },
+      { q: 'Lohnt sich ein Bewässerungssystem in Ingolstadt?', a: 'Für Flächen ab 100 m² kann eine automatische Bewässerungsanlage eine sinnvolle Investition sein – besonders im trockenen Ingolstädter Klima. Kosten: ab ca. 800–1.500 € für ein einfaches System. Einige Gartenbau-Betriebe installieren beides zusammen.' },
+      { q: 'Welche Bodenvorbereitung brauche ich in Ingolstadt?', a: 'Kiesige und sandige Böden im Ingolstädter Raum brauchen eine Humusschicht von 5–8 cm. Bei Neubauten ist Tiefenlockerung und Planieren nötig. Ein Fachbetrieb schätzt den Aufwand vor Ort ein.' },
     ],
   },
   freising: {
     name: 'Freising', region: 'Oberbayern', plz: '85354',
     title: 'Rollrasen Freising – Kosten, Händler & kostenlose Angebote 2026',
     desc:  'Rollrasen in Freising kaufen & verlegen lassen: Preisrechner, regionale Händler & kostenlose Angebote. Geprüfte Fachbetriebe aus der Region.',
-    intro: 'Freising liegt zwischen München und dem Niederbayerischen Hügelland – und hat damit eine ideale Lage für schnelle Rollrasen-Lieferungen. Isar Rollrasen aus Altheim ist nur wenige Kilometer entfernt, die Münchner Betriebe rund um Unterschleißheim und Kirchheim decken den Raum ebenfalls ab. Freisings Böden sind oft tiefgründig und humos – gute Voraussetzungen für schnelles Anwachsen.',
+    preisHinweis: 'Freising hat eine hervorragende Lieferanbindung: sowohl Münchner Betriebe als auch Isar Rollrasen aus Niederbayern konkurrieren um die Region. Das schafft echten Wettbewerb und faire Preise – hier lohnt es sich, mehrere Angebote einzuholen.',
+    nachbarStaedte: ['muenchen', 'landshut', 'ingolstadt', 'regensburg'],
+    intro: `Freising liegt verkehrsgünstig zwischen München und dem Niederbayerischen Hügelland – und profitiert rollrasenmäßig von beiden Seiten. Isar Rollrasen aus Altheim ist nur wenige Kilometer entfernt, Münchner Betriebe aus Unterschleißheim und Kirchheim decken den Raum ebenfalls zuverlässig ab. Diese günstige Position zwischen mehreren Anbietern bedeutet echten Preiswettbewerb.
+
+Das Klima in Freising ist mild-kontinental mit rund 800 mm Jahresniederschlag. Der Freisinger Raum gehört nicht zu den Extremstandorten – weder zu heiß noch zu feucht – was Rollrasen zu einer verlässlichen Wahl macht. Die besten Verlegezeiten sind Frühjahr (April–Juni) und Frühherbst (September/Oktober).
+
+Die Böden im Freisinger Raum sind sehr unterschiedlich: In der Isarniederung rund um die Altstadt gibt es tiefgründige, humusreiche Lehmböden – ideal für Rollrasen. Auf den höher gelegenen Schotterterrassen nordöstlich der Stadt sind die Böden sandiger und kiesiger, was gute Drainage bedeutet, aber Humusergänzung erfordert.
+
+Freising ist stark geprägt von Neubaugebieten rund um den Flughafen München (Ober- und Niederding, Hallbergmoos, Eching) – ein Markt mit konstant hoher Nachfrage nach Rollrasen für frisch fertiggestellte Gärten.`,
     faq: [
-      { q: 'Was kostet Rollrasen in Freising?', a: 'Material: 5–12 €/m². Inkl. Lieferung und Verlegung: 15–25 €/m². Komplett mit Bodenvorbereitung: 25–55 €/m². Freising liegt sehr günstig zu mehreren großen Herstellern.' },
-      { q: 'Welche Händler liefern nach Freising?', a: 'Isar Rollrasen (Altheim, Niederbayern) ist besonders nah. Zusätzlich liefern Wolf Gruen (Unterschleißheim) und Spiegl Gartenbau (Kirchheim) aus dem Münchner Raum nach Freising.' },
-      { q: 'Wann ist der beste Zeitpunkt für Rollrasen in Freising?', a: 'April bis Juni und September/Oktober. Das Klima in Freising ist gemäßigt – Frühjahrspflanzungen gelingen zuverlässig, wenn der Boden frost frei ist.' },
-      { q: 'Lohnt sich Rollrasen für Neubaugebiete in Freising?', a: 'Besonders ja – Rollrasen ist sofort nutzbar und schützt den Boden schnell vor Erosion. Bei Neubauprojekten oft die bevorzugte Wahl gegenüber Rasensaat.' },
+      { q: 'Was kostet Rollrasen in Freising?', a: 'Material: 5–12 €/m². Inkl. Lieferung und Verlegung: 15–25 €/m². Komplett mit Bodenvorbereitung: 25–55 €/m². Freising liegt sehr günstig zwischen mehreren großen Herstellern – günstige Ausgangslage.' },
+      { q: 'Welche Händler liefern nach Freising?', a: 'Isar Rollrasen (Altheim, Niederbayern) ist besonders nah. Zusätzlich liefern Betriebe aus dem Münchner Raum (Unterschleißheim, Kirchheim) nach Freising.' },
+      { q: 'Wann ist der beste Zeitpunkt für Rollrasen in Freising?', a: 'April bis Juni und September/Oktober. Das Klima ist gemäßigt – Frühjahrspflanzungen gelingen zuverlässig, wenn der Boden frostfrei ist.' },
+      { q: 'Lohnt sich Rollrasen für Neubaugebiete in Freising?', a: 'Besonders ja – Rollrasen ist sofort nutzbar und schützt den Boden schnell vor Erosion. Bei Neubauprojekten rund um den Flughafen München die mit Abstand bevorzugte Wahl.' },
+      { q: 'Welche Bodenvorbereitung ist in Freising nötig?', a: 'Das hängt vom Standort ab: Isarniederung-Böden brauchen wenig Aufbereitung, Schotterflächen am Stadtrand benötigen Humusergänzung (5 cm). Bei Neubauflächen ist Fräsen und Planieren Standard.' },
+      { q: 'Kann ich Rollrasen in Freising auch selbst verlegen?', a: 'Ja – für Flächen bis 80 m² ist Eigenverlegung gut machbar. Die Bodenvorbereitung ist der aufwendigste Teil. Für größere Flächen oder schwierige Böden empfiehlt sich ein Fachbetrieb.' },
+      { q: 'Wie lange bis Rollrasen in Freising begehbar ist?', a: 'Nach 10–14 Tagen ist der Rasen leicht begehbar, nach 3–4 Wochen voll belastbar. Konsequentes Wässern in den ersten 3 Wochen ist entscheidend für diesen Zeitplan.' },
     ],
   },
   fuerth: {
     name: 'Fürth', region: 'Mittelfranken', plz: '90762',
     title: 'Rollrasen Fürth – Kosten, Händler & kostenlose Angebote 2026',
     desc:  'Rollrasen in Fürth kaufen & verlegen lassen: Preisrechner, regionale Händler & kostenlose Angebote. Geprüfte Fachbetriebe aus Mittelfranken.',
-    intro: 'Fürth und Nürnberg bilden einen gemeinsamen Wirtschaftsraum – und sind rollrasenmäßig gut aufgestellt. Die Greenkeepers Gartenbau GbR hat ihren Sitz direkt in Fürth, Noris Rollrasen in Nürnberg ergänzt das Angebot. Mittelfranken hat ein klar kontinentales Klima mit trockenen Sommern: lokale Sorten sind darauf abgestimmt.',
+    preisHinweis: 'Fürth und Nürnberg bilden einen gemeinsamen Markt mit kurzen Wegen zu Greenkeepers Gartenbau und Noris Rollrasen. Die Preise im Fürther Raum entsprechen dem mittelfränkischen Durchschnitt – Konkurrenz zwischen mehreren lokalen Betrieben sorgt für faire Konditionen.',
+    nachbarStaedte: ['nuernberg', 'erlangen', 'ingolstadt', 'wuerzburg'],
+    intro: `Fürth und Nürnberg bilden einen gemeinsamen Wirtschafts- und Wohnraum – und sind rollrasenmäßig sehr gut aufgestellt. Die Greenkeepers Gartenbau GbR hat ihren Sitz direkt in Fürth, Noris Rollrasen in Nürnberg ergänzt das Angebot. Kurze Wege, bekannte Betriebe, lokale Expertise.
+
+Das Klima Mittelfrankens ist klar kontinental mit trockenen Sommern und kalten Wintern. Fürth bekommt mit rund 590 mm Jahresniederschlag vergleichsweise wenig Regen – intensive Bewässerung nach der Verlegung ist daher besonders wichtig. Frühjahr und Frühherbst sind die optimalen Verlegezeiten; Hochsommerverlegungen erfordern konsequentes Wässern.
+
+Die Böden in Fürth und Umgebung sind charakteristisch für Mittelfranken: sandsteinhaltig, leicht sauer, mit guter Drainage. Das ist für Rollrasen gut handhabbar, erfordert aber oft eine pH-Korrektur (Kalkung) und Humusergänzung vor der Verlegung. Lokale Betriebe wissen um diese Besonderheit und bereiten Flächen entsprechend vor.
+
+Fürth hat in den letzten Jahren starkes Bevölkerungswachstum erlebt – neue Wohnviertel in Ronhof, Oberfürberg und entlang der Stadtbahn-Achsen sind ein kontinuierlich wachsender Markt für Rollrasen bei Neubau und Gartensanierung.`,
     faq: [
-      { q: 'Was kostet Rollrasen in Fürth?', a: 'Material: 5–12 €/m². Inkl. Lieferung und Verlegung: 15–25 €/m². Mit Bodenvorbereitung: 25–55 €/m². Preise entsprechen dem mittelfränkischen Durchschnitt.' },
+      { q: 'Was kostet Rollrasen in Fürth?', a: 'Material: 5–12 €/m². Inkl. Lieferung und Verlegung: 15–25 €/m². Mit Bodenvorbereitung: 25–55 €/m². Preise entsprechen dem mittelfränkischen Durchschnitt – faire Konditionen durch lokalen Wettbewerb.' },
       { q: 'Welche Händler liefern in Fürth?', a: 'Greenkeepers Gartenbau GbR ist direkt in Fürth ansässig. Noris Rollrasen (Nürnberg) und überregionale Hersteller wie BayernRasen liefern ebenfalls in den Großraum Fürth.' },
       { q: 'Wann ist der beste Zeitpunkt für Rollrasen in Fürth?', a: 'April bis Juni und September. Fürth und Nürnberg haben relativ trockene Sommer – intensive Bewässerung nach der Verlegung ist besonders wichtig.' },
       { q: 'Kann ich Rollrasen in Fürth auch in Eigenleistung verlegen?', a: 'Ja, bei kleineren Flächen gut machbar. Wichtig ist eine ebene, ausreichend lockere Unterlage. Lokale Händler helfen mit Beratung zur richtigen Sorte und Bodenvorbereitung.' },
+      { q: 'Muss ich die Böden in Fürth kalkeln?', a: 'Auf den typischen Sandsteinböden Mittelfrankens ist der pH-Wert oft zu niedrig für optimales Rasenwachstum. Eine Kalkung vor der Verlegung (ca. 1–2 €/m²) verbessert die Anwachsrate deutlich.' },
+      { q: 'Welche Rasensorte eignet sich für Fürth?', a: 'Gebrauchsrasen und trockenheitstolerante Sorten sind für das trockene Mittelfranken empfehlenswert. Für stark genutzte Gärten (Kinder, Hund) empfiehlt sich Strapazierrasen.' },
+      { q: 'Wie lange dauert es bis Rollrasen in Fürth fest angewachsen ist?', a: 'Bei guter Bewässerung und kühlen bis milden Temperaturen (Frühjahr/Herbst) 10–14 Tage. Im Sommer bei Hitze kann es 3–4 Wochen dauern – Bewässerung ist dann entscheidend.' },
     ],
   },
   wuerzburg: {
     name: 'Würzburg', region: 'Unterfranken', plz: '97070',
     title: 'Rollrasen Würzburg – Kosten, Händler & kostenlose Angebote 2026',
     desc:  'Rollrasen in Würzburg kaufen & verlegen lassen: Preisrechner, regionale Händler & kostenlose Angebote. Geprüfte Fachbetriebe aus Unterfranken.',
-    intro: 'Würzburg ist eine der wärmsten Städte Deutschlands – mit mildem Weinbauklima und langen Vegetationsperioden. Das ist ideal für Rollrasen: schnelles Anwachsen, lange Nutzungszeit und wenig Frostrisiko. Überregionale Hersteller aus Bayern liefern zuverlässig in den Würzburger Raum, Walter Schwab GmbH aus dem schwäbischen Waidhofen ist einer der nächsten Produzenten.',
+    preisHinweis: 'Würzburg liegt weiter von den größten bayerischen Produzenten entfernt – Lieferkosten können 3–5 €/m² höher sein als im südbayerischen Raum. Dennoch: Mit einem kostenlosen Angebot-Vergleich finden Sie den günstigsten verfügbaren Betrieb.',
+    nachbarStaedte: ['nuernberg', 'erlangen', 'fuerth'],
+    intro: `Würzburg ist eine der wärmsten Städte Deutschlands – das milde Weinbauklima am Main macht die Stadt zu einem der klimatisch bevorzugten Rollrasen-Standorte in ganz Bayern. Lange Vegetationsperioden, milde Winter und warme Frühjahre schaffen ideale Bedingungen: Rollrasen wächst hier zuverlässig an, und die Nutzungszeit ist länger als in kälteren Regionen.
+
+Der Nachteil liegt in der Distanz zu den großen bayerischen Rollrasen-Produzenten. Walter Schwab GmbH aus Waidhofen im schwäbischen Raum ist einer der nächsten Produzenten; bayernweit liefernde Hersteller wie BayernRasen, Isar Rollrasen und Sued-Rasen sind ebenfalls verfügbar. Mehrere Angebote einzuholen ist in Würzburg besonders empfehlenswert, da die Preisunterschiede je nach Lieferant spürbar sein können.
+
+Das Klima am Main ist warm und vergleichsweise trocken – Würzburg bekommt mit rund 550 mm Jahresniederschlag ähnlich wenig Regen wie Regensburg. Intensive Bewässerung in den ersten Wochen nach der Verlegung ist daher Pflicht. Die gute Nachricht: Das warme Klima verkürzt die Anwachszeit – bei Frühlingstemperaturen ist Rollrasen in Würzburg schneller durchwurzelt als in kühleren Regionen.
+
+Würzburgs Böden sind oft lehmig-tonig (Muschelkalk-Gebiete), was gute Wasserhaltung bedeutet aber manchmal Drainage-Probleme verursacht. In solchen Lagen ist eine Drainageschicht vor dem Rollrasen sinnvoll.`,
     faq: [
       { q: 'Was kostet Rollrasen in Würzburg?', a: 'Material: 5–12 €/m². Inkl. Lieferung und Verlegung: 15–25 €/m². Mit Bodenvorbereitung: 25–55 €/m². Die etwas weiteren Transportwege von bayerischen Herstellern können die Lieferkosten leicht erhöhen.' },
       { q: 'Welche Händler liefern nach Würzburg?', a: 'Überregionale Hersteller wie BayernRasen, Isar Rollrasen und Sued-Rasen liefern bayernweit – auch nach Würzburg. PLZ eingeben und die drei nächsten Betriebe finden.' },
       { q: 'Wann ist der beste Zeitpunkt für Rollrasen in Würzburg?', a: 'März bis Juni und September/Oktober. Das milde Würzburger Klima ermöglicht frühere Frühjahrspflanzungen als im restlichen Bayern – oft schon ab Ende März.' },
-      { q: 'Welche Rasensorte eignet sich für Würzburgs Klima?', a: 'Zierrasen und Gebrauchsrasen gedeihen beide gut. Bei heißen Sommern empfiehlt sich eine trockenheitstolerante Sorte – lokale Händler beraten individuell.' },
+      { q: 'Welche Rasensorte eignet sich für Würzburgs Klima?', a: 'Trockenheitstolerante Gebrauchsrasen-Sorten sind für Würzburg empfehlenswert. Das warme, trockene Maintal-Klima stellt Rasen im Sommer vor Bewässerungs-Anforderungen.' },
+      { q: 'Muss ich trotz warmem Klima in Würzburg viel wässern?', a: 'Ja – Würzburg ist einer der trockensten Standorte in Bayern. Besonders in den ersten 3 Wochen nach Verlegung ist tägliches Wässern Pflicht. Ein automatisches Bewässerungssystem kann sich hier langfristig lohnen.' },
+      { q: 'Gibt es Drainage-Probleme bei Würzburger Böden?', a: 'Auf lehmig-tonigen Muschelkalk-Böden kann Staunässe ein Problem sein. In solchen Fällen empfiehlt sich eine 5–10 cm Drainageschicht (Kies/Splitt) unter dem Rollrasen. Lokale Betriebe kennen die Problemzonen in Würzburg.' },
+      { q: 'Wie früh im Jahr kann ich in Würzburg verlegen?', a: 'Dank des warmen Mainklimas oft schon ab Ende März – wenn der Boden frostfrei und über 8°C warm ist. Das ist 3–4 Wochen früher als in nördlicheren oder höher gelegenen Regionen Bayerns.' },
     ],
   },
   erlangen: {
     name: 'Erlangen', region: 'Mittelfranken', plz: '91052',
     title: 'Rollrasen Erlangen – Kosten, Händler & kostenlose Angebote 2026',
     desc:  'Rollrasen in Erlangen kaufen & verlegen lassen: Preisrechner, regionale Händler & kostenlose Angebote. Geprüfte Fachbetriebe aus Mittelfranken.',
-    intro: 'Erlangen liegt direkt nördlich von Nürnberg und profitiert von denselben spezialisierten Betrieben: Noris Rollrasen aus Nürnberg und Greenkeepers Gartenbau aus Fürth sind beide in wenigen Minuten erreichbar. Die Universitätsstadt mit ihren vielen Neubaugebieten und Reihenhaussiedlungen ist ein starker Rollrasen-Markt – Neubauprojekte brauchen schnell eine grüne Fläche.',
+    preisHinweis: 'Erlangen profitiert von seiner Nähe zu Nürnberg – Noris Rollrasen und Greenkeepers Gartenbau liefern zu kurzen Wegen und konkurrenzfähigen Preisen. Die Kosten entsprechen dem mittelfränkischen Durchschnitt.',
+    nachbarStaedte: ['nuernberg', 'fuerth', 'bayreuth', 'ingolstadt'],
+    intro: `Erlangen liegt direkt nördlich von Nürnberg und ist Teil des starken Wirtschaftsraums Mittelfranken. Rollrasenmäßig profitiert Erlangen von denselben spezialisierten Betrieben wie Nürnberg: Noris Rollrasen und Greenkeepers Gartenbau aus Fürth sind beide in wenigen Minuten erreichbar. Die Universitätsstadt mit ihren vielen Neubaugebieten und Reihenhaussiedlungen ist ein aktiver Rollrasen-Markt.
+
+Das kontinentale Klima Erlangen ist typisch für Mittelfranken: trockene Sommer, kalte Winter, Jahresniederschlag rund 590 mm. Frühjahr und Frühherbst sind die optimalen Verlegezeiten. Besonders die Hochsommerverlegungen erfordern konsequente Bewässerung – ohne die vertrocknet der Rasen in der Anwachsphase.
+
+Die Böden in Erlangen sind ähnlich wie in Nürnberg sandsteinhaltig und leicht sauer. In den Neubaugebieten rund um den Siemens-Campus und in den expandierenden Vorortgemeinden wie Tennenlohe, Büchenbach oder Kriegenbrunn ist verdichteter Aushub die häufigste Herausforderung – gründliches Fräsen und Humuseinarbeitung sind dann nötig.
+
+Erlangen ist bekannt für seine hohe Kaufkraft und anspruchsvolle Kundschaft: Zierrasen und Premium-Sorten werden hier überdurchschnittlich oft nachgefragt. Für repräsentative Gärten in Büchenbacher Hängen oder Bruck lohnen sich hochwertige Rollrasen-Sorten und professionelle Verlegung.`,
     faq: [
-      { q: 'Was kostet Rollrasen in Erlangen?', a: 'Material: 5–12 €/m². Inkl. Lieferung und Verlegung: 15–25 €/m². Mit Bodenvorbereitung: 25–55 €/m². Erlangen liegt nah an Nürnberger Betrieben, was kurze Lieferwege und günstige Preise bedeutet.' },
+      { q: 'Was kostet Rollrasen in Erlangen?', a: 'Material: 5–12 €/m². Inkl. Lieferung und Verlegung: 15–25 €/m². Mit Bodenvorbereitung: 25–55 €/m². Erlangen liegt nah an Nürnberger Betrieben – kurze Wege, faire Preise.' },
       { q: 'Welche Händler liefern nach Erlangen?', a: 'Noris Rollrasen (Nürnberg) und Greenkeepers Gartenbau (Fürth) sind direkt vor Ort. Überregionale Hersteller wie BayernRasen liefern ebenfalls nach Mittelfranken.' },
       { q: 'Wann ist der beste Zeitpunkt für Rollrasen in Erlangen?', a: 'April bis Juni und September. Das kontinentale Klima Mittelfrankens macht Frühjahrspflanzungen nach den Eisheiligen besonders zuverlässig.' },
-      { q: 'Lohnt sich Rollrasen für Neubauten in Erlangen?', a: 'Ja – Rollrasen ist bei Neubauprojekten die bevorzugte Wahl: sofort nutzbar, kein langes Warten auf Keimung und professionelles Erscheinungsbild von Tag eins.' },
+      { q: 'Lohnt sich Rollrasen für Neubauten in Erlangen?', a: 'Ja – Rollrasen ist bei Neubauprojekten die bevorzugte Wahl: sofort nutzbar, kein Warten auf Keimung und professionelles Erscheinungsbild von Tag eins.' },
+      { q: 'Welche Rollrasen-Sorte eignet sich für repräsentative Erlanger Gärten?', a: 'Für anspruchsvolle Gärten ist Zierrasen oder Premium-Gebrauchsrasen empfehlenswert – dichtes, feines Gras, attraktiv und belastbar. Für intensiv genutzte Flächen (Kinder, Hund) besser Strapazierrasen wählen.' },
+      { q: 'Was ist bei der Bodenvorbereitung in Erlangen zu beachten?', a: 'Auf sandsteinhaltigem Boden ist eine pH-Kontrolle und gegebenenfalls Kalkung empfehlenswert. Bei Neubauten: Tiefenlockerung (30 cm), Planieren und Humuseinarbeitung (5 cm). Lokale Betriebe kennen die typischen Bodenprobleme in Erlangens Stadtteilen.' },
+      { q: 'Gibt es auch Rollrasen für Dachgärten oder Balkone in Erlangen?', a: 'Spezielle leichte Rollrasen-Systeme für Dachgärten und Balkone sind möglich, aber eher selten. Die meisten Hersteller beraten auf Anfrage – Gewichtslimits und Drainage müssen vorab geprüft werden.' },
     ],
   },
   bayreuth: {
     name: 'Bayreuth', region: 'Oberfranken', plz: '95444',
     title: 'Rollrasen Bayreuth – Kosten, Händler & kostenlose Angebote 2026',
     desc:  'Rollrasen in Bayreuth kaufen & verlegen lassen: Preisrechner, regionale Händler & kostenlose Angebote. Geprüfte Fachbetriebe aus Oberfranken.',
-    intro: 'Bayreuth und Oberfranken sind die nördlichste Region Bayerns – mit einem raueren Klima als Oberbayern, aber bestens geeignet für robuste Rollrasen-Sorten. Überregionale Hersteller aus dem Großraum Nürnberg liefern zuverlässig in die Region. Für Garten- und Landschaftsprojekte in Bayreuth empfehlen sich frostresistente Sorten, die auch strengen Oberfränkischen Wintern standhalten.',
+    preisHinweis: 'Bayreuth liegt etwas weiter von den Hauptproduktionsbetrieben entfernt – Transportkosten von Nürnberger Betrieben können die Gesamtkosten leicht erhöhen. Mehrere Angebote einholen um den günstigsten Lieferanten zu finden.',
+    nachbarStaedte: ['erlangen', 'nuernberg', 'regensburg'],
+    intro: `Bayreuth und Oberfranken sind die nördlichste Region Bayerns – mit einem raueren, kühleren Klima als Oberbayern. Das stellt eigene Anforderungen an Rollrasen: Frostresistente Sorten, die auch strengen Oberfränkischen Wintern standhalten, sind wichtiger als anderswo in Bayern. Der späte Frühlingsbeginn bedeutet, dass Verlegung frühestens Mitte Mai sicher ist – nach den Eisheiligen.
+
+Die Versorgungslage in Bayreuth ist gut: Betriebe aus dem Großraum Nürnberg – Noris Rollrasen und Greenkeepers Gartenbau – liefern zuverlässig in die Region. Die etwas weiteren Transportwege sind einzuplanen, aber für ein frisches, hochwertiges Endprodukt kein Hindernis.
+
+Das Klima in Bayreuth ist kontinental mit deutlicher Saisonalität. Die Jahrestemperatur ist etwas niedriger als in Südbayern, die Vegetationszeit kürzer. Für Rollrasen bedeutet das: Im Frühjahr später verlegen (Mai statt April), im Herbst früher abschließen (bis Mitte Oktober). Die Frühjahrsniederschläge in Oberfranken sind ausreichend für gutes Anwachsen.
+
+Die Böden rund um Bayreuth sind oft tonig-lehmig im Talboden und kalkhaltiger auf den Höhenzügen. Beide Bodentypen eignen sich für Rollrasen – mit der richtigen Vorbereitung. In Hanglagen (typisch für das Bayreuther Stadtbild) ist Erosionsschutz beim Verlegen wichtig.`,
     faq: [
       { q: 'Was kostet Rollrasen in Bayreuth?', a: 'Material: 5–12 €/m². Inkl. Lieferung und Verlegung: 15–25 €/m². Mit Bodenvorbereitung: 25–55 €/m². Transportkosten von Nürnberger Betrieben sind bei der Kalkulation einzuplanen.' },
-      { q: 'Welche Händler liefern nach Bayreuth?', a: 'Noris Rollrasen (Nürnberg) und die Greenkeepers Gartenbau (Fürth) liefern in den Raum Oberfranken. Überregionale Hersteller wie Isar Rollrasen und BayernRasen sind ebenfalls verfügbar.' },
-      { q: 'Wann ist der beste Zeitpunkt für Rollrasen in Bayreuth?', a: 'Mai bis Juni und September. Oberfranken hat längere Winterperioden als Südbayern – Pflanzungen erst nach den Eisheiligen (Mitte Mai) sind sicherer.' },
-      { q: 'Welche Sorte eignet sich für Oberfranken?', a: 'Robuste Strapazierrasen-Sorten mit guter Frosttoleranz sind ideal. Lokale Händler beraten zu den besten Sorten für Bayreuths Bodenverhältnisse.' },
+      { q: 'Welche Händler liefern nach Bayreuth?', a: 'Noris Rollrasen (Nürnberg) und Greenkeepers Gartenbau (Fürth) liefern in den Raum Oberfranken. Überregionale Hersteller wie Isar Rollrasen und BayernRasen sind ebenfalls verfügbar.' },
+      { q: 'Wann ist der beste Zeitpunkt für Rollrasen in Bayreuth?', a: 'Mai bis Juni und September. Oberfranken hat längere Winterperioden als Südbayern – Pflanzungen erst nach den Eisheiligen (Mitte Mai) sind deutlich sicherer.' },
+      { q: 'Welche Sorte eignet sich für Oberfranken?', a: 'Robuste Strapazierrasen-Sorten mit guter Frosttoleranz sind ideal. Lokale Händler beraten zu den besten Sorten für Bayreuths Bodenverhältnisse und das raue oberfränkische Klima.' },
+      { q: 'Wie gehe ich mit Hanglagen in Bayreuth um?', a: 'Hanglagen sind in Bayreuth häufig. Rollrasen auf Hängen muss mit Heringen gesichert werden bis er angewachsen ist. Auf steilen Hängen (über 30%) empfiehlt sich immer ein Fachbetrieb mit Erfahrung in Hangverlegung.' },
+      { q: 'Kann ich Rollrasen in Bayreuth noch im Oktober verlegen?', a: 'Ja, aber nur bis Mitte Oktober – nach den ersten Frösten sollte kein Rollrasen mehr verlegt werden. In Oberfranken kommen Herbstfröste früher als in Südbayern; frühherbstliche Verlegung bis Ende September ist die sicherste Option.' },
+      { q: 'Welche Bodenvorbereitung ist in Bayreuth typisch?', a: 'Auf tonig-lehmigen Böden im Talboden ist Drainageverbesserung wichtig. Auf kalkhaltigen Böden der Höhenzüge pH-Wert prüfen. Bei Neubauflächen: Fräsen, Planieren und Humuseinarbeitung wie üblich.' },
     ],
   },
   passau: {
     name: 'Passau', region: 'Niederbayern', plz: '94032',
     title: 'Rollrasen Passau – Kosten, Händler & kostenlose Angebote 2026',
     desc:  'Rollrasen in Passau kaufen & verlegen lassen: Preisrechner, regionale Händler & kostenlose Angebote. Geprüfte Fachbetriebe aus Niederbayern.',
-    intro: 'Passau liegt an der Grenze zu Österreich – und hat mit Isar Rollrasen und Nodes Gartenbau aus dem Landshuter Raum zwei niederbayerische Spezialisten in erreichbarer Nähe. Das Drei-Flüsse-Klima mit ausreichend Niederschlägen ist hervorragend für Rollrasen: schnelles Anwachsen und satte grüne Flächen sind die Regel, nicht die Ausnahme.',
+    preisHinweis: 'Passau liegt am östlichen Rand Bayerns – Betriebe aus dem Landshuter Raum (Isar Rollrasen, Nodes Gartenbau) beliefern die Region mit etwas längeren Transportwegen. Transportkosten realistisch einkalkulieren.',
+    nachbarStaedte: ['regensburg', 'landshut', 'freising'],
+    intro: `Passau liegt an der Dreiflüssestadt-Lage von Inn, Ilz und Donau – mit einem Klima, das für Rollrasen hervorragende Bedingungen schafft. Das Drei-Flüsse-Klima bringt ausreichend Niederschläge und milde Temperaturen; der Passauer Raum zählt zu den niederschlagsreichsten in Niederbayern. Rollrasen wächst hier schnell und üppig an.
+
+Isar Rollrasen aus Altheim und Nodes Gartenbau aus Essenbach sind die nächsten niederbayerischen Spezialisten – ein Stück weiter als bei Landshut, aber zuverlässig für den Passauer Raum. Für große Projekte stehen bayernweite Hersteller zur Verfügung.
+
+Die Böden im Passauer Raum sind vielschichtig: Im Donautal und entlang der Flussniederlassungen gibt es fruchtbare Auenböden mit gutem Wasserhaltevermögen. Auf den angrenzenden Hochflächen und Hanglagen (Passau ist sehr hügelig) findet sich eher tonig-kristalliner Boden. Besonders an den stadtprägenden Hängen – Innstadt, Ilzstadt, Inngebiet – ist bei der Verlegung Hangschutz wichtig.
+
+Passau hat viele historische Gärten und Terrassengärten an den Steilhängen – eine eigene Kategorie mit besonderen Anforderungen. Erfahrene lokale Betriebe kennen diese Besonderheiten und können individuell beraten.`,
     faq: [
-      { q: 'Was kostet Rollrasen in Passau?', a: 'Material: 5–12 €/m². Inkl. Lieferung und Verlegung: 15–25 €/m². Mit Bodenvorbereitung: 25–55 €/m². Transportwege von Landshuter Betrieben sind einzuplanen.' },
+      { q: 'Was kostet Rollrasen in Passau?', a: 'Material: 5–12 €/m². Inkl. Lieferung und Verlegung: 15–25 €/m². Mit Bodenvorbereitung: 25–55 €/m². Transportwege von Landshuter Betrieben sind realistisch einzuplanen.' },
       { q: 'Welche Händler liefern nach Passau?', a: 'Isar Rollrasen (Altheim) und Nodes Gartenbau (Essenbach) decken Niederbayern ab. Für größere Projekte stehen bayernweite Hersteller wie BayernRasen und Sued-Rasen zur Verfügung.' },
       { q: 'Wann ist der beste Zeitpunkt für Rollrasen in Passau?', a: 'April bis Juni und September/Oktober. Das feuchte Klima im Passauer Raum begünstigt schnelles Anwachsen – Frühjahrsverlegungen sind besonders zuverlässig.' },
-      { q: 'Kann ich Rollrasen auch in Hanglagen in Passau verlegen?', a: 'Ja, aber Hanglagen erfordern spezielle Verlegetechnik und gegebenenfalls Erosionsschutz. Ein Fachbetrieb berät zur optimalen Vorgehensweise.' },
+      { q: 'Kann ich Rollrasen auch in Hanglagen in Passau verlegen?', a: 'Ja, aber Hanglagen erfordern spezielle Verlegetechnik und Erosionsschutz. Passaus viele Steilhänge sind typisch – ein erfahrener Fachbetrieb sichert den Rasen mit Heringen und berät zur besten Vorgehensweise.' },
+      { q: 'Brauche ich in Passau wegen der vielen Niederschläge weniger wässern?', a: 'In der Anwachsphase (erste 2–3 Wochen) sollte trotzdem täglich gewässert werden – auch wenn es regnet. Flachregen reicht oft nicht aus; nur gezielte Bewässerung direkt am Rasen sichert die Durchwurzelung.' },
+      { q: 'Gibt es Rollrasen-Betriebe auch in der österreichischen Grenzregion?', a: 'Deutsche Betriebe liefern bis an die Grenze; österreichische Anbieter sind nach deutschem Recht und Preisrecht eigenständig. Für Passau empfehlen wir bayerische Betriebe – Garantie, Gewährleistung und Ansprechpartner auf deutschem Rechtsgebiet.' },
+      { q: 'Was sind die größten Herausforderungen bei Rollrasen in Passau?', a: 'Die Hanglagen sind die größte Besonderheit – technisch aufwendiger als flache Flächen. Außerdem können Hochwassergefährdete Zonen (Donautal) nach starken Regenfällen den Rasen belasten. Lokale Betriebe kennen diese Risiken und beraten entsprechend.' },
     ],
   },
   kempten: {
     name: 'Kempten', region: 'Allgäu', plz: '87435',
     title: 'Rollrasen Kempten – Kosten, Händler & kostenlose Angebote 2026',
     desc:  'Rollrasen in Kempten kaufen & verlegen lassen: Preisrechner, regionale Händler & kostenlose Angebote. Geprüfte Fachbetriebe aus dem Allgäu.',
-    intro: 'Kempten im Allgäu liegt am Rand der Alpen – mit einem Klima das hohe Niederschläge und kurze Sommer mit sich bringt. Das ist ideal für üppigen, satten Rollrasen, der hier besonders schnell anwächst. Walter Schwab GmbH aus Waidhofen in Schwaben ist einer der nächsten Hersteller, überregionale Betriebe liefern ins gesamte Allgäu.',
+    preisHinweis: 'Kempten liegt am südlichen Rand Bayerns – Walter Schwab GmbH aus Waidhofen und überregionale Betriebe liefern in die Region. Im Allgäu können Hanglagen und weite Transportwege den Gesamtpreis leicht erhöhen.',
+    nachbarStaedte: ['augsburg', 'rosenheim', 'muenchen'],
+    intro: `Kempten im Allgäu liegt am Rand der Alpen – mit einem Klima, das zu den niederschlagsreichsten in ganz Bayern zählt. Über 1.100 mm Regen pro Jahr bedeuten: Rollrasen wächst hier üppig und benötigt nach dem Anwachsen vergleichsweise wenig Bewässerungsaufwand. Die kühlen, feuchten Sommer sind für Gras ideal, die Vegetationszeit ist allerdings kürzer als im Münchner Raum.
+
+Walter Schwab GmbH aus Waidhofen in Schwaben ist einer der nächsten Hersteller. Überregionale Betriebe liefern ins gesamte Allgäu – die etwas weiteren Transportwege im Allgäu sind einzuplanen.
+
+Das Klima stellt spezifische Anforderungen: Die Sommer sind kurz und kühl, die Winter lang und schneereich. Rollrasen sollte im Allgäu erst nach den Eisheiligen (Mitte Mai) verlegt werden – Spätfröste bis Ende April sind keine Seltenheit. Die optimale Verlege-Saison ist Mai bis September, wobei Juli und August die intensivste Nutzungszeit sind.
+
+Die Böden rund um Kempten sind häufig schwer und lehmig – typisch für das Alpenvorland. Gute Drainage ist entscheidend: Staunässe bei schweren Lehmböden kann Rollrasen schädigen. Eine Drainageschicht unter dem Rollrasen ist bei problematischen Standorten empfehlenswert.
+
+Hanglagen sind im Allgäu allgegenwärtig – für die Rollrasen-Verlegung bedeutet das technischen Mehraufwand und entsprechend sorgfältige Planung mit dem ausführenden Betrieb.`,
     faq: [
-      { q: 'Was kostet Rollrasen in Kempten?', a: 'Material: 5–12 €/m². Inkl. Lieferung und Verlegung: 15–25 €/m². Mit Bodenvorbereitung: 25–55 €/m². Im Allgäu können Hanglagen und weite Transportwege den Gesamtpreis leicht erhöhen.' },
+      { q: 'Was kostet Rollrasen in Kempten?', a: 'Material: 5–12 €/m². Inkl. Lieferung und Verlegung: 15–25 €/m². Mit Bodenvorbereitung: 25–55 €/m². Im Allgäu können Hanglagen und etwas weitere Transportwege den Gesamtpreis leicht erhöhen.' },
       { q: 'Welche Händler liefern nach Kempten?', a: 'Walter Schwab GmbH (Waidhofen, Schwaben) ist einer der nächsten Hersteller. Ergänzend liefern BayernRasen und Sued-Rasen bayernweit – auch ins Allgäu.' },
-      { q: 'Wann ist der beste Zeitpunkt für Rollrasen in Kempten?', a: 'Mai bis Juni und August/September. Das Allgäuer Klima ist kühl und feucht – Pflanzungen nach den Eisheiligen sind sicherer. Die hohen Niederschläge erleichtern das Anwachsen.' },
-      { q: 'Eignet sich Rollrasen für das feuchte Allgäuer Klima?', a: 'Besonders gut – hohe Niederschläge bedeuten weniger Bewässerungsaufwand und schnelleres Anwachsen. Strapazierrasen ist für die kurzen Sommer und intensiven Nutzung im Allgäu empfehlenswert.' },
+      { q: 'Wann ist der beste Zeitpunkt für Rollrasen in Kempten?', a: 'Mai bis September. Das Allgäuer Klima hat Spätfröste bis Mitte Mai – Pflanzungen erst danach sind sicherer. Die hohen Niederschläge erleichtern dann das Anwachsen erheblich.' },
+      { q: 'Eignet sich Rollrasen für das feuchte Allgäuer Klima?', a: 'Besonders gut – hohe Niederschläge bedeuten weniger Bewässerungsaufwand und schnelleres Anwachsen. Strapazierrasen ist für kurze Allgäuer Sommer und intensive Nutzung ideal.' },
+      { q: 'Was muss ich bei schweren Lehmböden in Kempten beachten?', a: 'Schwere Lehmböden können zu Staunässe führen, die Rollrasen schädigt. Eine Drainageschicht aus Kies (5–8 cm) unter dem Rollrasen schützt davor. Ein Fachbetrieb prüft den Boden vor Ort und empfiehlt die nötige Maßnahme.' },
+      { q: 'Wie gehe ich mit Hanglagen im Allgäu um?', a: 'Hanglagen sind im Allgäu die Norm. Rollrasen muss auf Hängen gesichert werden (Holzheringe, Jutenetze) bis er nach 2–3 Wochen angewachsen ist. Auf steilen Hängen immer einen erfahrenen Fachbetrieb beauftragen.' },
+      { q: 'Wie lange ist die Rollrasen-Saison in Kempten?', a: 'Von Mitte Mai (nach Eisheiligen) bis Ende September/Anfang Oktober. Im Oktober können frühe Fröste die Anwachsphase gefährden. Für etwa 4 Monate optimale Verlegebedingungen – kürzer als im Münchner Raum, aber dafür sehr verlässlich.' },
     ],
   },
 };
@@ -1174,6 +1330,10 @@ const stadtCss = `<style>
   .faq-item:last-child{border-bottom:none}
   .faq-q{font-weight:600;color:#1a3d12;margin-bottom:.3rem}
   .faq-a{color:#555;font-size:.93rem}
+  .city-links{display:flex;flex-wrap:wrap;gap:.5rem;margin:1rem 0 2rem}
+  .city-link{background:#f4f8f4;border:1px solid #d4e8c8;border-radius:6px;padding:.4rem 1rem;color:#2d6a2d;text-decoration:none;font-size:.88rem;font-weight:500}
+  .city-link:hover{background:#e8f5e8;border-color:#2d6a2d}
+  .dealer-note{font-size:.85rem;color:#666;background:#f9fbf9;border-radius:6px;padding:.75rem 1rem;margin-top:.75rem;border:1px solid #e8f0e8}
   footer{text-align:center;font-size:.78rem;color:#999;margin-top:3rem;padding-top:1rem;border-top:1px solid #e0e8e0}
   footer a{color:#2d6a2d}
   @media(max-width:600px){.st-hero h1{font-size:1.5rem}.dealer-grid{grid-template-columns:1fr}}
@@ -1195,12 +1355,17 @@ app.get('/bayern/:city', (req, res, next) => {
   const dealerCards = top3.map(h => `
     <div class="dealer-card">
       <strong>${h.name}</strong>
-      ${h.typ === 'Hersteller' ? '<small>Rollrasen-Hersteller</small>' : '<small>Fachbetrieb</small>'}
+      ${h.typ === 'Hersteller' ? '<small>Rollrasen-Hersteller · Lieferung &amp; Verlegung</small>' : '<small>Gartenbau-Fachbetrieb · Beratung &amp; Verlegung</small>'}
       ${h.google_bewertung ? `<div class="rating">★ ${h.google_bewertung.toFixed(1)} <span style="color:#999">(${h.google_bewertungen_anzahl} Bewertungen)</span></div>` : ''}
       ${h.ort ? `<div style="font-size:.82rem;color:#666;margin:.2rem 0">📍 ${h.ort}</div>` : ''}
       ${BADGE[h.paket] ? `<span class="dealer-badge-pill">${BADGE[h.paket]}</span>` : ''}
-      ${h.profil_slug ? `<div style="margin-top:.5rem"><a href="/haendler/${h.profil_slug}" style="color:#2d6a2d;font-size:.82rem;text-decoration:none">→ ${h.name} in ${h.ort || 'Bayern'}</a></div>` : ''}
+      ${h.profil_slug ? `<div style="margin-top:.5rem"><a href="/haendler/${h.profil_slug}" style="color:#2d6a2d;font-size:.82rem;text-decoration:none">→ Profil &amp; Kontakt ansehen</a></div>` : ''}
     </div>`).join('');
+
+  const nachbarLinks = (stadt.nachbarStaedte || [])
+    .filter(slug => STAEDTE[slug])
+    .map(slug => `<a class="city-link" href="/bayern/${slug}">Rollrasen ${STAEDTE[slug].name}</a>`)
+    .join('');
 
   const faqHtml = stadt.faq.map(f => `
     <div class="faq-item">
@@ -1252,6 +1417,7 @@ app.get('/bayern/:city', (req, res, next) => {
 
     <h2>Händler in ${stadt.name} & Umgebung</h2>
     <div class="dealer-grid">${dealerCards || '<p>Aktuell keine Händler-Daten verfügbar.</p>'}</div>
+    <p class="dealer-note">Alle aufgeführten Betriebe sind geprüfte Fachbetriebe aus der Region. PLZ eingeben und kostenlose Angebote direkt vergleichen – unverbindlich und ohne Weitergabe Ihrer Daten an Dritte ohne Ihre Zustimmung.</p>
 
     <div class="cta-block">
       <h2>Kostenloses Angebot für ${stadt.name} anfragen</h2>
@@ -1260,16 +1426,20 @@ app.get('/bayern/:city', (req, res, next) => {
     </div>
 
     <h2>Preise für Rollrasen in ${stadt.name}</h2>
-    <p>Die Preise in ${stadt.name} entsprechen dem bayerischen Durchschnitt:</p>
     <table style="width:100%;border-collapse:collapse;margin:1rem 0;font-size:.92rem">
       <tr style="background:#f4f8f4"><td style="padding:9px 14px;color:#555">Rollrasen Material</td><td style="padding:9px 14px;font-weight:700;color:#2d6a2d">5–12 €/m²</td></tr>
       <tr><td style="padding:9px 14px;color:#555">Inkl. Lieferung & Verlegung</td><td style="padding:9px 14px;font-weight:700;color:#2d6a2d">15–25 €/m²</td></tr>
       <tr style="background:#f4f8f4"><td style="padding:9px 14px;color:#555">Komplett inkl. Bodenvorbereitung</td><td style="padding:9px 14px;font-weight:700;color:#2d6a2d">25–55 €/m²</td></tr>
     </table>
+    <p style="font-size:.9rem;color:#555;margin-top:.5rem">${stadt.preisHinweis || ''}</p>
     <p style="font-size:.85rem;color:#888">Alle Angaben inkl. MwSt. Bodenvorbereitung (Fräsen, Planieren, Humus) wird separat kalkuliert. <a href="/bayern/" style="color:#2d6a2d">Preisrechner nutzen →</a></p>
 
     <h2>Häufige Fragen – Rollrasen ${stadt.name}</h2>
     <div>${faqHtml}</div>
+
+    ${nachbarLinks ? `<h2>Rollrasen in weiteren Städten Bayerns</h2>
+    <p style="color:#555;margin-bottom:.75rem">Wir verbinden Sie auch in diesen Regionen mit geprüften Fachbetrieben:</p>
+    <div class="city-links">${nachbarLinks}</div>` : ''}
 
     <footer>rasenrechner.de · Ein Service der Gartenschmiede GmbH ·
       <a href="/impressum">Impressum</a> · <a href="/datenschutz">Datenschutz</a>
