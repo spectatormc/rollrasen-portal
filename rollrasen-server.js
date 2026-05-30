@@ -993,6 +993,9 @@ Typische Projekte im Münchner Raum: Reihenhaus-Gärten in Pasing oder Neuaubing
       { q: 'Welche Bodenvorbereitung brauche ich in München?', a: 'Das hängt vom Standort ab: Sandige Böden am Stadtrand brauchen Humus-Einarbeitung (ca. 5 cm), verdichtete Böden aus Neubaugebieten müssen gefräst und planiert werden. Ein Fachbetrieb beurteilt den Boden vor Ort und gibt eine ehrliche Einschätzung.' },
       { q: 'Wie lange bis der Rollrasen in München begehbar ist?', a: 'Nach 10–14 Tagen ist Rollrasen leicht begehbar, nach 3–4 Wochen voll belastbar. Ausreichende Bewässerung in den ersten 3 Wochen ist entscheidend – mindestens einmal täglich, bei Hitze zweimal.' },
       { q: 'Lohnt sich Rollrasen für kleine Flächen unter 30 m² in München?', a: 'Ja, aber das Preis-Leistungs-Verhältnis ist ungünstiger: Anfahrt, Mindestmengen und Bodenvorbereitung fallen als Fixkosten an. Unter 20 m² ist Eigenverlegung mit gekauften Soden oft günstiger.' },
+      { q: 'Wo kann ich Rollrasen in München kaufen?', a: 'Über rasenrechner.de finden Sie geprüfte Fachbetriebe im Großraum München: Hersteller aus Unterschleißheim, Kirchheim bei München, Schwabhausen und Strasslach. PLZ eingeben und sofort die drei nächsten Betriebe mit Preisen vergleichen – kostenlos und unverbindlich.' },
+      { q: 'In welche Münchner Stadtteile wird Rollrasen geliefert?', a: 'Lokale Fachbetriebe beliefern alle Münchner Stadtteile und das Umland: Pasing, Aubing, Neuhausen, Sendling, Giesing, Bogenhausen, Schwabing, Maxvorstadt, Haidhausen sowie Gemeinden wie Unterschleißheim, Grünwald, Pullach, Germering, Gauting, Haar und Ottobrunn.' },
+      { q: 'Rollrasen München Preise – was kostet ein Garten komplett?', a: 'Für eine typische Münchner Gartenfläche von 80 m²: Material 400–960 €, Lieferung & Verlegung 1.200–2.000 €, Bodenvorbereitung 400–1.200 €. Gesamtrahmen: 2.000–4.160 € für 80 m² komplett. Unser Preisrechner liefert eine genaue Kalkulation für Ihre spezifische Fläche.' },
     ],
   },
   nuernberg: {
@@ -1085,6 +1088,9 @@ Häufige Projekte: Einfamilienhausgärten in Achdorf und Nikola (60–150 m²), 
       { q: 'Wie lange muss ich nach der Verlegung wässern in Landshut?', a: 'Mindestens 2–3 Wochen täglich, am besten morgens. Im Frühjahr und Herbst reicht meist einmal täglich; im Sommer ist zweimal täglich (morgens und abends) ratsam.' },
       { q: 'Kann ich Rollrasen in Landshut auch im Oktober noch verlegen?', a: 'Ja, Oktober ist oft noch gut geeignet – solange kein Frost droht und die Bodentemperatur über 8°C liegt. Frühherbstverlegungen haben in Niederbayern eine hohe Erfolgsrate.' },
       { q: 'Gibt es Rollrasen für Spielflächen und Kindergärten in Landshut?', a: 'Ja – Sportrasen und Strapazierrasen sind dafür ausgelegt. Diese Sorten vertragen intensive Nutzung und erholen sich schneller. Lokale Händler beraten zur optimalen Sorte für Kinderspielbereich oder Sportfläche.' },
+      { q: 'Wo kann ich Rollrasen in Landshut kaufen?', a: 'Über rasenrechner.de werden Sie direkt mit lokalen Fachbetrieben verbunden – darunter Isar Rollrasen aus Altheim und Nodes Gartenbau aus Essenbach. Beide liefern frisch geernteten Rasen in den Landshuter Raum. Kostenloses Angebot einfach PLZ eingeben.' },
+      { q: 'Liefert Rollrasen auch in die Landshuter Stadtteile Achdorf, Nikola und Seldenbühl?', a: 'Ja – lokale Betriebe beliefern alle Stadtteile Landshu ts: Achdorf, Nikola, Seldenbühl, Schönbrunn, Frauenberg und das gesamte Stadtgebiet sowie die Umlandgemeinden Ergolding, Altdorf und Essenbach.' },
+      { q: 'Wie viel Rollrasen brauche ich für einen typischen Garten in Landshut?', a: 'Ein durchschnittlicher Reihenhausgarten in Landshut hat 60–120 m². Mit etwas Verschnitt rechnet man ca. 5–10 % Mehrfläche. Unser kostenloser Preisrechner berechnet den genauen Bedarf nach Eingabe der Gartendimension.' },
     ],
   },
   rosenheim: {
@@ -1269,6 +1275,8 @@ Passau hat viele historische Gärten und Terrassengärten an den Steilhängen �
       { q: 'Brauche ich in Passau wegen der vielen Niederschläge weniger wässern?', a: 'In der Anwachsphase (erste 2–3 Wochen) sollte trotzdem täglich gewässert werden – auch wenn es regnet. Flachregen reicht oft nicht aus; nur gezielte Bewässerung direkt am Rasen sichert die Durchwurzelung.' },
       { q: 'Gibt es Rollrasen-Betriebe auch in der österreichischen Grenzregion?', a: 'Deutsche Betriebe liefern bis an die Grenze; österreichische Anbieter sind nach deutschem Recht und Preisrecht eigenständig. Für Passau empfehlen wir bayerische Betriebe – Garantie, Gewährleistung und Ansprechpartner auf deutschem Rechtsgebiet.' },
       { q: 'Was sind die größten Herausforderungen bei Rollrasen in Passau?', a: 'Die Hanglagen sind die größte Besonderheit – technisch aufwendiger als flache Flächen. Außerdem können Hochwassergefährdete Zonen (Donautal) nach starken Regenfällen den Rasen belasten. Lokale Betriebe kennen diese Risiken und beraten entsprechend.' },
+      { q: 'Wo kann ich Rollrasen in Passau kaufen?', a: 'Über rasenrechner.de erhalten Sie kostenlos Angebote von geprüften Fachbetrieben, die nach Passau liefern – darunter Isar Rollrasen aus Altheim. Einfach PLZ eingeben und die drei nächsten Betriebe mit Preisen vergleichen.' },
+      { q: 'Liefert Rollrasen auch in die Passauer Stadtteile Innstadt, Ilzstadt und Hacklberg?', a: 'Ja – lokale Betriebe beliefern alle Passauer Stadtteile: Innstadt, Ilzstadt, Hacklberg, Heining, Patriching und das gesamte Stadtgebiet. Auch die Umlandgemeinden Hutthurm, Ruhstorf, Pocking und Bad Griesbach werden bedient.' },
     ],
   },
   kempten: {
@@ -1383,18 +1391,31 @@ app.get('/bayern/:city', (req, res, next) => {
     })),
   });
 
+  const breadcrumbSchema = JSON.stringify({
+    '@context': 'https://schema.org',
+    '@type': 'BreadcrumbList',
+    itemListElement: [
+      { '@type': 'ListItem', position: 1, name: 'rasenrechner.de', item: 'https://www.rasenrechner.de/bayern/' },
+      { '@type': 'ListItem', position: 2, name: `Rollrasen ${stadt.name}`, item: `https://www.rasenrechner.de/bayern/${req.params.city}` },
+    ],
+  });
+
+  const pageTitle = `Rollrasen ${stadt.name} kaufen – Preise ab 5 €/m² & Händler 2026`;
+  const pageDesc  = `Rollrasen in ${stadt.name}: Material 5–12 €/m², Lieferung & Verlegung ab 15 €/m². Geprüfte Händler aus ${stadt.region}. Jetzt kostenlos Angebote vergleichen →`;
+
   res.send(`<!DOCTYPE html>
 <html lang="de">
 <head>
   <meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1">
-  <title>${stadt.title}</title>
-  <meta name="description" content="${stadt.desc}">
+  <title>${pageTitle}</title>
+  <meta name="description" content="${pageDesc}">
   <link rel="canonical" href="https://www.rasenrechner.de/bayern/${req.params.city}">
-  <meta property="og:title" content="${stadt.title}">
-  <meta property="og:description" content="${stadt.desc}">
+  <meta property="og:title" content="${pageTitle}">
+  <meta property="og:description" content="${pageDesc}">
   <meta property="og:url" content="https://www.rasenrechner.de/bayern/${req.params.city}">
   <meta property="og:type" content="website">
   <script type="application/ld+json">${faqSchema}</script>
+  <script type="application/ld+json">${breadcrumbSchema}</script>
   ${stadtCss}
 </head>
 <body>
@@ -1408,14 +1429,14 @@ app.get('/bayern/:city', (req, res, next) => {
 
   <div class="st-hero">
     <div class="breadcrumb"><a href="/bayern/" style="color:rgba(255,255,255,.6);text-decoration:none">rasenrechner.de</a> › ${stadt.name}</div>
-    <h1>Rollrasen ${stadt.name}</h1>
-    <p>Preise, geprüfte Händler & kostenlose Angebote aus ${stadt.region}</p>
+    <h1>Rollrasen ${stadt.name} kaufen</h1>
+    <p>Preise 5–12 €/m² · geprüfte Händler · kostenlose Angebote aus ${stadt.region}</p>
   </div>
 
   <div class="wrap">
     <div class="intro-box">${stadt.intro}</div>
 
-    <h2>Händler in ${stadt.name} & Umgebung</h2>
+    <h2>Rollrasen kaufen in ${stadt.name} – geprüfte Händler & Preise</h2>
     <div class="dealer-grid">${dealerCards || '<p>Aktuell keine Händler-Daten verfügbar.</p>'}</div>
     <p class="dealer-note">Alle aufgeführten Betriebe sind geprüfte Fachbetriebe aus der Region. PLZ eingeben und kostenlose Angebote direkt vergleichen – unverbindlich und ohne Weitergabe Ihrer Daten an Dritte ohne Ihre Zustimmung.</p>
 
