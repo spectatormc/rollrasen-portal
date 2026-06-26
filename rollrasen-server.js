@@ -936,9 +936,11 @@ app.get('/sitemap.xml', (req, res) => {
   const base = 'https://www.rasenrechner.de';
   const today = new Date().toISOString().slice(0, 10);
 
-  const staticUrls = ['/bayern/', '/bayern/muenchen', '/bayern/nuernberg', '/bayern/augsburg', '/bayern/regensburg',
+  const staticUrls = ['/bayern/', '/rollrasen-kosten/',
+    '/bayern/muenchen', '/bayern/nuernberg', '/bayern/augsburg', '/bayern/regensburg',
     '/bayern/landshut', '/bayern/rosenheim', '/bayern/ingolstadt', '/bayern/freising', '/bayern/fuerth',
-    '/bayern/wuerzburg', '/bayern/erlangen', '/bayern/bayreuth', '/bayern/passau', '/bayern/kempten'];
+    '/bayern/wuerzburg', '/bayern/erlangen', '/bayern/bayreuth', '/bayern/passau', '/bayern/kempten',
+    '/bayern/unterschleissheim'];
 
   const profileSlugs = db.prepare("SELECT profil_slug FROM hersteller WHERE profil_slug IS NOT NULL AND profil_slug != '' AND aktiv = 1").all();
 
@@ -969,6 +971,185 @@ ${urls.map(u => `  <url>
   res.send(xml);
 });
 
+// ─── ROLLRASEN KOSTEN INFORMATIONSSEITE ──────────────────────────────────────
+
+app.get('/rollrasen-kosten', (req, res) => res.redirect(301, '/rollrasen-kosten/'));
+app.get('/rollrasen-kosten/', (req, res) => {
+  const kostenFaq = [
+    { q: 'Was kostet Rollrasen pro m²?', a: 'Rollrasen-Material kostet je nach Sorte 5,50–9,00 €/m²: Spielwiese/Landschaftsrasen ab 5,50 €/m², Sportrasen ab 6,50 €/m², Halbschattenrasen ab 8,50 €/m², Premium-Fertigrasen ab 9,00 €/m². Diese Preise gelten für das reine Material – ohne Lieferung und Verlegung.' },
+    { q: 'Was kostet Rollrasen inkl. Verlegung?', a: 'Material plus Lieferung und fachgerechte Verlegung kosten zusammen 15–25 €/m². Das ist der Standardbereich für Komplettangebote von regionalen Fachbetrieben. Enthaltene Leistungen: Lieferung, Bodennivellierung (leicht), Rollrasen auslegen und einpassen.' },
+    { q: 'Was kostet Rollrasen komplett inkl. Bodenvorbereitung?', a: 'Die Komplettlösung – Material, Lieferung, Verlegung und Bodenvorbereitung – kostet 25–55 €/m². Der große Spielraum erklärt sich durch die Bodenvorbereitung: Bei gutem, lockerem Boden ist sie minimal; bei verdichtetem Neubaugrund oder altem Rasen kann allein das Fräsen, Planieren und Humuszufügen 10–20 €/m² kosten.' },
+    { q: 'Was kostet die Lieferung von Rollrasen?', a: 'Lieferkosten hängen von Menge und Entfernung ab: Bei 50 m² typischerweise 80–180 €, bei 100 m² 60–120 €, bei 200 m² oft inklusive oder 60–100 €. Einige Hersteller liefern ab Mindestmengen (30–50 m²) kostenlos in der Nahregion. Immer im Angebot klären lassen.' },
+    { q: 'Wann ist Rollrasen günstiger als Rasensaat?', a: 'Rasensaat kostet als Material nur 0,50–2,00 €/m², ist also deutlich günstiger. Aber: Die Bodenvorbereitung ist identisch aufwendig, und bei der Saat müssen Sie 4–8 Wochen warten bis der Rasen nutzbar ist. Rollrasen lohnt sich bei schnell nutzbaren Flächen, Neubau-Termindruck, großer Erosionsgefahr oder wenn Qualität von Tag 1 wichtig ist.' },
+    { q: 'Gibt es günstigeren Rollrasen in Bayern?', a: 'Regionale Hersteller wie Walter Schwab GmbH (Schwaben), Isar Rollrasen (Niederbayern) und Noris Rollrasen (Nürnberg) produzieren selbst – das macht sie in ihrer Region oft günstiger als Händler, die Rasen einkaufen. Direktkauf oder Selbstabholung spart zusätzlich.' },
+    { q: 'Wie viel Rollrasen brauche ich – mit Verschnitt?', a: 'Grundregel: Gemessene Fläche + 5–10 % Verschnitt. Bei rechteckigen Gärten reichen 5 %, bei unregelmäßigen Formen mit vielen Kurven oder Beeten eher 10 %. Unser kostenloser Preisrechner berechnet den genauen Bedarf automatisch – auch für L-Formen und mehreckige Gärten.' },
+  ];
+
+  const faqSchemaKosten = JSON.stringify({
+    '@context': 'https://schema.org',
+    '@type': 'FAQPage',
+    mainEntity: kostenFaq.map(f => ({
+      '@type': 'Question',
+      name: f.q,
+      acceptedAnswer: { '@type': 'Answer', text: f.a },
+    })),
+  });
+
+  const faqHtmlKosten = kostenFaq.map(f => `
+    <div class="faq-item">
+      <div class="faq-q">${f.q}</div>
+      <div class="faq-a">${f.a}</div>
+    </div>`).join('');
+
+  res.send(`<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>Rollrasen Kosten 2026 – Was kostet Rollrasen komplett? Preise & Rechner</title>
+  <meta name="description" content="Rollrasen Kosten im Überblick: Material 5–12 €/m², inkl. Verlegung 15–25 €/m², komplett 25–55 €/m². Preistabellen nach Sorte, Konkrete Beispiele & kostenloser Rechner für Bayern.">
+  <link rel="canonical" href="https://www.rasenrechner.de/rollrasen-kosten/">
+  <meta property="og:title" content="Rollrasen Kosten 2026 – Was kostet Rollrasen komplett?">
+  <meta property="og:description" content="Rollrasen Kosten im Überblick: Material ab 5 €/m², komplett 25–55 €/m². Preistabellen & kostenloser Rechner.">
+  <meta property="og:url" content="https://www.rasenrechner.de/rollrasen-kosten/">
+  <meta property="og:type" content="article">
+  <script type="application/ld+json">${faqSchemaKosten}</script>
+  <script type="application/ld+json">${JSON.stringify({
+    '@context': 'https://schema.org',
+    '@type': 'BreadcrumbList',
+    itemListElement: [
+      { '@type': 'ListItem', position: 1, name: 'rasenrechner.de', item: 'https://www.rasenrechner.de/bayern/' },
+      { '@type': 'ListItem', position: 2, name: 'Rollrasen Kosten', item: 'https://www.rasenrechner.de/rollrasen-kosten/' },
+    ],
+  })}</script>
+  ${stadtCss}
+  <style>
+    .cost-table { width:100%; border-collapse:collapse; margin:1rem 0; font-size:.92rem; }
+    .cost-table th { background:#2d6a2d; color:#fff; padding:9px 14px; text-align:left; font-weight:600; }
+    .cost-table td { padding:9px 14px; border-bottom:1px solid #e8f0e8; }
+    .cost-table tr:last-child td { border-bottom:none; }
+    .cost-table tr:nth-child(even) td { background:#f4f8f4; }
+    .highlight-row td { background:#dcfce7 !important; font-weight:700; color:#1a3d12; }
+    .info-box { background:#fef9c3; border:1px solid #fcd34d; border-radius:8px; padding:1rem 1.25rem; margin:1.5rem 0; font-size:.9rem; color:#854d0e; }
+  </style>
+</head>
+<body>
+  <header class="st-header">
+    <a href="/bayern/">🌿 rasenrechner.de</a>
+    <nav class="nav-links">
+      <a href="/bayern/#rechner">Preisrechner</a>
+      <a href="/bayern/#anfrage">Angebot anfragen</a>
+    </nav>
+  </header>
+
+  <div class="st-hero">
+    <div class="breadcrumb"><a href="/bayern/" style="color:rgba(255,255,255,.6);text-decoration:none">rasenrechner.de</a> › Rollrasen Kosten</div>
+    <h1>Was kostet Rollrasen? – Preise 2026 im Überblick</h1>
+    <p>Material · Lieferung · Verlegung · Bodenvorbereitung – alle Kostenpunkte erklärt</p>
+  </div>
+
+  <div class="wrap">
+
+    <h2>Rollrasen Kosten auf einen Blick – Kurzübersicht 2026</h2>
+    <table class="cost-table">
+      <tr><th>Leistung</th><th>Kosten pro m²</th><th>Hinweis</th></tr>
+      <tr><td>Material (Rollrasen)</td><td>5–12 €/m²</td><td>Je nach Sorte</td></tr>
+      <tr><td>Lieferung</td><td>60–280 € pauschal</td><td>Mengenabhängig</td></tr>
+      <tr><td>Verlegung durch Fachbetrieb</td><td>4–12 €/m²</td><td>Zzgl. Material</td></tr>
+      <tr class="highlight-row"><td>Material + Lieferung + Verlegung</td><td>15–25 €/m²</td><td>Typischer Komplettpreis</td></tr>
+      <tr><td>Bodenvorbereitung (Fräsen, Humus)</td><td>5–20 €/m²</td><td>Je nach Aufwand</td></tr>
+      <tr class="highlight-row"><td>Alles komplett</td><td>25–55 €/m²</td><td>Realistischer Gesamtrahmen</td></tr>
+    </table>
+    <p style="font-size:.82rem;color:#888">Alle Preise inkl. MwSt. · Gültig für Bayern 2026 · Regionaler Preisrechner → <a href="/bayern/" style="color:#2d6a2d">kostenlos berechnen</a></p>
+
+    <h2>Rollrasen Material – Preise nach Sorte</h2>
+    <table class="cost-table">
+      <tr><th>Rasensorte</th><th>Preis/m²</th><th>Geeignet für</th></tr>
+      <tr><td>Spielwiese / Landschaftsrasen</td><td>ab 5,50 €/m²</td><td>Naturnahe Flächen, wenig Ansprüche</td></tr>
+      <tr><td>Sportrasen / Strapazierrasen</td><td>ab 6,50 €/m²</td><td>Kinder, Hunde, intensive Nutzung</td></tr>
+      <tr><td>Gebrauchsrasen (Standard)</td><td>6,00–8,00 €/m²</td><td>Normaler Familiengarten</td></tr>
+      <tr><td>Halbschattenrasen</td><td>ab 8,50 €/m²</td><td>Gärten mit Baumschatten</td></tr>
+      <tr><td>Premium-Fertigrasen / Zierrasen</td><td>ab 9,00 €/m²</td><td>Repräsentative Flächen</td></tr>
+    </table>
+    <div class="info-box">💡 <strong>Tipp:</strong> Die Sortenwahl beeinflusst den Materialpreis um bis zu 70 %. Für die meisten Familiengärten ist Standard-Gebrauchsrasen (6–8 €/m²) die beste Kosten-Leistungs-Wahl.</div>
+
+    <h2>Rollrasen verlegen lassen – was kostet die Arbeit?</h2>
+    <p>Professionelle Verlegung kostet 4–12 €/m² zusätzlich zum Material – je nach Größe der Fläche, Zugänglichkeit und Aufwand. Kleinere Flächen unter 50 m² werden oft pauschal berechnet. Große Flächen ab 300 m² liegen eher am unteren Ende der Skala, da Fixkosten auf mehr m² verteilt werden.</p>
+    <table class="cost-table">
+      <tr><th>Flächengröße</th><th>Verlegekosten (ohne Material)</th></tr>
+      <tr><td>bis 30 m²</td><td>Oft Mindestpauschale 200–400 €</td></tr>
+      <tr><td>50 m²</td><td>ca. 350–600 €</td></tr>
+      <tr><td>100 m²</td><td>ca. 500–900 €</td></tr>
+      <tr><td>200 m²</td><td>ca. 800–1.600 €</td></tr>
+      <tr><td>500 m²+</td><td>ca. 4–7 €/m² (mengenbedingt günstiger)</td></tr>
+    </table>
+
+    <h2>Bodenvorbereitung – der oft unterschätzte Kostenpunkt</h2>
+    <p>Bodenvorbereitung wird häufig vergessen, ist aber entscheidend für dauerhaft schönen Rasen. Je nach Ausgangslage entstehen folgende Kosten:</p>
+    <table class="cost-table">
+      <tr><th>Maßnahme</th><th>Kosten</th><th>Wann nötig</th></tr>
+      <tr><td>Fräsen / Tiefenlockerung</td><td>3–8 €/m²</td><td>Verdichteter oder alter Rasen-Boden</td></tr>
+      <tr><td>Planieren / Einebnen</td><td>2–5 €/m²</td><td>Immer empfehlenswert</td></tr>
+      <tr><td>Humus einarbeiten (5 cm)</td><td>2–5 €/m²</td><td>Sandige oder nährstoffarme Böden</td></tr>
+      <tr><td>Kalkung (pH-Korrektur)</td><td>1–2 €/m²</td><td>Saure Böden (häufig in Mittelfranken)</td></tr>
+      <tr><td>Drainage legen</td><td>8–20 €/m²</td><td>Staunässegefährdete Böden</td></tr>
+      <tr><td>Alter Rasen entfernen</td><td>3–6 €/m²</td><td>Sanierung bestehender Rasenflächen</td></tr>
+    </table>
+
+    <h2>Rollrasen Kosten für typische Gärten – konkrete Beispiele</h2>
+    <table class="cost-table">
+      <tr><th>Gartengröße</th><th>Material</th><th>Lieferung & Verlegung</th><th>Bodenvorbereitung</th><th>Gesamt</th></tr>
+      <tr><td>50 m² (Reihenhaus)</td><td>275–600 €</td><td>500–800 €</td><td>250–1.000 €</td><td>1.000–2.400 €</td></tr>
+      <tr><td>100 m² (Doppelhaus)</td><td>550–1.200 €</td><td>800–1.500 €</td><td>500–2.000 €</td><td>2.000–4.700 €</td></tr>
+      <tr><td>200 m² (Einfamilienhaus)</td><td>1.100–2.400 €</td><td>1.400–2.800 €</td><td>1.000–4.000 €</td><td>3.500–9.200 €</td></tr>
+      <tr><td>500 m² (Landhaus)</td><td>2.750–6.000 €</td><td>3.000–6.500 €</td><td>2.500–10.000 €</td><td>8.000–22.500 €</td></tr>
+    </table>
+    <p style="font-size:.85rem;color:#888">Alle Angaben sind Richtwerte. Der genaue Preis hängt von Bodenzustand, Sorte und regionalem Betrieb ab. <a href="/bayern/" style="color:#2d6a2d">Kostenloser Preisrechner →</a></p>
+
+    <div class="cta-block">
+      <h2>Genaue Kosten für Ihren Garten berechnen</h2>
+      <p>Fläche eingeben – Sofortrechnung, kostenlos & unverbindlich. Dann direkt Angebote von regionalen Händlern anfragen.</p>
+      <a class="cta-btn" href="/bayern/#rechner">Jetzt kostenlos berechnen →</a>
+    </div>
+
+    <h2>Rollrasen selbst verlegen oder Fachbetrieb beauftragen?</h2>
+    <p>Eigenverlegung spart die Verlegekosten (4–12 €/m²), aber: Die Bodenvorbereitung ist der anspruchsvollste Teil und nicht günstiger als beim Fachbetrieb. Für Flächen bis 80 m² ist Eigenverlegung gut machbar, wenn der Boden bereits gut vorbereitet ist. Für Neubauflächen, schwierige Böden oder Flächen über 100 m² ist ein regionaler Fachbetrieb meist günstiger in der Gesamtrechnung – durch effizienteres Arbeiten und Vermeidung kostspieliger Fehler.</p>
+
+    <h2>Rollrasen vs. Rasensaat – ein Kostenvergleich</h2>
+    <table class="cost-table">
+      <tr><th></th><th>Rollrasen</th><th>Rasensaat</th></tr>
+      <tr><td>Material</td><td>5–12 €/m²</td><td>0,50–2,00 €/m²</td></tr>
+      <tr><td>Bodenvorbereitung</td><td>5–20 €/m²</td><td>5–20 €/m² (identisch)</td></tr>
+      <tr><td>Verlegung/Aussaat</td><td>4–12 €/m²</td><td>1–3 €/m²</td></tr>
+      <tr><td>Nutzbar nach</td><td>2–3 Wochen</td><td>6–10 Wochen</td></tr>
+      <tr><td>Erosionsschutz sofort</td><td>Ja</td><td>Nein</td></tr>
+      <tr><td>Gesamtkosten typisch</td><td>20–45 €/m²</td><td>8–25 €/m²</td></tr>
+    </table>
+    <p>Rollrasen ist teurer, aber sofort nutzbar und risikoärmer. Rasensaat eignet sich bei großen Flächen, ausreichend Zeit und gutem Wetter. Bei Zeitdruck, Neubau oder kleinen bis mittleren Flächen ist Rollrasen die bessere Wahl.</p>
+
+    <h2>Häufige Fragen zu Rollrasen Kosten</h2>
+    <div>${faqHtmlKosten}</div>
+
+    <h2>Rollrasen Kosten in Bayern – regional unterschiedlich</h2>
+    <p>Die Rollrasen-Preise in Bayern unterscheiden sich je nach Region leicht. Standorte nah an großen Produzenten sind günstiger:</p>
+    <div class="city-links">
+      <a class="city-link" href="/bayern/landshut">Rollrasen Landshut</a>
+      <a class="city-link" href="/bayern/nuernberg">Rollrasen Nürnberg</a>
+      <a class="city-link" href="/bayern/augsburg">Rollrasen Augsburg</a>
+      <a class="city-link" href="/bayern/muenchen">Rollrasen München</a>
+      <a class="city-link" href="/bayern/regensburg">Rollrasen Regensburg</a>
+      <a class="city-link" href="/bayern/rosenheim">Rollrasen Rosenheim</a>
+      <a class="city-link" href="/bayern/passau">Rollrasen Passau</a>
+      <a class="city-link" href="/bayern/ingolstadt">Rollrasen Ingolstadt</a>
+    </div>
+
+    <footer>rasenrechner.de · Ein Service der Gartenschmiede GmbH ·
+      <a href="/impressum">Impressum</a> · <a href="/datenschutz">Datenschutz</a>
+    </footer>
+  </div>
+</body>
+</html>`);
+});
+
 // ─── STADTSEITEN ─────────────────────────────────────────────────────────────
 
 const STAEDTE = {
@@ -977,7 +1158,7 @@ const STAEDTE = {
     title: 'Rollrasen München – Kosten, Händler & kostenlose Angebote 2026',
     desc:  'Rollrasen in München kaufen & verlegen lassen: Preisrechner, regionale Händler & kostenlose Angebote. Geprüfte Fachbetriebe aus dem Großraum München.',
     preisHinweis: 'In München können Anfahrt und Parkraummangel in innerstädtischen Lagen die Verlegekosten leicht erhöhen – bei Projekten in der Innenstadt oder dichtem Stadtgebiet realistisch 2–4 €/m² Aufschlag einkalkulieren. Im Münchner Umland (Unterschleißheim, Germering, Kirchheim) entsprechen die Preise dem bayerischen Durchschnitt.',
-    nachbarStaedte: ['landshut', 'rosenheim', 'ingolstadt', 'freising', 'augsburg'],
+    nachbarStaedte: ['landshut', 'rosenheim', 'ingolstadt', 'freising', 'augsburg', 'unterschleissheim'],
     intro: `München und das Großraum-Umland zählen zu den aktivsten Rollrasen-Märkten in Bayern. Das mild-kontinentale Klima mit rund 930 mm Jahresniederschlag bietet grundsätzlich gute Bedingungen – kritisch ist jedoch der oft trockene Frühsommer zwischen Mitte Juni und Ende Juli, wenn intensive Bewässerung über Erfolg oder Misserfolg entscheidet.
 
 Die Böden im Münchner Raum sind heterogen. In Stadtrandlagen wie Unterschleißheim, Grünwald oder Germering dominiert lehmig-sandiger Boden mit guter Drainage und guten Anwachsbedingungen. Innerstädtische Gärten stehen dagegen oft auf verdichtetem Untergrund oder aufgefülltem Bauland – hier ist gründliche Bodenvorbereitung keine Option, sondern Voraussetzung für dauerhaft schönen Rasen.
@@ -1000,33 +1181,43 @@ Typische Projekte im Münchner Raum: Reihenhaus-Gärten in Pasing oder Neuaubing
   },
   nuernberg: {
     name: 'Nürnberg', region: 'Mittelfranken', plz: '90402',
-    title: 'Rollrasen Nürnberg – Kosten, Händler & kostenlose Angebote 2026',
-    desc:  'Rollrasen in Nürnberg kaufen & verlegen lassen: Preisrechner, regionale Händler & kostenlose Angebote. Geprüfte Fachbetriebe aus Mittelfranken.',
-    preisHinweis: 'Nürnberg hat mit Noris Rollrasen einen lokalen Produzenten direkt vor Ort – das hält die Materialpreise wettbewerbsfähig und die Transportkosten niedrig. Für eine typische Gartenfläche von 80 m² sind 1.200–4.400 € Gesamtkosten ein realistischer Rahmen.',
+    title: 'Rollrasen Nürnberg kaufen – Preise, Händler & Angebote 2026',
+    desc:  'Rollrasen in Nürnberg kaufen & verlegen lassen: Noris Rollrasen direkt vor Ort, Preisrechner & kostenlose Angebote. Geprüfte Fachbetriebe aus Mittelfranken – Material ab 5 €/m².',
+    preisHinweis: 'Nürnberg hat mit Noris Rollrasen einen lokalen Produzenten direkt vor Ort (PLZ 90471) – das hält Materialpreise und Transportkosten niedrig. Für eine typische 100-m²-Fläche sind 2.500–5.500 € Gesamtkosten realistisch.',
     nachbarStaedte: ['erlangen', 'fuerth', 'ingolstadt', 'bayreuth', 'wuerzburg'],
-    intro: `Nürnberg und der Großraum Mittelfranken haben eine ausgeprägte Gartenkultur – und mit Noris Rollrasen sowie den Greenkeepers Gartenbau aus Fürth gleich zwei spezialisierte Betriebe vor Ort. Das ist ein klarer Vorteil: frischer Rasen, kurze Lieferwege, und Betriebe die die lokalen Bodenbedingungen aus dem Alltag kennen.
+    intro: `Nürnberg und der Großraum Mittelfranken sind rollrasenmäßig hervorragend aufgestellt: Noris Rollrasen hat seinen Sitz direkt in Nürnberg (PLZ 90471), Greenkeepers Gartenbau aus Fürth (PLZ 90766) ergänzt das Angebot. Kurze Lieferwege, lokale Expertise und frischer Rasen direkt vom Feld – das sind die Vorteile gegenüber überregionalen Versandhändlern.
 
-Das Klima Mittelfrankens ist klar kontinental: heiße, oft trockene Sommer mit Temperaturen über 30°C sind keine Seltenheit, die Winter können streng sein. Für Rollrasen bedeutet das: Verlegung im Frühjahr (April/Mai) oder Frühherbst (September/Oktober) ist deutlich zuverlässiger als im Hochsommer. Wer im Juli verlegt, muss täglich bewässern – sonst leidet die Anwachsrate.
+Das Klima Mittelfrankens ist klar kontinental: heiße, oft trockene Sommer mit Temperaturen über 30°C sind keine Seltenheit, die Winter können streng sein. Mit rund 590 mm Jahresniederschlag gehört Nürnberg zu den trockeneren Städten Bayerns. Verlegung im Frühjahr (April/Mai) oder Frühherbst (September/Oktober) ist deutlich zuverlässiger als im Hochsommer – wer im Juli verlegt, muss täglich bewässern, sonst leidet die Anwachsrate.
 
-Die Böden in der Region sind größtenteils sandsteinhaltig und leicht sauer – das ist für Rollrasen beherrschbar, erfordert aber manchmal eine Kalkung vor der Verlegung. Lokale Betriebe kennen die Bodenverhältnisse in einzelnen Stadtteilen und Umlandgemeinden und können gezielt beraten.
+Die Böden in der Region sind charakteristisch für Mittelfranken: sandsteinhaltig und leicht sauer. Das ist für Rollrasen beherrschbar, erfordert aber oft eine Kalkung (ca. 1–2 €/m²) vor der Verlegung. In Stadtteilen wie Schweinau, Langwasser und Stein ist der Sandsteinanteil besonders hoch – lokale Betriebe kennen die Bodenverhältnisse aus dem Alltag und beraten entsprechend.
 
-Häufige Projekte in Nürnberg: Reihenhaus-Gärten in Langwasser oder Stein (50–100 m²), Neubaugebiete in Wendelstein oder Schwaig (150–400 m²), und Gewerbe-Außenanlagen rund um die Messe (ab 500 m²). Für alle Projekte gilt: Mehrere Angebote vergleichen lohnt sich – die Preisunterschiede zwischen Betrieben können 20–30 % ausmachen.`,
+Häufige Projekte in Nürnberg: Reihenhausgärten in Langwasser, Kornburg oder Stein (50–100 m²), Neubaugebiete in Wendelstein (90530), Schwaig (90571) oder Feucht (90537) mit 150–400 m², und Gewerbe-Außenanlagen rund um die Messe (ab 500 m²). Mehrere Angebote vergleichen lohnt sich – Preisunterschiede zwischen Betrieben können 20–30 % betragen.`,
+    regionContent: {
+      heading: 'Rollrasen Mittelfranken – Lieferung im gesamten Großraum Nürnberg',
+      text: 'Als Metropole Mittelfrankens ist Nürnberg das logistische Zentrum für Rollrasen in der gesamten Region. Lokale Betriebe beliefern neben dem Stadtgebiet (PLZ 90xxx) auch die umliegenden Gemeinden: Fürth (90xxx), Erlangen (91xxx), Schwaig (90571), Wendelstein (90530), Feucht (90537), Stein (90547), Zirndorf (90513) und Oberasbach (90522). Für den weiteren Raum Mittelfranken – Ansbach, Neumarkt i.d.OPf., Roth – liefern überregionale Hersteller auf Anfrage. Die hohe Dichte lokaler Fachbetriebe macht Nürnberg zu einem der wettbewerbsstärksten Rollrasen-Märkte in Bayern.',
+    },
     faq: [
-      { q: 'Was kostet Rollrasen in Nürnberg?', a: 'Material: 5–12 €/m². Inkl. Lieferung und Verlegung: 15–25 €/m². Komplett mit Bodenvorbereitung: 25–55 €/m². Für eine typische Gartenfläche von 80 m² sind 1.200–4.400 € ein realistischer Gesamtrahmen.' },
-      { q: 'Welche Händler liefern in Nürnberg und Umgebung?', a: 'Noris Rollrasen (Nürnberg) und die Greenkeepers Gartenbau (Fürth) sind direkt vor Ort. Überregionale Hersteller wie Isar Rollrasen und BayernRasen liefern ebenfalls nach Mittelfranken.' },
+      { q: 'Was kostet Rollrasen in Nürnberg?', a: 'Material: 5–12 €/m². Inkl. Lieferung und Verlegung: 15–25 €/m². Komplett mit Bodenvorbereitung: 25–55 €/m². Nürnberg profitiert von lokalem Hersteller Noris Rollrasen – kurze Wege, wettbewerbsfähige Preise.' },
+      { q: 'Was kostet Rollrasen 100 m² in Nürnberg komplett?', a: 'Für 100 m² in Nürnberg kalkulieren Sie: Material 500–1.200 €, Lieferung & Verlegung 800–1.800 €, Bodenvorbereitung 500–2.500 € je nach Aufwand. Gesamtrahmen: 2.500–5.500 €. Die lokale Konkurrenz zwischen Noris Rollrasen und überregionalen Betrieben hält die Preise fair.' },
+      { q: 'Rollrasen Nürnberg kaufen – wo und wie?', a: 'Über rasenrechner.de erhalten Sie kostenlos Angebote von Noris Rollrasen (Nürnberg, PLZ 90471), Greenkeepers Gartenbau (Fürth) und weiteren regionalen Betrieben. PLZ eingeben – wir verbinden Sie sofort mit den drei nächsten Fachbetrieben.' },
+      { q: 'Welche Händler liefern in Nürnberg und Umgebung?', a: 'Noris Rollrasen (Nürnberg) und Greenkeepers Gartenbau (Fürth) sind direkt vor Ort. Überregionale Hersteller wie Isar Rollrasen und BayernRasen liefern ebenfalls nach Mittelfranken.' },
       { q: 'Wann ist die beste Zeit für Rollrasen in Nürnberg?', a: 'Frühjahr (April/Mai) und Frühherbst (September/Oktober) sind ideal. Der Nürnberger Sommer ist trocken und heiß – Verlegung im Juli/August erfordert intensive tägliche Bewässerung.' },
+      { q: 'Liefert Rollrasen auch in Nürnberger Stadtteile wie Langwasser, Schweinau und Stein?', a: 'Ja – lokale Betriebe beliefern alle Nürnberger Stadtteile und Umlandgemeinden: Langwasser, Schweinau, Stein, Kornburg, Laufamholz sowie Wendelstein (90530), Schwaig (90571), Feucht (90537) und Zirndorf (90513).' },
       { q: 'Gibt es Rollrasen auch für schattige Gärten in Nürnberg?', a: 'Ja. Halbschattenrasen ist für Gärten mit altem Baumbestand geeignet. Lokale Händler beraten zu den richtigen Sorten für Ihren spezifischen Standort.' },
-      { q: 'Welche Rasensorte eignet sich für das Nürnberger Klima?', a: 'Gebrauchsrasen und Strapazierrasen sind in Mittelfranken am verbreitetsten. Für trockene Lagen empfiehlt sich eine trockenheitstolerante Sorte – lokale Händler kennen die bewährten Sorten für die Region.' },
-      { q: 'Wie lange dauert die Verlegung von Rollrasen in Nürnberg?', a: 'Ein typischer Garten von 80–100 m² ist inklusive Bodenvorbereitung an einem Arbeitstag fertig verlegt. Reine Verlegung ohne Bodenvorbereitung geht bei erfahrenen Betrieben in 2–4 Stunden.' },
+      { q: 'Welche Rasensorte eignet sich für das Nürnberger Klima?', a: 'Trockenheitstolerante Gebrauchsrasen- und Strapazierrasen-Sorten sind für Mittelfranken empfehlenswert. Lokale Händler kennen die bewährten Sorten für die Region.' },
       { q: 'Was kostet die Bodenvorbereitung in Nürnberg?', a: 'Fräsen und Planieren kosten je nach Aufwand 5–15 €/m². Humus-Einarbeitung kommt obendrauf. Auf Nürnberger Sandsteinböden ist eine Kalkung empfehlenswert – ca. 1–2 €/m² zusätzlich.' },
     ],
   },
   augsburg: {
     name: 'Augsburg', region: 'Schwaben', plz: '86150',
-    title: 'Rollrasen Augsburg – Kosten, Händler & kostenlose Angebote 2026',
-    desc:  'Rollrasen in Augsburg kaufen & verlegen lassen: Preisrechner, regionale Händler & kostenlose Angebote. Geprüfte Fachbetriebe aus Schwaben.',
-    preisHinweis: 'Augsburg liegt nah am Hersteller Walter Schwab GmbH in Waidhofen – das hält Transportkosten vergleichsweise niedrig. Augsburg zählt zu den günstigsten Standorten in Bayern für Rollrasen-Lieferung.',
+    title: 'Rollrasen Augsburg kaufen – Preise, Händler & Angebote 2026',
+    desc:  'Rollrasen in Augsburg kaufen & verlegen lassen: Walter Schwab GmbH direkt in der Region, Preisrechner & kostenlose Angebote. Geprüfte Fachbetriebe aus Schwaben – günstige Lieferbedingungen.',
+    preisHinweis: 'Augsburg liegt nah am Hersteller Walter Schwab GmbH in Waidhofen – das hält Transportkosten vergleichsweise niedrig. Für eine 100-m²-Fläche sind 2.400–5.200 € Gesamtkosten realistisch – günstiger als im Münchner Stadtgebiet.',
     nachbarStaedte: ['muenchen', 'ingolstadt', 'kempten'],
+    regionContent: {
+      heading: 'Rollrasen Schwaben – Lieferung im gesamten Augsburger Raum',
+      text: 'Augsburg ist das Zentrum Schwabens und wird von lokalen Betrieben großflächig beliefert: Gersthofen (86368), Königsbrunn (86343), Stadtbergen (86391), Neusäß (86356), Kissing (86438), Schwabmünchen (86830) und Bobingen (86399) liegen alle im typischen Lieferradius. Walter Schwab GmbH aus Waidhofen (Entfernung ~30 km) ist einer der größten deutschen Rollrasen-Produzenten und beliefert ganz Schwaben zuverlässig.',
+    },
     intro: `Augsburg und der Raum Schwaben sind rollrasenmäßig hervorragend versorgt: Mit der Walter Schwab GmbH aus Waidhofen gibt es einen der ältesten und größten Rollrasen-Hersteller Deutschlands in direkter Nachbarschaft – gegründet in den 1970er Jahren, heute mit rund 250 Hektar Eigenproduktion. Diese Nähe bedeutet: frisch geernteter Rasen, kurze Transportwege und konkurrenzfähige Preise.
 
 Das Klima in Augsburg ist gemäßigt-kontinental mit rund 800 mm Jahresniederschlag. Die Sommer sind warm aber nicht extrem trocken, die Winter moderat. Für Rollrasen sind das gute Bedingungen: Das Frühjahr (April–Juni) und der Frühherbst (September/Oktober) bieten die besten Anwachsbedingungen. Auch Sommerverlegungen sind möglich, erfordern aber konsequente Bewässerung in den ersten drei Wochen.
@@ -1042,6 +1233,8 @@ Typische Projekte: Reihenhausgärten in Haunstetten (50–120 m²), Neubaugebiet
       { q: 'Welche Rasensorte empfiehlt sich für Augsburg?', a: 'Gebrauchsrasen ist für die meisten Augsburger Gärten ideal: robust, pflegeleicht und belastbar. Für Flächen mit Baumschatten (z.B. in Stadtrandlagen mit altem Baumbestand) empfiehlt sich Halbschattenrasen.' },
       { q: 'Wie schnell wächst Rollrasen in Augsburg an?', a: 'Bei optimaler Bewässerung und milden Temperaturen im Frühjahr oder Herbst wächst Rollrasen innerhalb von 10–14 Tagen fest an. Im Sommer dauert es bei Hitze etwas länger – dafür ist er nach dem Anwachsen robuster.' },
       { q: 'Gibt es Mindestmengen bei der Lieferung in Augsburg?', a: 'Die meisten Betriebe liefern ab 30–50 m². Darunter lohnt sich Abholung direkt beim Hersteller oder Kauf im Gartencenter. Walter Schwab GmbH bietet auch Selbstabholung in Waidhofen an.' },
+      { q: 'Was kostet Rollrasen 100 m² in Augsburg komplett?', a: 'Für 100 m² in Augsburg kalkulieren Sie: Material 500–1.200 €, Lieferung & Verlegung 800–1.700 €, Bodenvorbereitung 500–2.300 €. Gesamtrahmen: 2.400–5.200 €. Augsburg zählt durch die Nähe zu Walter Schwab GmbH zu den günstigsten Standorten in Bayern.' },
+      { q: 'Liefert Rollrasen auch nach Gersthofen, Königsbrunn und Neusäß?', a: 'Ja – lokale Betriebe beliefern den gesamten Augsburger Raum: Gersthofen (86368), Königsbrunn (86343), Neusäß (86356), Stadtbergen (86391), Kissing (86438), Bobingen (86399) und Schwabmünchen (86830).' },
     ],
   },
   regensburg: {
@@ -1102,10 +1295,14 @@ Typische Projekte in Landshut: Reihenhausgärten in Achdorf, Nikola und Seldenb�
   },
   rosenheim: {
     name: 'Rosenheim', region: 'Oberbayern', plz: '83022',
-    title: 'Rollrasen Rosenheim – Kosten, Händler & kostenlose Angebote 2026',
-    desc:  'Rollrasen in Rosenheim kaufen & verlegen lassen: Preisrechner, regionale Händler & kostenlose Angebote. Geprüfte Fachbetriebe aus dem Chiemgau.',
-    preisHinweis: 'In Rosenheim und dem Chiemgau können Hanglagen und aufwendigere Verlegetechnik die Kosten um 3–8 €/m² erhöhen. Immer vorab im Angebot klären lassen – seriöse Betriebe besichtigen die Fläche vor der Kalkulation.',
+    title: 'Rollrasen Rosenheim kaufen – Preise, Händler & Angebote 2026',
+    desc:  'Rollrasen in Rosenheim & Chiemgau kaufen: Rasen Schwab direkt vor Ort, Preisrechner & kostenlose Angebote. Geprüfte Fachbetriebe aus Oberbayern – auch für Hanglagen.',
+    preisHinweis: 'In Rosenheim und dem Chiemgau können Hanglagen und aufwendigere Verlegetechnik die Kosten um 3–8 €/m² erhöhen. Für eine typische 100-m²-Fläche sind 2.500–6.000 € Gesamtkosten realistisch – bei Hanglagen am oberen Ende.',
     nachbarStaedte: ['muenchen', 'kempten', 'freising'],
+    regionContent: {
+      heading: 'Rollrasen im Chiemgau – Lieferung im gesamten Rosenheimer Raum',
+      text: 'Rosenheim ist das Zentrum des Chiemgaus und versorgt als Rollrasen-Markt eine breite Umgebung: Kolbermoor (83059), Bad Aibling (83043), Prien a. Chiemsee (83209), Wasserburg a. Inn (83512), Bruckmühl (83052) und Raubling (83064) werden von lokalen Betrieben zuverlässig beliefert. Die besonderen Herausforderungen der Region – Hanglagen, Voralpenklima, schwere Lehmböden – sind regionalen Fachbetrieben wie Rasen Schwab bestens vertraut.',
+    },
     intro: `Rosenheim und der Chiemgau liegen am Fuß der Voralpen – eine Region mit eigenen klimatischen Anforderungen an Rollrasen. Rasen Schwab ist als lokaler Fachbetrieb direkt vor Ort und kennt die Besonderheiten der Region: Hanglagen, schwere Lehmböden in Tallage und das Voralpenklima mit späten Frösten im Frühjahr.
 
 Das Klima im Chiemgau ist feucht und niederschlagsreich – Rosenheim bekommt im Schnitt über 1.000 mm Regen pro Jahr. Das ist ein Segen für Rollrasen: Einmal fest angewachsen, gedeiht er hier üppig und tiefgrün ohne übermäßigen Pflegeaufwand. Die Herausforderung liegt im Frühjahr: Fröste bis in den Mai hinein sind in der Voralpenregion keine Seltenheit, weshalb Pflanzungen erst nach den Eisheiligen (Mitte Mai) sicherer sind.
@@ -1121,6 +1318,8 @@ Hanglagen stellen auch bei der Verlegung besondere Anforderungen: Rollrasen muss
       { q: 'Wie verlege ich Rollrasen auf einer Hanglage in Rosenheim?', a: 'Rollrasen auf Hängen muss mit Holzheringen oder Jutenetzen gesichert werden, bis er nach 2–3 Wochen fest angewachsen ist. Auf steilen Hängen (über 30%) sollte immer ein Fachbetrieb ausführen.' },
       { q: 'Muss ich trotz des feuchten Chiemgauer Klimas bewässern?', a: 'In den ersten 14 Tagen nach der Verlegung ist tägliches Wässern auch im Chiemgau wichtig – die Wurzeln müssen erst Kontakt zum Untergrund aufbauen. Danach genügt bei normalem Niederschlag oft das natürliche Regenwasser.' },
       { q: 'Was kostet Rollrasen in Hanglagen rund um Rosenheim?', a: 'Hanglagen erhöhen den Aufwand für Bodenvorbereitung, Verlegung und Sicherung. Realistisch sind 3–8 €/m² Aufschlag auf die Verlegekosten – eine Besichtigung vor Ort und ein schriftliches Angebot sind bei Hangprojekten unbedingt empfehlenswert.' },
+      { q: 'Was kostet Rollrasen 100 m² in Rosenheim komplett?', a: 'Für 100 m² in Rosenheim kalkulieren Sie: Material 500–1.200 €, Lieferung & Verlegung 800–1.800 €, Bodenvorbereitung 500–2.500 €. Gesamtrahmen: 2.500–5.500 € auf ebenem Gelände. Bei Hanglagen realistisch bis 6.000 € – Besichtigung vor Ort ist Pflicht.' },
+      { q: 'Liefert Rollrasen auch nach Kolbermoor, Bad Aibling und Prien?', a: 'Ja – Rasen Schwab und weitere Betriebe beliefern den gesamten Rosenheimer Raum: Kolbermoor (83059), Bad Aibling (83043), Prien a. Chiemsee (83209), Wasserburg a. Inn (83512), Bruckmühl (83052) und Raubling (83064).' },
     ],
   },
   ingolstadt: {
@@ -1309,6 +1508,34 @@ Hanglagen sind im Allgäu allgegenwärtig – für die Rollrasen-Verlegung bedeu
       { q: 'Was muss ich bei schweren Lehmböden in Kempten beachten?', a: 'Schwere Lehmböden können zu Staunässe führen, die Rollrasen schädigt. Eine Drainageschicht aus Kies (5–8 cm) unter dem Rollrasen schützt davor. Ein Fachbetrieb prüft den Boden vor Ort und empfiehlt die nötige Maßnahme.' },
       { q: 'Wie gehe ich mit Hanglagen im Allgäu um?', a: 'Hanglagen sind im Allgäu die Norm. Rollrasen muss auf Hängen gesichert werden (Holzheringe, Jutenetze) bis er nach 2–3 Wochen angewachsen ist. Auf steilen Hängen immer einen erfahrenen Fachbetrieb beauftragen.' },
       { q: 'Wie lange ist die Rollrasen-Saison in Kempten?', a: 'Von Mitte Mai (nach Eisheiligen) bis Ende September/Anfang Oktober. Im Oktober können frühe Fröste die Anwachsphase gefährden. Für etwa 4 Monate optimale Verlegebedingungen – kürzer als im Münchner Raum, aber dafür sehr verlässlich.' },
+    ],
+  },
+  unterschleissheim: {
+    name: 'Unterschleißheim', region: 'Oberbayern', plz: '85716',
+    title: 'Rollrasen Unterschleißheim kaufen – Preise, Händler & Angebote 2026',
+    desc:  'Rollrasen in Unterschleißheim kaufen & verlegen lassen: Wolf Grün direkt vor Ort, Preisrechner & kostenlose Angebote. Geprüfte Fachbetriebe im Münchner Norden.',
+    preisHinweis: 'Unterschleißheim profitiert von seiner Lage im Münchner Norden – mehrere Fachbetriebe aus Unterschleißheim, Kirchheim und Schwabhausen liefern in die Region. Preise entsprechen dem günstigen Münchner Umland: 2.400–5.000 € für 100 m² komplett.',
+    nachbarStaedte: ['muenchen', 'freising', 'landshut'],
+    intro: `Unterschleißheim liegt im Münchner Norden und gehört zu den rollrasenmäßig bestversorgten Gemeinden in Bayern. Wolf Grün Gartenbau ist direkt vor Ort ansässig – kurze Wege, schnelle Lieferung, lokale Expertise. Ergänzend liefern weitere Münchner Betriebe aus Kirchheim bei München und Schwabhausen in die Region, was echten Preiswettbewerb schafft.
+
+Die Gemeinde Unterschleißheim boomt: Starkes Bevölkerungswachstum durch die Nähe zum Münchner Flughafen (8 km) und zu großen Arbeitgebern wie Infineon macht Unterschleißheim zu einem der aktivsten Neubaugebiete in ganz Bayern. Reihenhausgärten, Doppelhaushälften und Neubau-Wohnanlagen brauchen regelmäßig frisch angelegte Grünflächen – Rollrasen ist dabei die Wahl für sofortige Nutzbarkeit ohne Wartezeit.
+
+Das Klima in Unterschleißheim ist typisch für das Münchner Umland: mild-kontinental mit rund 850 mm Jahresniederschlag, warme Sommer, ausreichende Frühjahrsregenfälle. Die optimalen Verlegezeiten sind Frühjahr (April bis Juni) und Frühherbst (September/Oktober). Im Sommer ist Rollrasen möglich, erfordert dann aber konsequente tägliche Bewässerung in den ersten 3 Wochen.
+
+Die Böden in Unterschleißheim sind überwiegend sandig-lehmig – typisch für die Schotterterrassen nördlich von München. Das ist eine gute Ausgangslage: gute Drainage, kein Staunässe-Risiko. In Neubaugebieten ist verdichteter Baustellenboden die häufigste Herausforderung – Fräsen und Humuseinarbeitung (5 cm) sind dann Standard.`,
+    regionContent: {
+      heading: 'Rollrasen im Münchner Norden – Unterschleißheim und Umgebung',
+      text: 'Unterschleißheim ist das Zentrum des Münchner Nordens und gut an das regionale Rollrasen-Netzwerk angebunden. Lokale Betriebe beliefern neben Unterschleißheim (85716) auch: Oberschleißheim (85764), Haimhausen (85778), Eching (85386), Garching b. München (85748), Hallbergmoos (85399) und Neufahrn b. Freising (85375). Die günstige Lage zwischen Münchner Betrieben und niederbayerischen Herstellern sorgt für echten Wettbewerb und faire Preise im Vergleich zum teuren Münchner Stadtgebiet.',
+    },
+    faq: [
+      { q: 'Was kostet Rollrasen in Unterschleißheim?', a: 'Material: 5–12 €/m². Inkl. Lieferung und Verlegung: 15–25 €/m². Komplett mit Bodenvorbereitung: 25–50 €/m². Unterschleißheim hat kurze Wege zu lokalen Betrieben – Preise liegen günstiger als im Münchner Stadtgebiet.' },
+      { q: 'Was kostet Rollrasen 100 m² in Unterschleißheim komplett?', a: 'Für 100 m² in Unterschleißheim kalkulieren Sie: Material 500–1.200 €, Lieferung & Verlegung 800–1.700 €, Bodenvorbereitung 400–2.100 €. Gesamtrahmen: 2.400–5.000 €. Bei gut vorbereitetem Boden (Neubau-Standard) oft am unteren Ende.' },
+      { q: 'Welche Händler liefern in Unterschleißheim?', a: 'Wolf Grün Gartenbau ist direkt in Unterschleißheim ansässig. Ergänzend liefern Münchner Betriebe aus Kirchheim bei München und Schwabhausen sowie niederbayerische Hersteller wie Isar Rollrasen in die Region.' },
+      { q: 'Wann ist der beste Zeitpunkt für Rollrasen in Unterschleißheim?', a: 'April bis Juni und September/Oktober. Das Klima im Münchner Norden begünstigt Frühjahrspflanzungen besonders – ausreichende Niederschläge und milde Temperaturen sorgen für schnelles Anwachsen.' },
+      { q: 'Lohnt sich Rollrasen für Neubaugärten in Unterschleißheim?', a: 'Besonders ja – Rollrasen ist bei Neubauprojekten die bevorzugte Wahl. Sofort nutzbar, schützt den Boden vor Erosion und sieht vom ersten Tag an professionell aus. Wolf Grün kennt die typischen Neubau-Bodenprobleme in der Gemeinde.' },
+      { q: 'Welche Bodenvorbereitung brauche ich in Unterschleißheim?', a: 'Auf den sandig-lehmigen Schotterböden des Münchner Nordens ist Humusergänzung (5 cm) meist ausreichend. Bei Neubauflächen mit verdichtetem Aushub: Tiefenlockerung (30 cm), Planieren und Humuseinarbeitung. Wolf Grün beurteilt den Boden vor Ort kostenlos.' },
+      { q: 'Liefert Rollrasen auch nach Oberschleißheim, Haimhausen und Eching?', a: 'Ja – lokale Betriebe beliefern den gesamten Münchner Norden: Oberschleißheim (85764), Haimhausen (85778), Eching (85386), Garching b. München (85748), Hallbergmoos (85399) und Neufahrn b. Freising (85375).' },
+      { q: 'Kann ich Rollrasen in Unterschleißheim auch selbst verlegen?', a: 'Ja, für Flächen bis 80 m² gut machbar. Die Bodenvorbereitung ist der aufwendigste Teil. Für Neubauflächen oder größere Projekte ist Wolf Grün empfehlenswert – spart Zeit und sichert das Ergebnis.' },
     ],
   },
 };
