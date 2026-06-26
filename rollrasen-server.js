@@ -1069,28 +1069,35 @@ Das Frühjahr (April bis Juni) ist die beste Verlegezeit: Die Böden erwärmen s
   },
   landshut: {
     name: 'Landshut', region: 'Niederbayern', plz: '84028',
-    title: 'Rollrasen Landshut – Kosten, Händler & kostenlose Angebote 2026',
-    desc:  'Rollrasen in Landshut kaufen & verlegen lassen: Preisrechner, regionale Händler & kostenlose Angebote. Geprüfte Fachbetriebe aus Niederbayern.',
-    preisHinweis: 'Landshut profitiert von seiner Nähe zu Isar Rollrasen in Altheim – einer der kürzesten Lieferwege in ganz Niederbayern. Das drückt Transportkosten nach unten und sorgt für besonders frischen Rasen.',
+    title: 'Rollrasen Landshut kaufen – Preise, Händler & Angebote 2026',
+    desc:  'Rollrasen in Landshut kaufen & verlegen lassen: Preisrechner, regionale Händler & kostenlose Angebote. Geprüfte Fachbetriebe aus Niederbayern – Isar Rollrasen & Nodes Gartenbau direkt vor Ort.',
+    preisHinweis: 'Landshut hat mit Isar Rollrasen (Altheim, PLZ 84169) einen der nächstgelegenen Produzenten in ganz Südbayern. Kurze Transportwege drücken die Lieferkosten und sorgen für besonders frischen Rasen. Für eine typische 100-m²-Fläche sind 2.500–5.500 € Gesamtkosten ein realistischer Rahmen.',
     nachbarStaedte: ['muenchen', 'freising', 'regensburg', 'passau'],
-    intro: `Landshut liegt im Herzen Niederbayerns und ist rollrasenmäßig exzellent versorgt: Isar Rollrasen aus dem nahe gelegenen Altheim und Nodes Gartenbau aus Essenbach sind beide innerhalb einer halben Autostunde – und liefern frisch geernteten Rasen oft noch am selben Tag nach der Ernte. Diese Frische macht einen messbaren Unterschied: Rollrasen, der schnell vom Feld zum Garten kommt, wurzelt zuverlässiger an als Ware, die 24–48 Stunden auf LKWs verbracht hat.
+    intro: `Landshut ist das Rollrasen-Zentrum Niederbayerns – aus gutem Grund. Isar Rollrasen aus dem nahe gelegenen Altheim (PLZ 84169) ist einer der bekanntesten Produzenten in ganz Südbayern, Nodes Gartenbau aus Essenbach (PLZ 84051) ergänzt das Angebot als lokaler Verlegespezialist. Beide sind innerhalb von 15–20 Minuten am Verlegeort – das bedeutet frisch geernteten Rasen, oft noch am selben Tag nach der Ernte geliefert. Dieser Frischevorsprung gegenüber überregionalen Versandhändlern macht einen messbaren Unterschied beim Anwurzeln.
 
-Das niederbayerische Klima rund um Landshut ist mild-kontinental mit rund 800 mm Jahresniederschlag – mehr als in Regensburg oder Nürnberg. Das kommt Rollrasen zugute: Die Anwachsbedingungen im Frühjahr sind hervorragend, intensive Bewässerung ist weniger kritisch als in trockeneren Regionen.
+Das niederbayerische Klima rund um Landshut ist mild-kontinental mit rund 800 mm Jahresniederschlag – spürbar mehr als in Regensburg (540 mm) oder Nürnberg (590 mm). Das erleichtert das Anwachsen erheblich: intensive Bewässerung ist weniger kritisch als in trockeneren Regionen. Die besten Verlegezeiten sind Frühjahr (April bis Juni) und Frühherbst (September/Oktober); die Bodentemperaturen bleiben in Niederbayern oft bis Mitte Oktober ausreichend warm für sicheres Wurzelwachstum.
 
-Die Böden im Isartal sind oft tiefgründig und fruchtbar – Auenlehm mit gutem Wasserhaltvermögen ist typisch für die Flussniederungen rund um Landshut. Höher gelegene Lagen rund um die Stadt haben sandige bis sandig-lehmige Böden, die etwas mehr Humusergänzung vertragen.
+Die Böden im Isartal sind ein Pluspunkt: tiefgründiger, fruchtbarer Auenlehm in der Talsohle und in den zentralen Stadtteilen Achdorf und Nikola – ideal für Rollrasen ohne aufwendige Bodenvorbereitung. Auf den Hochflächen südlich der Stadt (Schönbrunn, Frauenberg) und in den Randlagen Richtung Ergolding finden sich sandige bis sandig-lehmige Böden, die etwas Humusergänzung vertragen. In Neubaugebieten wie Landshut-Ost ist verdichteter Baustellenboden die häufigste Herausforderung – hier ist Fräsen und Planieren nötig.
 
-Häufige Projekte: Einfamilienhausgärten in Achdorf und Nikola (60–150 m²), Neubaugebiete am Stadtrand (150–400 m²) und landwirtschaftliche Außenanlagen im Umland.`,
+Typische Projekte in Landshut: Reihenhausgärten in Achdorf, Nikola und Seldenbühl (60–120 m²), Neubaugebiete am Stadtrand Richtung Ergolding und Altdorf (150–400 m²) und Gewerbe-Außenanlagen im Industriegebiet Nord. Als Kreisstadt Niederbayerns profitiert Landshut von einer konstant hohen Bautätigkeit – regionale Betriebe kennen die lokalen Gegebenheiten und beliefern alle Stadtteile zuverlässig.`,
+    regionContent: {
+      heading: 'Rollrasen Niederbayern – Lieferung im gesamten Landkreis Landshut',
+      text: 'Als Kreisstadt Niederbayerns ist Landshut das logistische Zentrum für Rollrasen in der gesamten Region. Die lokalen Fachbetriebe liefern nicht nur ins Stadtgebiet, sondern in den gesamten Landkreis Landshut: Ergolding (84030), Altdorf (84032), Rottenburg an der Laaber (84056), Essenbach (84051), Adlkofen, Vilsheim, Tiefenbach und Bruckberg. Für den weiteren Raum Niederbayern – Dingolfing, Straubing-Bogen, Deggendorf – stehen dieselben Betriebe auf Anfrage zur Verfügung. Die geografisch günstige Lage zwischen München und Passau macht Landshut zu einem der am besten versorgten Rollrasen-Märkte in ganz Bayern.',
+    },
     faq: [
-      { q: 'Was kostet Rollrasen in Landshut?', a: 'Material: 5–12 €/m². Inkl. Lieferung und Verlegung: 15–25 €/m². Mit Bodenvorbereitung: 25–55 €/m². Landshut profitiert von kurzen Wegen zu regionalen Herstellern – besonders günstige Lieferbedingungen.' },
-      { q: 'Welche Händler liefern in Landshut?', a: 'Isar Rollrasen aus Altheim und Nodes Gartenbau aus Essenbach sind direkt vor Ort. Beide decken den Raum Niederbayern zuverlässig ab.' },
+      { q: 'Was kostet Rollrasen in Landshut?', a: 'Material: 5–12 €/m². Inkl. Lieferung und Verlegung: 15–25 €/m². Mit Bodenvorbereitung: 25–55 €/m². Landshut profitiert von kurzen Wegen zu regionalen Herstellern – das hält die Lieferkosten niedrig.' },
+      { q: 'Was kostet Rollrasen 100 m² in Landshut komplett?', a: 'Für eine 100-m²-Fläche in Landshut kalkulieren Sie: Material 500–1.200 €, Lieferung & Verlegung 800–1.800 €, Bodenvorbereitung je nach Aufwand 500–2.500 €. Gesamtkosten realistisch: 2.500–5.500 € für die Komplettlösung. Auf guten Isartal-Böden mit wenig Aufbereitung kann es deutlich günstiger sein.' },
+      { q: 'Rollrasen Preise Landshut 2026 – was ist ein realistisches Budget?', a: 'Für einen typischen Landshuter Garten (80–120 m²) planen Sie 2.000–6.600 € ein. Als Orientierung: Nur Material selbst verlegen ab 400–1.440 €; Material + Lieferung + Verlegung durch Fachbetrieb 1.200–3.000 €; Komplettlösung inkl. Bodenvorbereitung 2.500–6.600 €. Unser kostenloser Preisrechner liefert eine genaue Kalkulation für Ihre Fläche.' },
+      { q: 'Welche Händler liefern in Landshut?', a: 'Isar Rollrasen aus Altheim (PLZ 84169) und Nodes Gartenbau aus Essenbach (PLZ 84051) sind direkt vor Ort – beide innerhalb von 20 Minuten. Beide decken den gesamten Raum Niederbayern zuverlässig ab.' },
       { q: 'Wann ist der beste Zeitpunkt für Rollrasen in Landshut?', a: 'April bis Juni und September/Oktober. Niederbayern hat ausreichend Frühjahrs-Niederschläge – ideal für schnelles Anwachsen ohne übermäßigen Bewässerungsaufwand.' },
-      { q: 'Was ist der Vorteil von regionalem Rollrasen aus Niederbayern?', a: 'Kurze Transportwege bedeuten frischeren Rasen mit höherer Anwurzelungsrate. Isar Rollrasen liefert oft am selben oder nächsten Tag nach der Ernte – das ist ein echter Qualitätsvorteil.' },
+      { q: 'Was ist der Vorteil von regionalem Rollrasen aus Niederbayern?', a: 'Kurze Transportwege bedeuten frischeren Rasen mit höherer Anwurzelungsrate. Isar Rollrasen liefert oft am selben oder nächsten Tag nach der Ernte – das ist ein echter Qualitätsvorteil gegenüber Versandhändlern, bei denen der Rasen 24–48 Stunden unterwegs ist.' },
       { q: 'Wie lange muss ich nach der Verlegung wässern in Landshut?', a: 'Mindestens 2–3 Wochen täglich, am besten morgens. Im Frühjahr und Herbst reicht meist einmal täglich; im Sommer ist zweimal täglich (morgens und abends) ratsam.' },
       { q: 'Kann ich Rollrasen in Landshut auch im Oktober noch verlegen?', a: 'Ja, Oktober ist oft noch gut geeignet – solange kein Frost droht und die Bodentemperatur über 8°C liegt. Frühherbstverlegungen haben in Niederbayern eine hohe Erfolgsrate.' },
       { q: 'Gibt es Rollrasen für Spielflächen und Kindergärten in Landshut?', a: 'Ja – Sportrasen und Strapazierrasen sind dafür ausgelegt. Diese Sorten vertragen intensive Nutzung und erholen sich schneller. Lokale Händler beraten zur optimalen Sorte für Kinderspielbereich oder Sportfläche.' },
-      { q: 'Wo kann ich Rollrasen in Landshut kaufen?', a: 'Über rasenrechner.de werden Sie direkt mit lokalen Fachbetrieben verbunden – darunter Isar Rollrasen aus Altheim und Nodes Gartenbau aus Essenbach. Beide liefern frisch geernteten Rasen in den Landshuter Raum. Kostenloses Angebot einfach PLZ eingeben.' },
-      { q: 'Liefert Rollrasen auch in die Landshuter Stadtteile Achdorf, Nikola und Seldenbühl?', a: 'Ja – lokale Betriebe beliefern alle Stadtteile Landshu ts: Achdorf, Nikola, Seldenbühl, Schönbrunn, Frauenberg und das gesamte Stadtgebiet sowie die Umlandgemeinden Ergolding, Altdorf und Essenbach.' },
-      { q: 'Wie viel Rollrasen brauche ich für einen typischen Garten in Landshut?', a: 'Ein durchschnittlicher Reihenhausgarten in Landshut hat 60–120 m². Mit etwas Verschnitt rechnet man ca. 5–10 % Mehrfläche. Unser kostenloser Preisrechner berechnet den genauen Bedarf nach Eingabe der Gartendimension.' },
+      { q: 'Wo kann ich Rollrasen in Landshut kaufen?', a: 'Über rasenrechner.de werden Sie direkt mit lokalen Fachbetrieben verbunden – darunter Isar Rollrasen aus Altheim und Nodes Gartenbau aus Essenbach. Beide liefern frisch geernteten Rasen in den Landshuter Raum. PLZ eingeben und kostenloses Angebot einholen.' },
+      { q: 'Liefert Rollrasen auch in Landshuter Stadtteile wie Achdorf, Nikola und Seldenbühl?', a: 'Ja – lokale Betriebe beliefern alle Landshuter Stadtteile: Achdorf, Nikola, Seldenbühl, Schönbrunn, Frauenberg, Münchnerau und das gesamte Stadtgebiet (PLZ 84028, 84030, 84032, 84034, 84036). Auch die Umlandgemeinden Ergolding, Altdorf und Essenbach werden bedient.' },
+      { q: 'Welche PLZ-Gebiete rund um Landshut werden beliefert?', a: 'Lokale Fachbetriebe liefern in alle Landshuter PLZ-Gebiete: 84028, 84030, 84032, 84034 und 84036 im Stadtgebiet sowie 84051 (Essenbach), 84055 (Rottenburg), 84056 (Rottenburg a.d.L.) und viele weitere Adressen im Landkreis Landshut.' },
+      { q: 'Wie viel Rollrasen brauche ich für einen typischen Garten in Landshut?', a: 'Ein durchschnittlicher Reihenhausgarten in Landshut hat 60–120 m². Mit 5–10 % Verschnitt rechnet man etwas Mehrfläche ein. Unser kostenloser Preisrechner berechnet den genauen Bedarf nach Eingabe der Gartendimension.' },
     ],
   },
   rosenheim: {
@@ -1434,7 +1441,7 @@ app.get('/bayern/:city', (req, res, next) => {
   </div>
 
   <div class="wrap">
-    <div class="intro-box">${stadt.intro}</div>
+    <div class="intro-box">${stadt.intro.trim().split(/\n\n+/).map(p => `<p style="margin-bottom:.75rem;color:#333">${p}</p>`).join('')}</div>
 
     <h2>Rollrasen kaufen in ${stadt.name} – geprüfte Händler & Preise</h2>
     <div class="dealer-grid">${dealerCards || '<p>Aktuell keine Händler-Daten verfügbar.</p>'}</div>
@@ -1454,6 +1461,9 @@ app.get('/bayern/:city', (req, res, next) => {
     </table>
     <p style="font-size:.9rem;color:#555;margin-top:.5rem">${stadt.preisHinweis || ''}</p>
     <p style="font-size:.85rem;color:#888">Alle Angaben inkl. MwSt. Bodenvorbereitung (Fräsen, Planieren, Humus) wird separat kalkuliert. <a href="/bayern/" style="color:#2d6a2d">Preisrechner nutzen →</a></p>
+
+    ${stadt.regionContent ? `<h2>${stadt.regionContent.heading}</h2>
+    <p style="color:#444;line-height:1.75;margin-bottom:.75rem">${stadt.regionContent.text}</p>` : ''}
 
     <h2>Häufige Fragen – Rollrasen ${stadt.name}</h2>
     <div>${faqHtml}</div>
