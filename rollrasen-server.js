@@ -973,8 +973,7 @@ ${urls.map(u => `  <url>
 
 // ─── ROLLRASEN KOSTEN INFORMATIONSSEITE ──────────────────────────────────────
 
-app.get('/rollrasen-kosten', (req, res) => res.redirect(301, '/rollrasen-kosten/'));
-app.get('/rollrasen-kosten/', (req, res) => {
+app.get(['/rollrasen-kosten', '/rollrasen-kosten/'], (req, res) => {
   const kostenFaq = [
     { q: 'Was kostet Rollrasen pro m²?', a: 'Rollrasen-Material kostet je nach Sorte 5,50–9,00 €/m²: Spielwiese/Landschaftsrasen ab 5,50 €/m², Sportrasen ab 6,50 €/m², Halbschattenrasen ab 8,50 €/m², Premium-Fertigrasen ab 9,00 €/m². Diese Preise gelten für das reine Material – ohne Lieferung und Verlegung.' },
     { q: 'Was kostet Rollrasen inkl. Verlegung?', a: 'Material plus Lieferung und fachgerechte Verlegung kosten zusammen 15–25 €/m². Das ist der Standardbereich für Komplettangebote von regionalen Fachbetrieben. Enthaltene Leistungen: Lieferung, Bodennivellierung (leicht), Rollrasen auslegen und einpassen.' },
